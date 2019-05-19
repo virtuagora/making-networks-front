@@ -25,6 +25,12 @@ const auth = {
       'Hi! Thanks for signing up!',
       'Please complete your registration!',
     ],
+    response: {
+      title: 'Thank you!',
+      notification: 'You\'ve successfully completed your registration!',
+      instruction: 'Now you can log in into your account and start collaborating',
+      login: 'Log In',
+    },
   },
 };
 

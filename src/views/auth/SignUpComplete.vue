@@ -65,8 +65,16 @@
       </div>
     </div>
   </section>
-  <section class="notification is-success has-text-centered" v-else>
-    <p class="animated infinite bounce"><i class="fas fa-check-circle fa-lg"></i></p>
+  <section v-else>
+    <h1 class="title animated fadeInUp is-4 has-text-centered"> {{$t('auth.completeSignUp.response.title')}}</h1>
+    <div class="box is-light has-text-centered">
+      <p class="animated heartBeat delay-1s has-text-success"><i class="fas fa-check-circle fa-lg"></i></p>
+      <p>{{$t('auth.completeSignUp.response.notification')}}</p>
+    </div>
+    <div class="content has-text-centered">
+    <p>{{$t('auth.completeSignUp.response.instruction')}}</p>
+    <p><router-link :to="{name: 'login'}" class="has-text-primary"><i class="fas fa-sign-in-alt"></i>&nbsp;{{$t('auth.completeSignUp.response.login')}}</router-link></p>
+    </div>
   </section>
 </template>
 
@@ -85,7 +93,7 @@ export default {
       password: null,
       confirmPassword: null,
       response: {
-        ok: true,
+        ok: false,
       },
     };
   },
@@ -110,12 +118,13 @@ export default {
         }
         // is valid, then...
         this.startLoading();
-        this.$http.post('/v1/pending-users', this.getPayload())
+        this.$http.post('/v1/users', this.getPayload())
           .then((res) => {
             console.log(res);
+            this.response.ok = true
           }).catch((err) => {
-            console.log(err);
-            this.$toast.open(err.response.data.message);
+             console.error(err);
+            if(err.response && err.response.data) this.$toast.open(err.response.data.message);
           }).finally(() => {
             this.stopLoading();
           });
