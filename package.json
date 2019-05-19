@@ -1,0 +1,37 @@
+{
+  "name": "creating-networks-front",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "animate.css": "^3.7.0",
+    "axios": "^0.18.0",
+    "buefy": "^0.7.3",
+    "bulma": "^0.7.2",
+    "mapbox-gl": "^0.53.1",
+    "vee-validate": "^2.2.0",
+    "vue": "^2.6.9",
+    "vue-carousel": "^0.17.0",
+    "vue-i18n": "^8.9.0",
+    "vue-mapbox": "^0.1.4",
+    "vue-particles": "^1.0.9",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.7.0",
+    "@vue/cli-plugin-eslint": "^3.7.0",
+    "@vue/cli-service": "^3.7.0",
+    "@vue/eslint-config-airbnb": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.2.2",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.0.1",
+    "vue-template-compiler": "^2.6.10"
+  }
+}

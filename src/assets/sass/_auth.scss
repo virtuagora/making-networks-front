@@ -1,0 +1,17 @@
+section#auth{
+  .input{
+  background-color: rgba(255, 255, 255, 0);
+  border: 0px solid #FFF;
+  border-radius: 0;
+  border-bottom: 1px solid #FFF;
+  color: #FFF;
+
+  &::placeholder {
+    color: rgb(255, 255, 255);
+    opacity: 0.3;
+  }
+  &:focus{
+    border-color: $primary
+  }
+}
+}

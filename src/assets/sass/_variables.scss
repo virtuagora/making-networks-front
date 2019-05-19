@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,600,800,900');
+// Set your colors
+
+$body-size: 14px;
+// $family-sans-serif: 'Roboto Slab',
+// $family-sans-serif;
+$family-title: 'Raleway', $family-sans-serif;
+// $family-subtitle: 'Amarante',
+// $family-sans-serif;
+
+// Colors
+// $primary: hsl(197, 24%, 57%);
+// $primary-invert: findColorInvert($primary);
+// $twitter: #4099FF;
+// $twitter-invert: findColorInvert($twitter);
+
+$primary: #da8313;
+// $primary: #e29735;
+// $primary: #181d27;
+$primary-invert: findColorInvert($primary);
+$dark: #181d27;
+$dark-invert: findColorInvert($dark);
+// $text: $white;
+$danger: rgb(243, 62, 62);
+// $twitter: #4099FF;
+// $twitter-invert: findColorInvert($twitter);
+
+// Setup $colors to use as bulma classes (e.g. 'is-twittser')
+$colors: ("white": ($white, $black),
+"black": ($black, $white),
+"light": ($light, $light-invert),
+"dark": ($dark, $dark-invert),
+"primary": ($primary, $primary-invert),
+"info": ($info, $info-invert),
+"success": ($success, $success-invert),
+"warning": ($warning, $warning-invert),
+"link": ($link, $link-invert),
+"danger": ($danger, $danger-invert));
+
+// Links
+// $link: $primary;
+// $link-invert: $primary-invert;
+// $link-focus-border: $primary;
+
+// Navbar
+// $navbar-height: 3.5rem;
+// $navbar-item-img-max-height: 2.3rem;
+// $navbar-tab-active-border-bottom-width: 0px;
+// $navbar-background-color: $white;
+// $navbar-item-color: $white;
+// $navbar-item-hover-color: $white;
+// $navbar-item-hover-background-color: transparent;
+
+
+// Input
+$input-shadow: none;
+$input-focus-box-shadow-size: none;
+
+// FORM
+$label-color: $black
