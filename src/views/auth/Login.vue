@@ -58,8 +58,7 @@ export default {
         }).then((res) => {
             console.log(res);
             this.$toast.open('Welcome back!')
-            this.$store.dispatch('login',res.data.user)
-            localStorage.setItem('mykeee',res.data.access_token)
+            this.$store.dispatch('login',res.data)
             this.$router.push({name: 'home'})
           }).catch((err) => {
             console.error(err);

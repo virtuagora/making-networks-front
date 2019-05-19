@@ -1,18 +1,19 @@
 <template>
   <div id="app">
+    <Navbar />
     <RouterView />
     <b-loading ref="loader" :active="isLoading"></b-loading>
   </div>
 </template>
 
 <script>
-// import Navbar  from './components/Navbar.vue';
+import Navbar  from './components/Navbar.vue';
 
 export default {
   name: 'App',
 
   components: {
-    // Navbar,
+    Navbar,
   },
   beforeCreate() {
     // this.$http.get('/user')

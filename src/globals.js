@@ -62,6 +62,20 @@ const globals = {
     currentLanguage() {
       return document.documentElement.lang;
     },
+    user() {
+      return this.$store.getters.user;
+    },
+    userAvatarUrl() {
+      if (this.user) {
+        switch (this.user.img_type) {
+          case 1:
+            return `https://www.gravatar.com/avatar/${this.user.img_hash}?d=mm&s=256`;
+          default:
+            return `https://www.gravatar.com/avatar/${this.user.img_hash}?d=mm&s=256`;
+        }
+      }
+      return 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp';
+    }
   },
 };
 

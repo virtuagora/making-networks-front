@@ -1,5 +1,15 @@
 <template>
-    <p>Naking Networks yay</p>
+  <nav class="floating-navbar" v-if="user">
+<b-dropdown aria-role="list" position="is-bottom-left" >
+            <img class="image" :src="userAvatarUrl" slot="trigger" role="button" />
+
+            <b-dropdown-item aria-role="listitem" has-link >
+              <a @click="logout">
+              <i class="fas fa-sign-out-alt"></i>&nbsp;Log out
+              </a>
+              </b-dropdown-item>
+        </b-dropdown>
+  </nav>
 </template>
 
 <script>
@@ -19,27 +29,13 @@ export default {
     logout() {
       this.showMobileNav = false;
       this.$http
-        .post('/user/logout')
+        .post('/v1/logout')
         .then(() => {
           this.$store.dispatch('logout');
         })
         .catch((err) => {
           console.error(err);
         });
-    },
-  },
-  computed: {
-    authenticated() {
-      return this.$store.state.isAuthenticated;
-    },
-    user() {
-      return this.$store.state.user;
-    },
-    audio() {
-      return this.$store.state.audio;
-    },
-    isAdmin() {
-      return this.$store.getters.isAdmin;
     },
   },
 };
@@ -61,4 +57,17 @@ export default {
 //   font-size: 1.15rem;
 //   // text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.384);
 // }
+  nav.floating-navbar {
+    position: absolute;
+    z-index: 1000;
+    right: 10px;
+    top: 10px;
+    img{
+      width: 48px;
+      border-radius: 100px;
+      &:hover{
+        cursor: pointer
+      }
+    }
+  }
 </style>
