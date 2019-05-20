@@ -48,6 +48,8 @@ const router = new Router({
           name: 'login',
           component: Login,
           meta: {
+            withNavbar: false,
+            withFooter: false,
             requiresAnon: true,
           },
         },
@@ -56,6 +58,8 @@ const router = new Router({
           name: 'signup',
           component: SignUp,
           meta: {
+            withNavbar: false,
+            withFooter: false,
             requiresAnon: true,
           },
         },
@@ -65,6 +69,8 @@ const router = new Router({
           component: SignUpComplete,
           props: true,
           meta: {
+            withNavbar: false,
+            withFooter: false,
             requiresAnon: true,
           },
         },
@@ -73,6 +79,8 @@ const router = new Router({
           name: 'recoverRequest',
           component: RecoverPasswordRequest,
           meta: {
+            withNavbar: false,
+            withFooter: false,
             requiresAnon: true,
           },
         },
@@ -82,6 +90,8 @@ const router = new Router({
           component: RecoverPassword,
           props: true,
           meta: {
+            withNavbar: false,
+            withFooter: false,
             requiresAnon: true,
           },
         },

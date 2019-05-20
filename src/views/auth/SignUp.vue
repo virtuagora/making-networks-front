@@ -10,10 +10,15 @@
         <span class="help is-danger" v-if="errors.has('email')">{{errors.first('email')}}</span>
       </div>
     </div>
+    <div class="field">
+      <div class="control">
+        <vue-recaptcha :sitekey="siteKey" @verify="catchRecaptcha" @expired="recaptcha = null"></vue-recaptcha>
+      </div>
+    </div>
     <br>
     <div class="field">
       <div class="control has-text-centered">
-          <a @click="submit" class="is-size-4 has-text-primary">
+          <a @click="submit" :disabled="!recaptcha" class="is-size-4 has-text-primary">
             {{$t('auth.signUp.actionButton')}}&nbsp;&nbsp;<i class="fas fa-user-plus fa-lg"></i>
           </a>
       </div>
@@ -37,10 +42,13 @@
 </template>
 
 <script>
+import VueRecaptcha from 'vue-recaptcha';
 export default {
+  components: { VueRecaptcha },
   data() {
     return {
       email: null,
+      recaptcha: null,
       response: {
         ok: false
       }
@@ -48,9 +56,13 @@ export default {
   },
   methods: {
     // Make postPayload
+    catchRecaptcha: function (response) {
+         this.recaptcha = response
+      },
     getPayload() {
       const data = {};
       data.email = this.email;
+      data.recaptcha = this.recaptcha
       return { data };
     },
     // Submit new pending user
@@ -76,5 +88,10 @@ export default {
       });
     },
   },
+  computed: {
+    siteKey: function(){
+      return process.env.VUE_APP_RECAPTCHA_SITE_KEY
+    }
+  }
 };
 </script>

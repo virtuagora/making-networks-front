@@ -1,22 +1,27 @@
 <template>
-  <nav class="floating-navbar" v-if="user">
-<b-dropdown aria-role="list" position="is-bottom-left" >
-            <img class="image" :src="userAvatarUrl" slot="trigger" role="button" />
-
-            <b-dropdown-item aria-role="listitem" has-link >
-              <a @click="logout">
-              <i class="fas fa-sign-out-alt"></i>&nbsp;Log out
-              </a>
-              </b-dropdown-item>
-        </b-dropdown>
+  <nav class="tags is-large floating-navbar" v-if="user">
+    <b-dropdown aria-role="list" position="is-bottom-left">
+      <img class="image" :src="userAvatarUrl" slot="trigger" role="button">
+      <b-dropdown-item custom aria-role="menuitem">
+        Logged as
+        <b>{{user.display_name}}</b>
+      </b-dropdown-item>
+      <hr class="dropdown-divider">
+      <b-dropdown-item aria-role="listitem" has-link>
+        <a @click="logout" class="has-text-link">
+          <i class="fas fa-sign-out-alt"></i>&nbsp;Log out
+        </a>
+      </b-dropdown-item>
+    </b-dropdown>
   </nav>
+  <router-link :to="{name: 'login'}" class="floating-navbar has-text-primary" v-else><i class="fas fa-sign-in-alt fa-2x"></i></router-link>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      showMobileNav: false,
+      showMobileNav: false
     };
   },
   methods: {
@@ -28,16 +33,17 @@ export default {
     },
     logout() {
       this.showMobileNav = false;
-      this.$http
-        .post('/v1/logout')
-        .then(() => {
-          this.$store.dispatch('logout');
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    },
-  },
+      this.$store.dispatch("logout");
+      // this.$http
+      //   .post('/v1/logout')
+      //   .then(() => {
+      //     this.$store.dispatch('logout');
+      //   })
+      //   .catch((err) => {
+      //     console.error(err);
+      //   });
+    }
+  }
 };
 </script>
 
@@ -57,17 +63,17 @@ export default {
 //   font-size: 1.15rem;
 //   // text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.384);
 // }
-  nav.floating-navbar {
-    position: absolute;
-    z-index: 1000;
-    right: 10px;
-    top: 10px;
-    img{
-      width: 48px;
-      border-radius: 100px;
-      &:hover{
-        cursor: pointer
-      }
+.floating-navbar {
+  position: absolute;
+  z-index: 1000;
+  right: 10px;
+  top: 10px;
+  img {
+    width: 36px;
+    border-radius: 100px;
+    &:hover {
+      cursor: pointer;
     }
   }
+}
 </style>

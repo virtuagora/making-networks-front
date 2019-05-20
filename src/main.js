@@ -23,6 +23,7 @@ Vue.use(VueI18n);
 Vue.use(VueParticles);
 Vue.use(Buefy, getTranslation().globals.buefyOptions);
 Vue.use(VueMapbox, { mapboxgl: Mapbox });
+
 // Vue.use(Croppa, { componentName: 'vue-croppa' });
 // Ready translated locale messages
 // Create VueI18n instance with optionss

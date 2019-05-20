@@ -9,7 +9,7 @@
             <router-link :to="{name: 'login'}" class="button is-dark is-inverted is-outlined">
               <i class="fas fa-map"></i>&nbsp; {{$t('home.buttons.seeMap')}}
             </router-link>
-            <router-link :to="{name: 'login'}" class="button is-primary is-outlined">
+            <router-link :to="{name: 'login'}" class="button is-primary is-outlined" v-if="!user">
               <i class="fas fa-sign-in-alt"></i>&nbsp; Join
             </router-link>
           </div>

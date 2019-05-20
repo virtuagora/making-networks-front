@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar v-if="$route.meta.withNavbar"/>
     <RouterView />
     <b-loading ref="loader" :active="isLoading"></b-loading>
   </div>
