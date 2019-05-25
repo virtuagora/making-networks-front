@@ -62,8 +62,8 @@ export default {
     getPayload() {
       const data = {};
       data.email = this.email;
-      data.recaptcha = this.recaptcha
-      return { data };
+      let recaptcha = this.recaptcha
+      return { data, recaptcha };
     },
     // Submit new pending user
     submit() {
@@ -77,7 +77,6 @@ export default {
         this.startLoading();
         this.$http.post('/v1/pending-users', this.getPayload())
           .then((res) => {
-            console.log(res);
             this.response.ok = true;
           }).catch((err) => {
             console.error(err);
