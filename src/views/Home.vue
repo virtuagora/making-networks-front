@@ -6,7 +6,7 @@
           <div class="subtitle is-4">{{$t('home.subtitle')}}</div>
           <div class="title is-1">{{$t('globals.title')}}</div>
           <div class="buttons">
-            <router-link :to="{name: 'login'}" class="button is-dark is-inverted is-outlined">
+            <router-link :to="{name: 'map'}" class="button is-dark is-inverted is-outlined">
               <i class="fas fa-map"></i>&nbsp; {{$t('home.buttons.seeMap')}}
             </router-link>
             <router-link :to="{name: 'login'}" class="button is-primary is-outlined" v-if="!user">

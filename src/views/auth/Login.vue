@@ -86,11 +86,6 @@ export default {
             this.$store.dispatch("login", res.data);
             this.$router.push({ name: "home" });
           })
-          .catch(err => {
-            console.error(err);
-            if (err.response && err.response.data)
-              this.$toast.open(err.response.data.message);
-          })
           .finally(() => {
             this.stopLoading();
           });
