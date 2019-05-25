@@ -11,9 +11,14 @@ const globals = {
     defaultMonthNames: months,
     defaultDateFormatter: date => date.toLocaleDateString(dateLocaleString),
     defaultIconPack: 'fas',
+    defaultToastDuration: 3500,
   },
   title: 'Creating networks',
-  formNotValid: 'Invalid data, please check the fields',
+  errors: {
+    error: 'The server responded with an error. Try again later',
+    formNotValid: 'Invalid data, please check the fields',
+    invalidData: 'The data is invalid',
+  },
 };
 
 export default globals;

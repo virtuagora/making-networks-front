@@ -11,6 +11,7 @@ const globals = {
     defaultMonthNames: months,
     defaultDateFormatter: date => date.toLocaleDateString(dateLocaleString),
     defaultIconPack: 'fas',
+    defaultToastDuration: 3500,
   },
 };
 

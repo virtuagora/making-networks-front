@@ -32,7 +32,7 @@ const router = new Router({
       name: 'map',
       component: Map,
       meta: {
-        withNavbar: false,
+        withNavbar: true,
         withFooter: false,
       },
     },
