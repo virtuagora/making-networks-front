@@ -1,0 +1,31 @@
+.field{
+  input.input{
+    background-color: transparent;
+    border: 0px solid #FFF;
+    border-radius: 0;
+    border-bottom: 1px solid #FFF;
+    color: #FFF;
+    &::placeholder {
+      color: rgb(255, 255, 255);
+      opacity: 0.3;
+    }
+    &:focus{
+      border-color: $primary
+    }
+  }
+  textarea.textarea{
+    background-color: transparent;
+    border: 1px solid rgba(226, 226, 226, 0.158);
+    border-radius: 0;
+    border-bottom: 1px solid #FFF;
+    color: #FFF;
+    resize: none;
+    &::placeholder {
+      color: rgb(255, 255, 255);
+      opacity: 0.3;
+    }
+    &:focus{
+      border-bottom-color: $primary
+    }
+  }
+}

@@ -36,7 +36,7 @@ export default new Vuex.Store({
   getters: {
     isLoading: state => state.isLoading,
     user: (state) => {
-      if (state.userToken) return state.userToken.user;
+      if (state.userToken) return state.userToken.subject;
       return null;
     },
     accessToken: (state) => {

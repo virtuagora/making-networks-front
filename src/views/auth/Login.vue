@@ -69,7 +69,7 @@ export default {
         if (!valid) {
           // Not valid
           this.$toast.open({
-            message: this.$t("globals.formNotValid"),
+            message: this.$t("globals.errors.formNotValid"),
             type: "is-danger"
           });
           return false;

@@ -9,17 +9,6 @@ axios.defaults.baseURL = process.env.VUE_APP_API_URL;
 axios.defaults.withCredentials = true;
 axios.defaults.timeout = 15000;
 
-
-// axios.interceptors.request.use(
-//   (config) => {
-//     if (store.state.session) {
-//       config.headers.Authorization = `Bearer ${store.state.session.token}`;
-//     }
-//     return config;
-//   },
-//   err => Promise.reject(err),
-// );
-
 const getTranslation = () => translations[document.documentElement.lang];
 
 

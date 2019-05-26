@@ -10,6 +10,7 @@ import SignUp from './views/auth/SignUp.vue';
 import SignUpComplete from './views/auth/SignUpComplete.vue';
 import RecoverPassword from './views/auth/RecoverPassword.vue';
 import RecoverPasswordRequest from './views/auth/RecoverPasswordRequest.vue';
+import NewInitiative from './views/initiatives/NewInitiative.vue';
 
 
 Vue.use(Router);
@@ -34,6 +35,16 @@ const router = new Router({
       meta: {
         withNavbar: true,
         withFooter: false,
+      },
+    },
+    {
+      path: '/newInitiative',
+      name: 'newInitiative',
+      component: NewInitiative,
+      meta: {
+        withNavbar: true,
+        withFooter: false,
+        requiresAuth: true,
       },
     },
     {

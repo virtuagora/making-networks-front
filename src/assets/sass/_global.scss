@@ -1,5 +1,5 @@
 @mixin font-weight($weight) {
-  font-weight: $weight;
+  font-weight: $weight !important;
 }
 
 // --------  
@@ -79,7 +79,7 @@ img.is-centered {
 
 @for $i from 1 through 9 {
   .is-#{100 * $i} {
-    @include font-weight(100 * $i)
+    @include font-weight(100 * $i, ) 
   }
 }
 
