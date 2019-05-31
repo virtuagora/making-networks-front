@@ -34,6 +34,7 @@ export default {
     logout() {
       this.showMobileNav = false;
       this.$store.dispatch("logout");
+      this.$router.push({ name: 'home' })
       // this.$http
       //   .post('/v1/logout')
       //   .then(() => {
