@@ -19,6 +19,18 @@ const globals = {
     formNotValid: 'Invalid data, please check the fields',
     invalidData: 'The data is invalid',
   },
+  buttonLabels: {
+    goHome: 'Go to main page',
+    close: 'Close',
+    save: 'Save',
+    edit: 'Edit',
+    cancel: 'Cancel',
+    return: 'Return',
+    new: 'New',
+    add: 'Add',
+    remove: 'Remove',
+    retry: 'Retry',
+  },
 };
 
 export default globals;

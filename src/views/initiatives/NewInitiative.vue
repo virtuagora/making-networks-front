@@ -8,15 +8,14 @@
               <div class="column is-8">
                 <div class="the-head">
                   <h1 class="title is-1 is-size-3-touch has-text-centered has-text-primary">
-                    <i class="fas fa-map-marker"></i>&nbsp;Add your initiative
+                    <i class="fas fa-map-marker"></i>&nbsp;{{$t('forms.user.addInitiative.title')}}
                   </h1>
-                  <!-- <h1 class="subtitle is-4 is-size-5-touch has-text-centered">
-                    OMG! A new initiative? That's awesome!
-                    <i class="far fa-grin"></i>
-                  </h1> -->
                 </div>
                 <transition name="component-fade" mode="out-in">
-                  <component v-bind:is="`Step${step}`" @forward="forward" @backward="backward" :model.sync="model"></component>
+                  <component v-bind:is="`Step${step}`" v-if="step >= 0 && step <= 7 " @forward="forward" @backward="backward" @goTo="goTo" :model.sync="model"></component>
+                  <Sending v-else-if="step == 8" @forward="forward" @backward="backward" @goTo="goTo" :model.sync="model"></Sending>
+                  <Confirmation v-else-if="step == 9" @forward="forward" @backward="backward" @goTo="goTo" :model.sync="model"></Confirmation>
+                  <Fail v-else-if="step == -1" @goTo="goTo"></Fail>
                 </transition>
               </div>
             </div>
@@ -35,6 +34,12 @@ import Step1 from "./steps/Step1.vue";
 import Step2 from "./steps/Step2.vue";
 import Step3 from "./steps/Step3.vue";
 import Step4 from "./steps/Step4.vue";
+import Step5 from "./steps/Step5.vue";
+import Step6 from "./steps/Step6.vue";
+import Step7 from "./steps/Step7.vue";
+import Sending from "./steps/Sending.vue";
+import Confirmation from "./steps/Confirmation.vue";
+import Fail from "./steps/Fail.vue";
 
 export default {
   data() {
@@ -46,11 +51,14 @@ export default {
         public_data: {
           goals: null,
           founding_year: null,
-          role_of_youth: []
+          role_of_youth: null
         },
         private_data: {
           contact_email: null
-        }
+        },
+        selectedRegion: null,
+        selectedCountry: null,
+        selectedCity: null,
       }
     };
   },
@@ -59,7 +67,13 @@ export default {
     Step1,
     Step2,
     Step3,
-    Step4
+    Step4,
+    Step5,
+    Step6,
+    Step7,
+    Sending,
+    Confirmation,
+    Fail
   },
   methods: {
     backward: function() {
@@ -70,11 +84,14 @@ export default {
       this.step -= 1;
     },
     forward: function() {
-      if (this.step >= 5) {
-        this.step = 5;
+      if (this.step >= 9) {
+        this.step = 9;
         return;
       }
       this.step += 1;
+    },
+    goTo: function(step){
+      this.step = step
     }
   }
 };

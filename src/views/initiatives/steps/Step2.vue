@@ -1,30 +1,29 @@
 <template>
   <div>
+    <div class="content">
+      <p
+        class="has-text-centered is-italic"
+      >{{$t('forms.user.addInitiative.step2.conversation[0]',{initiativeName: model.name})}}</p>
+      <p
+        class="has-text-centered is-italic"
+      >{{$t('forms.user.addInitiative.step2.conversation[1]')}}</p>
+    </div>
+    <h1 class="subtitle is-5 has-text-centered">
+      <span class="is-500 has-text-primary">2.</span>
+      &nbsp;{{$t('forms.user.addInitiative.step2.fields[0].question')}}
+    </h1>
     <div class="field">
-      <div class="content">
-        <p
-          class="has-text-centered is-italic"
-        >"{{model.name}}..." Nice! I like it! Ok, now.. how about you tell us more about it?</p>
-      </div>
-      <h1 class="subtitle is-5 has-text-centered">
-        <span class="is-500 has-text-primary">2.</span>&nbsp;Write a brief description of your initiative
-      </h1>
-      <div class="field">
-        <div class="control">
-          <textarea
-            name="description"
-            class="textarea"
-            v-model="model.description"
-            rows="6"
-            v-validate="{required:true, max:4000}"
-            data-vv-as="'Initiative description'"
-            placeholder="Start typing..."
-          ></textarea>
-          <div
-            class="help is-danger"
-            v-if="errors.has('description')"
-          >{{errors.first('description')}}</div>
-        </div>
+      <div class="control">
+        <textarea
+          name="description"
+          class="textarea"
+          v-model="model.description"
+          rows="6"
+          v-validate="{required:true, max:4000}"
+          :data-vv-as="$t('forms.user.addInitiative.step2.fields[0].fieldName')"
+          :placeholder="$t('forms.user.addInitiative.step2.fields[0].placeholder')"
+        ></textarea>
+        <div class="help is-danger" v-if="errors.has('description')">{{errors.first('description')}}</div>
       </div>
     </div>
     <br>

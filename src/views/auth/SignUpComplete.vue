@@ -69,7 +69,7 @@
     <h1 class="title animated fadeInUp is-4 has-text-centered"> {{$t('auth.completeSignUp.response.title')}}</h1>
     <div class="box is-light has-text-centered">
       <p class="animated heartBeat delay-1s has-text-success"><i class="fas fa-check-circle fa-lg"></i></p>
-      <p>{{$t('auth.completeSignUp.response.notification')}}</p>
+      <p class="has-text-black">{{$t('auth.completeSignUp.response.notification')}}</p>
     </div>
     <div class="content has-text-centered">
     <p>{{$t('auth.completeSignUp.response.instruction')}}</p>

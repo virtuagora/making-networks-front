@@ -1,10 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Raleway:400,600,800,900');
+// @import url('https://fonts.googleapis.com/css?family=Raleway:400,600,800,900');
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans:100,100i,300,300i,400,400i,600,600i,700,700i&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap');
 // Set your colors
 
 $body-size: 14px;
-// $family-sans-serif: 'Roboto Slab',
-// $family-sans-serif;
-$family-title: 'Raleway', $family-sans-serif;
+$family-sans-serif: 'Roboto',
+$family-sans-serif;
+$family-title: 'Josefin Sans', $family-sans-serif;
 // $family-subtitle: 'Amarante',
 // $family-sans-serif;
 

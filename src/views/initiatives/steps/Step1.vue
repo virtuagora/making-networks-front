@@ -1,17 +1,23 @@
 <template>
-  <div>
+  <section>
+    <div class="content">
+      <p
+        class="has-text-centered is-italic"
+      >{{$t('forms.user.addInitiative.step1.conversation[0]')}}</p>
+    </div>
+    <h1 class="subtitle is-5 has-text-centered">
+      <span class="is-500 has-text-primary">1.</span>&nbsp;{{$t('forms.user.addInitiative.step1.fields[0].question')}}
+    </h1>
     <div class="field">
-      
-    <h1 class="subtitle is-5 has-text-centered"><span class="is-500 has-text-primary">1.</span>&nbsp;Whats the name of your initiative?</h1>
       <div class="control">
         <input
           type="text"
           v-model="model.name"
           v-validate="{required: true}"
-          data-vv-as="'Initiative name'"
+          :data-vv-as="$t('forms.user.addInitiative.step1.fields[0].fieldName')"
           name="initiative"
           class="input is-medium has-text-centered"
-          placeholder="Name of your initiative"
+          :placeholder="$t('forms.user.addInitiative.step1.fields[0].placeholder')"
         >
         <div class="help is-danger" v-if="errors.has('initiative')">{{errors.first('initiative')}}</div>
       </div>
@@ -25,7 +31,7 @@
         <i class="fas fa-arrow-right"></i>
       </button>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -43,7 +49,7 @@ export default {
           this.$toast.open({
             message: this.$t("globals.errors.formNotValid"),
             type: "is-warning",
-            position: 'is-bottom'
+            position: "is-bottom"
           });
           return;
         }

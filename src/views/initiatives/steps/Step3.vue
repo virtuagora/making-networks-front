@@ -1,85 +1,90 @@
 <template>
   <div>
-    <div class="field">
-      <div class="content">
-        <p class="has-text-centered is-italic">That sounds pretty good!</p>
-        <p class="has-text-centered is-italic">
-          Ok, now we need some
-          <u>public information</u>
-        </p>
-      </div>
-      <h1 class="subtitle is-5 has-text-centered">
-        <span class="is-500 has-text-primary">3-A.</span>&nbsp;Whats is (or are) the goal (or goals) of the initiative?
-      </h1>
-      <div class="field">
-        <div class="control">
-          <textarea
-            name="goal"
-            class="textarea"
-            v-model="model.public_data.goals"
-            rows="2"
-            v-validate="{required:true, max:4000}"
-            data-vv-as="'Initiative goal'"
-            placeholder="Start typing..."
-          ></textarea>
-          <div class="help is-danger" v-if="errors.has('goal')">{{errors.first('goal')}}</div>
-        </div>
-      </div>
-      <br>
-      <h1 class="subtitle is-5 has-text-centered">
-        <span class="is-500 has-text-primary">3-b.</span>&nbsp;What year the initiative started?
-      </h1>
-      <div class="field">
-        <div class="control">
-          <input
-            type="text"
-            v-model="model.public_data.founding_year"
-            v-validate="{required: true, between: [1900,2020], date_format: 'yyyy' }"
-            data-vv-as="'Initiative founding year'"
-            name="founding_year"
-            class="input is-medium has-text-centered"
-            placeholder="YYYY"
-          >
-          <div
-            class="help is-danger"
-            v-if="errors.has('founding_year')"
-          >{{errors.first('founding_year')}}</div>
-        </div>
-      </div>
-      <br>
-      <h1 class="subtitle is-5 has-text-centered">
-        <span class="is-500 has-text-primary">3-b.</span>&nbsp;What is the role of youth in this organization/initative?
-      </h1>
-      <div class="field">
-        <div class="control">
-          <div class="block has-text-centered">
-            <b-checkbox
-              v-model="model.public_data.role_of_youth"
-              v-validate="{required:true}"
-              name="role"
+    <div class="content">
+      <p 
+        class="has-text-centered is-italic"      
+      v-for="(p,index) in $t('forms.user.addInitiative.step3.conversation')" :key="index">{{p}}</p>
+    </div>
+    <h1 class="subtitle is-5 has-text-centered">
+      <span class="is-500 has-text-primary">3.</span>&nbsp;{{$t('forms.user.addInitiative.step3.fields[0].question')}}
+    </h1>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="field">
+          <div class="control">
+            <b-autocomplete
+              rounded
+              v-model="queryRegion"
+              :data="filteredRegions"
+              :placeholder="placeholderRegions"
+              :open-on-focus="true"
+              :loading="fetchingRegions"
+              icon="search"
               size="is-medium"
-              native-value="Target Audience"
-            >Target Audience</b-checkbox>
-            <b-checkbox
-              v-model="model.public_data.role_of_youth"
-              v-validate="{required:true}"
-              name="role"
-              size="is-medium"
-              native-value="Leadership"
-            >Leadership</b-checkbox>
-            <b-checkbox
-              v-model="model.public_data.role_of_youth"
-              v-validate="{required:true}"
-              name="role"
-              size="is-medium"
-              native-value="Membership"
-            >Membership</b-checkbox>
+              field="name"
+              @select="option => selectRegion(option)"
+            >
+              <template slot="empty">{{$t('forms.user.addInitiative.step3.noResults')}}</template>
+              <template slot-scope="props">{{ props.option.name }}</template>
+            </b-autocomplete>
           </div>
-          <div class="help is-danger has-text-centered" v-if="errors.has('role')">{{errors.first('role')}}</div>
+        </div>
+        <div class="field animated fadeIn" v-if="selectedRegion">
+          <div class="control">
+            <b-autocomplete
+              rounded
+              v-model="queryCountry"
+              :data="filteredCountries"
+              :placeholder="placeholderCountries"
+              :open-on-focus="true"
+              :loading="fetchingCountries"
+              icon="search"
+              size="is-medium"
+              field="name"
+              @select="option => selectCountry(option)"
+            >
+              <template slot="empty">{{$t('forms.user.addInitiative.step3.noResults')}}</template>
+              <template slot-scope="props">{{ props.option.name }}</template>
+            </b-autocomplete>
+          </div>
+        </div>
+        <div class="field animated fadeIn" v-if="selectedCountry && !notInACity">
+          <div class="control">
+            <b-autocomplete
+              rounded
+              v-model="queryCity"
+              :data="filteredCities"
+              :placeholder="placeholderCities"
+              :open-on-focus="true"
+              :loading="fetchingCities"
+              icon="search"
+              size="is-medium"
+              field="name"
+              @select="option => selectCity(option)"
+            >
+              <template slot="empty">{{$t('forms.user.addInitiative.step3.noResults')}}</template>
+              <template slot="footer">
+                <a
+                  @click="openModalAddCity"
+                  class="has-text-primary"
+                >{{$t('forms.user.addInitiative.step3.cantFindCity')}}</a>
+              </template>
+              <template slot-scope="props">{{ props.option.name }}</template>
+            </b-autocomplete>
+          </div>
+        </div>
+        <div class="notification is-dark animated fadeIn" v-if="notInACity">
+          <span @click="isLocatedInACity" class="delete"></span>
+          <i class="fas fa-info"></i>&nbsp;&nbsp; {{$t('forms.user.addInitiative.step3.notificationNoCity')}}
         </div>
       </div>
     </div>
     <br>
+    <div class="content">
+    <p class="has-text-centered">
+      <a @click="skip" class="has-text-primary"><i class="fas fa-share"></i>&nbsp;{{$t('forms.user.addInitiative.step3.skip')}}</a>
+    </p>
+    </div>
     <div class="buttons is-centered">
       <button @click="$emit('backward')" class="button is-rounded is-white is-outlined is-medium">
         <i class="fas fa-arrow-left"></i>
@@ -92,12 +97,33 @@
 </template>
 
 <script>
+import AddCityModal from '@/components/initiatives/new/AddCityModal'
 export default {
   props: {
     model: {
       type: Object,
       required: true
     }
+  },
+  data() {
+    return {
+      queryRegion: "",
+      queryCountry: "",
+      queryCity: "",
+      dataRegions: [],
+      dataCountries: [],
+      dataCities: [],
+      fetchingRegions: true,
+      fetchingCountries: false,
+      fetchingCities: false,
+      selectedRegion: null,
+      selectedCountry: null,
+      selectedCity: null,
+      notInACity: false
+    };
+  },
+  created: function() {
+    this.fetchRegions();
   },
   methods: {
     goForward: function() {
@@ -110,15 +136,135 @@ export default {
           });
           return;
         }
+        this.model.selectedRegion = this.selectedRegion
+        this.model.selectedCountry = this.selectedCountry
+        this.model.selectedCity = this.selectedCity
         this.$emit("forward");
+      });
+    },
+    fetchRegions: function() {
+      this.$http
+        .get(`/v1/regions?size=100`)
+        .then(res => {
+          this.dataRegions = res.data.data;
+        })
+        .finally(() => {
+          this.fetchingRegions = false;
+        });
+    },
+    selectRegion: function(selectedRegion) {
+      this.fetchingCountries = true;
+      this.selectedRegion = selectedRegion;
+      this.queryCountry = "";
+      this.queryCity = "";
+      this.selectedCountry = null;
+      this.selectedCity = null;
+      this.$http
+        .get(`/v1/countries?size=100&region_id=${selectedRegion.id}`)
+        .then(res => {
+          this.dataCountries = res.data.data;
+        })
+        .finally(() => {
+          this.fetchingCountries = false;
+        });
+    },
+    selectCountry: function(selectedCountry) {
+      if (selectedCountry == null) return;
+      this.fetchingCities = true;
+      this.selectedCountry = selectedCountry;
+      this.queryCity = "";
+      this.selectedCity = null;
+      this.$http
+        .get(`/v1/registered-cities?size=100&country_id=${selectedCountry.id}`)
+        .then(res => {
+          this.dataCities = res.data.data;
+        })
+        .finally(() => {
+          this.fetchingCities = false;
+        });
+    },
+    skip: function(){
+      this.model.selectedRegion = null
+      this.model.selectedCountry = null
+      this.model.selectedCity = null
+      this.$emit("forward");
+    },
+    selectCity: function(selectedCity) {
+      if (selectedCity === null) return;
+      // this.fetchingCities = true;
+      this.selectedCity = selectedCity;
+    },
+    notLocatedInACity: function() {
+      this.notInACity = true;
+    },
+    isLocatedInACity: function() {
+      this.selectedCity = null;
+      this.notInACity = false;
+    },
+    openModalAddCity: function() {
+      this.$modal.open({
+        parent: this,
+        component: AddCityModal,
+        hasModalCard: true
+      });
+    }
+  },
+  computed: {
+    placeholderRegions: function() {
+      return this.fetchingRegions
+        ? this.$t('forms.user.addInitiative.step3.fetchingRegions')
+        : this.$t('forms.user.addInitiative.step3.startTypingRegion');
+    },
+    placeholderCountries: function() {
+      return this.fetchingCountries
+        ? this.$t('forms.user.addInitiative.step3.fetchingCountries')
+        : this.$t('forms.user.addInitiative.step3.startTypingCountry');
+    },
+    placeholderCities: function() {
+      return this.fetchingCities
+        ? this.$t('forms.user.addInitiative.step3.fetchingCities')
+        : this.$t('forms.user.addInitiative.step3.startTypingCity');
+    },
+    filteredRegions: function() {
+      return this.dataRegions.filter(option => {
+        return (
+          option.name
+            .toString()
+            .toLowerCase()
+            .indexOf(this.queryRegion.toLowerCase()) >= 0
+        );
+      });
+    },
+    filteredCountries: function() {
+      return this.dataCountries.filter(option => {
+        return (
+          option.name
+            .toString()
+            .toLowerCase()
+            .indexOf(this.queryCountry.toLowerCase()) >= 0
+        );
+      });
+    },
+    filteredCities: function() {
+      return this.dataCities.filter(option => {
+        return (
+          option.name
+            .toString()
+            .toLowerCase()
+            .indexOf(this.queryCity.toLowerCase()) >= 0
+        );
       });
     }
   }
 };
 </script>
 
-<style lang="scss" scoped>
-.control-label:hover {
-  color: #da8313;
+<style lang="scss">
+.autocomplete.control .dropdown-menu {
+  position: relative;
+}
+.map-container{
+      position: relative;
+    height: 300px;
 }
 </style>

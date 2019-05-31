@@ -128,7 +128,6 @@ router.beforeEach(async (to, from, next) => {
   console.log('requiresAnon', requiresAnon);
   console.log('requiresAuth', requiresAuth);
   console.log('requiresAdmin', requiresAdmin);
-  
   if (requiresAnon) {
     console.log('- Requires anon');
     // Is anonymous

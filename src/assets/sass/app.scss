@@ -6,7 +6,9 @@
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 @import "~animate.css/animate.css";
-// @import '~vue-croppa/dist/vue-croppa.css';
+
+// All the styles from vue-mapbox
+@import "./mapbox";
 
 @import "./auth";
 @import "./form";

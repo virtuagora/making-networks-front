@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "animate.css": "^3.7.0",
+    "animate.css": "^3.7.1",
     "axios": "^0.18.0",
     "buefy": "^0.7.6",
     "bulma": "^0.7.5",
@@ -18,7 +18,7 @@
     "vue-analytics": "^5.16.4",
     "vue-carousel": "^0.17.0",
     "vue-i18n": "^8.9.0",
-    "vue-mapbox": "^0.1.4",
+    "vue-mapbox": "^0.4.1",
     "vue-particles": "^1.0.9",
     "vue-recaptcha": "^1.1.1",
     "vue-router": "^3.0.1",
@@ -26,9 +26,9 @@
     "vuex-persist": "^2.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.7.0",
-    "@vue/cli-plugin-eslint": "^3.7.0",
-    "@vue/cli-service": "^3.7.0",
+    "@vue/cli-plugin-babel": "^3.8.0",
+    "@vue/cli-plugin-eslint": "^3.8.0",
+    "@vue/cli-service": "^3.8.0",
     "@vue/eslint-config-airbnb": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",

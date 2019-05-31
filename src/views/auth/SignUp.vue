@@ -31,8 +31,8 @@
   <section v-else>
     <h1 class="title animated fadeInUp is-4 has-text-centered"> {{$t('auth.signUp.response.title')}}</h1>
     <div class="box is-light has-text-centered">
-      <p class="animated heartBeat delay-1s"><i class="fas fa-info-circle fa-lg"></i></p>
-      <p>{{$t('auth.signUp.response.notification')}}</p>
+      <p class="animated heartBeat delay-1s has-text-black"><i class="fas fa-info-circle fa-lg"></i></p>
+      <p class="has-text-black">{{$t('auth.signUp.response.notification')}}</p>
     </div>
     <div class="content has-text-centered">
     <p>{{$t('auth.signUp.response.instruction')}}</p>
