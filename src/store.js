@@ -15,7 +15,7 @@ export default new Vuex.Store({
   state: {
     isLoading: false,
     isAuthenticated: false,
-    userToken: {},
+    userToken: null,
     firstFecth: false,
     lastTimeUpdated: Date.now(),
   },
@@ -52,7 +52,7 @@ export default new Vuex.Store({
     },
     logout(context) {
       context.commit('setAuthenticated', false);
-      context.commit('setUserToken', {});
+      context.commit('setUserToken', null);
     },
   },
   plugins: [vuexLocal.plugin],
