@@ -1,5 +1,5 @@
 <template>
-  <nav class="tags is-large floating-navbar" v-if="user">
+  <nav class="tags is-large floating-navbar" :class="extraClasses" v-if="user">
     <b-dropdown aria-role="list" position="is-bottom-left">
       <img class="image" :src="userAvatarUrl" slot="trigger" role="button">
       <b-dropdown-item custom aria-role="menuitem">
@@ -44,6 +44,12 @@ export default {
       //     console.error(err);
       //   });
     }
+  },
+  computed: {
+    extraClasses: function(){
+      if(['map'].includes(this.$route.name)) return 'push-more-right'
+      return false;
+    }
   }
 };
 </script>
@@ -76,5 +82,9 @@ export default {
       cursor: pointer;
     }
   }
+  &.push-more-right{
+    right: 50px;
+  }
+  transition: all 3s;
 }
 </style>

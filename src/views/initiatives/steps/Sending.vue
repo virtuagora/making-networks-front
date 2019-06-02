@@ -1,6 +1,6 @@
 <template>
   <div class>
-    <div class="has-text-centered animated zoomOutUp delay-2s slower">
+    <div class="has-text-centered animated zoomOutUp delay-1s slower">
       <i class="fas fa-paper-plane fa-3x has-text-primary"></i>
     </div>
     <br>
@@ -34,7 +34,7 @@ export default {
   mounted: function() {
     setTimeout(() => {
       this.submit();
-    }, 2000);
+    }, 2500);
   },
   methods: {
     getPayload: function() {
