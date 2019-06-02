@@ -75,7 +75,7 @@ export default {
     placeholderInput: function(){
       if(!this.fetchingCities){
         if(!this.mapReady) return 'Getting map ready.. get ready!'
-        return 'Where you want to go today? ✈'
+        return 'Where do you want to go today? ✈'
       }
       return 'Fetching cities, hold on!'
     },

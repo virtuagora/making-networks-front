@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import store from './store';
+import http from './http';
 // import http from './http';
 import Home from './views/Home.vue';
 import Map from './views/Map.vue';
@@ -10,8 +11,10 @@ import SignUp from './views/auth/SignUp.vue';
 import SignUpComplete from './views/auth/SignUpComplete.vue';
 import RecoverPassword from './views/auth/RecoverPassword.vue';
 import RecoverPasswordRequest from './views/auth/RecoverPasswordRequest.vue';
-import NewInitiative from './views/initiatives/NewInitiative.vue';
-
+import NewInitiative from './views/initiatives/New.vue';
+import ListInitiatives from './views/initiatives/List.vue';
+import Initiative from './views/initiative/Initiative.vue';
+import InitiativeAbout from './views/initiative/About.vue';
 
 Vue.use(Router);
 
@@ -38,13 +41,58 @@ const router = new Router({
       },
     },
     {
-      path: '/newInitiative',
+      path: '/initiatives/new',
       name: 'newInitiative',
       component: NewInitiative,
       meta: {
         withNavbar: true,
         withFooter: false,
         requiresAuth: true,
+      },
+    },
+    {
+      path: '/initiatives',
+      name: 'listInitiatives',
+      component: ListInitiatives,
+      meta: {
+        withNavbar: true,
+        withFooter: false,
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/initiative/:id',
+      component: Initiative,
+      props: true,
+      redirect: {
+        name: 'home',
+      },
+      children: [
+        {
+          path: '',
+          name: 'Initiative',
+          component: InitiativeAbout,
+          props: true,
+          meta: {
+            withNavbar: true,
+            withFooter: true,
+            // requiresAnon: false,
+          },
+        },
+      ],
+      beforeEnter: (to, from, next) => {
+        console.log('First time entering, getting initiative...');
+        http
+          .get(`/v1/initiatives/${to.params.id}`)
+          .then((response) => {
+            store.commit('setInitiative', response.data.data);
+            console.log('GET OK - Got initiative');
+            next();
+          })
+          .catch((error) => {
+            console.log('Fetching data failed.', error);
+            next({ name: 'home' });
+          });
       },
     },
     {

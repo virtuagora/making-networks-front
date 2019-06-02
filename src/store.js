@@ -18,6 +18,9 @@ export default new Vuex.Store({
     userToken: null,
     firstFecth: false,
     lastTimeUpdated: Date.now(),
+    fetchService: {
+      initiative: null,
+    },
   },
   mutations: {
     setLoading(state, loading) {
@@ -32,6 +35,10 @@ export default new Vuex.Store({
       // eslint-disable-next-line
       state.userToken = userToken
     },
+    setInitiative(state, initiative) {
+      // eslint-disable-next-line
+      state.fetchService.initiative = initiative
+    },
   },
   getters: {
     isLoading: state => state.isLoading,
@@ -41,6 +48,10 @@ export default new Vuex.Store({
     },
     accessToken: (state) => {
       if (state.userToken) return state.userToken.access_token;
+      return null;
+    },
+    initiative: (state) => {
+      if (state.fetchService.initiative) return state.fetchService.initiative;
       return null;
     },
     isAuthenticated: state => state.isAuthenticated,
