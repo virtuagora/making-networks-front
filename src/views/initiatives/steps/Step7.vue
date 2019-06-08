@@ -1,8 +1,8 @@
 <template>
   <section>
     <div class="content">
-      <p 
-        class="has-text-centered is-italic"      
+      <p
+        class="has-text-centered is-italic"
       v-for="(p,index) in $t('forms.user.addInitiative.step6.conversation')" :key="index">{{p}}</p>
     </div>
       <div class="card">
@@ -96,14 +96,14 @@ export default {
   props: {
     model: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
-    goTo: function(step) {
-      this.$emit("goTo", step);
-    }
-  }
+    goTo(step) {
+      this.$emit('goTo', step);
+    },
+  },
 };
 </script>
 
@@ -115,5 +115,3 @@ export default {
   white-space: pre-wrap;
 }
 </style>
-
-

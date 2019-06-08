@@ -27,15 +27,15 @@ module.exports = {
     es: {
       entry: 'src/main.js',
       template: 'public/es/index.html',
-      filename: 'en/index.html',
-      title_es: 'Creando Redes - Español',
+      filename: 'es/index.html',
+      title_es: 'Creando Redes',
       chunks: ['chunk-vendors', 'chunk-common', 'index'],
     },
     pt: {
       entry: 'src/main.js',
       template: 'public/pt/index.html',
       filename: 'pt/index.html',
-      title_pt: 'Creando Redes - Portugues',
+      title_pt: 'Creando Redes',
       chunks: ['chunk-vendors', 'chunk-common', 'index'],
     },
     // when using the entry-only string format,

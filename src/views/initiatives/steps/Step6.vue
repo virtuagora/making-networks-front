@@ -1,8 +1,8 @@
 <template>
   <div>
       <div class="content">
-      <p 
-        class="has-text-centered is-italic"      
+      <p
+        class="has-text-centered is-italic"
       v-for="(p,index) in $t('forms.user.addInitiative.step6.conversation')" :key="index">{{p}}</p>
     </div>
       <h1 class="subtitle is-5 has-text-centered">
@@ -42,23 +42,23 @@ export default {
   props: {
     model: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
-    goForward: function() {
-      this.$validator.validateAll().then(valid => {
+    goForward() {
+      this.$validator.validateAll().then((valid) => {
         if (!valid) {
           this.$toast.open({
-            message: this.$t("globals.errors.formNotValid"),
-            type: "is-warning",
-            position: "is-bottom"
+            message: this.$t('globals.errors.formNotValid'),
+            type: 'is-warning',
+            position: 'is-bottom',
           });
           return;
         }
-        this.$emit("forward");
+        this.$emit('forward');
       });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -39,23 +39,23 @@ export default {
   props: {
     model: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
-    goForward: function() {
-      this.$validator.validateAll().then(valid => {
+    goForward() {
+      this.$validator.validateAll().then((valid) => {
         if (!valid) {
           this.$toast.open({
-            message: this.$t("globals.errors.formNotValid"),
-            type: "is-warning",
-            position: "is-bottom"
+            message: this.$t('globals.errors.formNotValid'),
+            type: 'is-warning',
+            position: 'is-bottom',
           });
           return;
         }
-        this.$emit("forward");
+        this.$emit('forward');
       });
-    }
-  }
+    },
+  },
 };
 </script>

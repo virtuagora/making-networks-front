@@ -16,6 +16,9 @@ const globals = {
         return [];
       } return value;
     },
+    isEmptyObject(obj) {
+      return !obj || Object.keys(obj).length === 0;
+    },
     isInputEmpty(value) {
       if (value === null || value === '') {
         return true;
@@ -35,6 +38,12 @@ const globals = {
     },
     capitalize(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
+    },
+    getSpaceLocalization(space) {
+      if (space.localization && space.localization[this.currentLanguage]) {
+        return space.localization[this.currentLanguage].name;
+      }
+      return space.name;
     },
     // sizeFile(bytes) {
     //   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -64,6 +73,9 @@ const globals = {
     },
     user() {
       return this.$store.getters.user;
+    },
+    isAdmin() {
+      return this.$store.getters.isAdmin;
     },
     userAvatarUrl() {
       if (this.user) {

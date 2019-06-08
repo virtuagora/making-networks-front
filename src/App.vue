@@ -1,19 +1,22 @@
 <template>
   <div id="app">
-    <Navbar v-if="$route.meta.withNavbar"/>
+    <Navbar v-if="!$route.meta.hideNavbar"/>
     <RouterView />
     <b-loading ref="loader" :active="isLoading"></b-loading>
+    <Footer v-if="!$route.meta.hideFooter"/>
   </div>
 </template>
 
 <script>
-import Navbar  from './components/Navbar.vue';
+import Navbar from './components/Navbar.vue';
+import Footer from './components/Footer.vue';
 
 export default {
   name: 'App',
 
   components: {
     Navbar,
+    Footer,
   },
   beforeCreate() {
     // this.$http.get('/user')

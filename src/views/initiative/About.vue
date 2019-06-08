@@ -10,11 +10,11 @@
 <script>
 export default {
   computed: {
-    initiative: function(){
-      return this.$store.getters.initiative
-    }
-  }
-}
+    initiative() {
+      return this.$store.getters.initiative;
+    },
+  },
+};
 </script>
 
 <style>

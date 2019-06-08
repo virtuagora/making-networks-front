@@ -20,8 +20,10 @@
 </template>
 
 <script>
-import { MglMap, MglNavigationControl, MglMarker, MglPopup } from "vue-mapbox";
-import CityPopUp from './CityPopUp'
+import {
+  MglMap, MglNavigationControl, MglMarker, MglPopup,
+} from 'vue-mapbox';
+import CityPopUp from './CityPopUp';
 
 export default {
   components: {
@@ -33,8 +35,8 @@ export default {
   },
   props: {
     cities: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   data() {
     return {
@@ -42,27 +44,27 @@ export default {
       colorMarker: '#da8313',
       accessToken: process.env.VUE_APP_MAPBOX_TOKEN_MAPTILES, // your access token. Needed if you using Mapbox maps
       mapStyle: process.env.VUE_APP_MAPBOX_STYLE, // your map style
-      theCenter: [-60.675328, -31.617428]
+      theCenter: [-60.675328, -31.617428],
     };
   },
-  methods:{
-    onMapLoad: async function(event) {
+  methods: {
+    async onMapLoad(event) {
       // Here we cathing 'load' map event
-     this.$emit('mapReady')
+      this.$emit('mapReady');
     },
-    flyTo: async function(coordinates){
-      const newParams = await this.$refs['theMap'].actions.flyTo({
+    async flyTo(coordinates) {
+      const newParams = await this.$refs.theMap.actions.flyTo({
         center: coordinates,
         zoom: 4,
-        speed: 0.4
-      })
-      console.log(newParams)
-      return true
+        speed: 0.4,
+      });
+      console.log(newParams);
+      return true;
     },
-    fireCityFetch: function(ref){
-      this.$refs[ref][0].getCity()
-    }
-  }
+    fireCityFetch(ref) {
+      this.$refs[ref][0].getCity();
+    },
+  },
 };
 </script>
 

@@ -54,6 +54,12 @@ export default new Vuex.Store({
       if (state.fetchService.initiative) return state.fetchService.initiative;
       return null;
     },
+    isAdmin: (state) => {
+      if (state.userToken && state.userToken.subject.roles_list && state.userToken.subject.roles_list.length > 0) {
+        return state.userToken.subject.roles_list.includes('Admin');
+      }
+      return false;
+    },
     isAuthenticated: state => state.isAuthenticated,
   },
   actions: {

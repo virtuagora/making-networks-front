@@ -54,43 +54,43 @@ export default {
   data() {
     return {
       email: null,
-      password: null
+      password: null,
     };
   },
   methods: {
-    getCredentials: function() {
-      let credentials = {};
+    getCredentials() {
+      const credentials = {};
       credentials.username = this.email;
       credentials.password = this.password;
       return credentials;
     },
-    submit: function() {
-      this.$validator.validateAll().then(valid => {
+    submit() {
+      this.$validator.validateAll().then((valid) => {
         if (!valid) {
           // Not valid
           this.$toast.open({
-            message: this.$t("globals.errors.formNotValid"),
-            type: "is-danger"
+            message: this.$t('globals.errors.formNotValid'),
+            type: 'is-danger',
           });
           return false;
         }
         // is valid, then...
         this.startLoading();
         this.$http
-          .post("/v1/tokens", null, {
-            auth: this.getCredentials()
+          .post('/v1/tokens', null, {
+            auth: this.getCredentials(),
           })
-          .then(res => {
+          .then((res) => {
             console.log(res);
-            this.$toast.open("Welcome back!");
-            this.$store.dispatch("login", res.data);
-            this.$router.push({ name: "home" });
+            this.$toast.open('Welcome back!');
+            this.$store.dispatch('login', res.data);
+            this.$router.push({ name: 'home' });
           })
           .finally(() => {
             this.stopLoading();
           });
       });
-    }
-  }
+    },
+  },
 };
 </script>

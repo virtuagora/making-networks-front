@@ -29,17 +29,17 @@
 </template>
 
 <script>
-import Step0 from "./steps/Step0.vue";
-import Step1 from "./steps/Step1.vue";
-import Step2 from "./steps/Step2.vue";
-import Step3 from "./steps/Step3.vue";
-import Step4 from "./steps/Step4.vue";
-import Step5 from "./steps/Step5.vue";
-import Step6 from "./steps/Step6.vue";
-import Step7 from "./steps/Step7.vue";
-import Sending from "./steps/Sending.vue";
-import Confirmation from "./steps/Confirmation.vue";
-import Fail from "./steps/Fail.vue";
+import Step0 from './steps/Step0.vue';
+import Step1 from './steps/Step1.vue';
+import Step2 from './steps/Step2.vue';
+import Step3 from './steps/Step3.vue';
+import Step4 from './steps/Step4.vue';
+import Step5 from './steps/Step5.vue';
+import Step6 from './steps/Step6.vue';
+import Step7 from './steps/Step7.vue';
+import Sending from './steps/Sending.vue';
+import Confirmation from './steps/Confirmation.vue';
+import Fail from './steps/Fail.vue';
 
 export default {
   data() {
@@ -51,15 +51,15 @@ export default {
         public_data: {
           goals: null,
           founding_year: null,
-          role_of_youth: null
+          role_of_youth: null,
         },
         private_data: {
-          contact_email: null
+          contact_email: null,
         },
         selectedRegion: null,
         selectedCountry: null,
         selectedCity: null,
-      }
+      },
     };
   },
   components: {
@@ -73,27 +73,27 @@ export default {
     Step7,
     Sending,
     Confirmation,
-    Fail
+    Fail,
   },
   methods: {
-    backward: function() {
+    backward() {
       if (this.step <= 0) {
         this.step = 0;
         return;
       }
       this.step -= 1;
     },
-    forward: function() {
+    forward() {
       if (this.step >= 9) {
         this.step = 9;
         return;
       }
       this.step += 1;
     },
-    goTo: function(step){
-      this.step = step
-    }
-  }
+    goTo(step) {
+      this.step = step;
+    },
+  },
 };
 </script>
 
@@ -140,4 +140,3 @@ export default {
   opacity: 0;
 }
 </style>
-

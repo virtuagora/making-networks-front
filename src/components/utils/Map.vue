@@ -1,18 +1,18 @@
 <template>
-  <MglMap 
-  :accessToken="accessToken" 
+  <MglMap
+  :accessToken="accessToken"
   :mapStyle="mapStyle"
    @load="onMapLoad"
     />
 </template>
 
 <script>
-import Mapbox from "mapbox-gl";
-import { MglMap } from "vue-mapbox";
+import Mapbox from 'mapbox-gl';
+import { MglMap } from 'vue-mapbox';
 
 export default {
   components: {
-    MglMap
+    MglMap,
   },
   data() {
     return {
@@ -21,16 +21,16 @@ export default {
     };
   },
   methods: {
-    onMapLoad: async function(event) {
+    async onMapLoad(event) {
       // Here we cathing 'load' map event
-      const asyncActions = event.component.actions
+      const asyncActions = event.component.actions;
 
       const newParams = await asyncActions.flyTo({
         center: [30, 30],
         zoom: 9,
-        speed: 0.2
-      })
-      console.log(newParams)
+        speed: 0.2,
+      });
+      console.log(newParams);
       /* => {
               center: [30, 30],
               zoom: 9,
@@ -38,11 +38,11 @@ export default {
               pitch: 7
             }
       */
-    }
+    },
   },
   created() {
     // We need to set mapbox-gl library here in order to use it in template
     this.mapbox = Mapbox;
-  }
+  },
 };
 </script>

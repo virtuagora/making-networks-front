@@ -43,6 +43,7 @@
 
 <script>
 import VueRecaptcha from 'vue-recaptcha';
+
 export default {
   components: { VueRecaptcha },
   data() {
@@ -50,19 +51,20 @@ export default {
       email: null,
       recaptcha: null,
       response: {
-        ok: false
-      }
+        ok: false,
+      },
     };
   },
   methods: {
     // Make postPayload
-    catchRecaptcha: function (response) {
-         this.recaptcha = response
-      },
+    catchRecaptcha(response) {
+      this.recaptcha = response;
+    },
     getPayload() {
       const data = {};
       data.email = this.email;
-      let recaptcha = this.recaptcha
+      data.locale = this.currentLanguage
+      const { recaptcha } = this;
       return { data, recaptcha };
     },
     // Submit new pending user
@@ -80,7 +82,7 @@ export default {
             this.response.ok = true;
           }).catch((err) => {
             console.error(err);
-            if(err.response && err.response.data) this.$toast.open(err.response.data.message);
+            if (err.response && err.response.data) this.$toast.open(err.response.data.message);
           }).finally(() => {
             this.stopLoading();
           });
@@ -88,9 +90,9 @@ export default {
     },
   },
   computed: {
-    siteKey: function(){
-      return process.env.VUE_APP_RECAPTCHA_SITE_KEY
-    }
-  }
+    siteKey() {
+      return process.env.VUE_APP_RECAPTCHA_SITE_KEY;
+    },
+  },
 };
 </script>

@@ -1,10 +1,18 @@
 <template>
   <nav class="tags is-large floating-navbar" :class="extraClasses" v-if="user">
     <b-dropdown aria-role="list" position="is-bottom-left">
-      <img class="image" :src="userAvatarUrl" slot="trigger" role="button">
+      <div class="has-user-image" slot="trigger" role="button">
+      <img class="image" :src="userAvatarUrl">
+      </div>
       <b-dropdown-item custom aria-role="menuitem">
         Logged as
         <b>{{user.display_name}}</b>
+      </b-dropdown-item>
+      <b-dropdown-item aria-role="listitem" has-link v-if="user">
+      <router-link :to="{name: 'user'}" class="has-text-link">My panel</router-link>
+      </b-dropdown-item>
+      <b-dropdown-item aria-role="listitem" has-link v-if="isAdmin">
+      <router-link :to="{name: 'admin'}" class="has-text-link">Admin panel</router-link>
       </b-dropdown-item>
       <hr class="dropdown-divider">
       <b-dropdown-item aria-role="listitem" has-link>
@@ -21,7 +29,7 @@
 export default {
   data() {
     return {
-      showMobileNav: false
+      showMobileNav: false,
     };
   },
   methods: {
@@ -33,8 +41,8 @@ export default {
     },
     logout() {
       this.showMobileNav = false;
-      this.$store.dispatch("logout");
-      this.$router.push({ name: 'home' })
+      this.$store.dispatch('logout');
+      this.$router.push({ name: 'home' });
       // this.$http
       //   .post('/v1/logout')
       //   .then(() => {
@@ -43,14 +51,14 @@ export default {
       //   .catch((err) => {
       //     console.error(err);
       //   });
-    }
+    },
   },
   computed: {
-    extraClasses: function(){
-      if(['map'].includes(this.$route.name)) return 'push-more-right'
+    extraClasses() {
+      if (['map'].includes(this.$route.name)) return 'push-more-right';
       return false;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -82,8 +90,15 @@ export default {
       cursor: pointer;
     }
   }
+  .has-user-image{
+    width: 36px;
+    height: 36px;
+    border-radius:100px;
+    background-color: #CACACA;
+    
+  }
   &.push-more-right{
-    right: 50px;
+    top: 110px;
   }
   transition: all 3s;
 }

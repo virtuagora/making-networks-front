@@ -1,0 +1,136 @@
+<template>
+  <nav class="pagination is-small" role="navigation" aria-label="pagination">
+    <a :disabled="disablePrevious" class="pagination-previous">Previous</a>
+    <a :disabled="disableNextPage" @click="fetchNext" class="pagination-next">Next page</a>
+    <ul class="pagination-list">
+      <li>
+      <a class="pagination-ellipsis">Page X of Y</a>
+      </li>
+      <!-- <li>
+        <a class="pagination-link" aria-label="Goto page 1">1</a>
+      </li>
+      <li>
+        <span class="pagination-ellipsis">&hellip;</span>
+      </li>
+      <li>
+        <a class="pagination-link" aria-label="Goto page 45">45</a>
+      </li>
+      <li>
+        <a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a>
+      </li>
+      <li>
+        <a class="pagination-link" aria-label="Goto page 47">47</a>
+      </li>
+      <li>
+        <span class="pagination-ellipsis">&hellip;</span>
+      </li>
+      <li>
+        <a class="pagination-link" aria-label="Goto page 86">86</a>
+      </li> -->
+    </ul>
+  </nav>
+</template>
+
+<script>
+export default {
+  props: {
+    resourceUrl: {
+      type: String,
+      required: true
+    },
+    query: {
+      type: Object,
+      required: false
+    },
+    fetching: Boolean
+  },
+  data() {
+    return {
+      defaultQuery: {
+        size: 10
+      },
+      pagination: {
+        offset: null,
+        size: null,
+        total: 0
+      },
+      links: null
+    };
+  },
+  created: function() {
+    this.getResource();
+  },
+  methods: {
+    getResource: function() {
+      this.startLoading();
+      this.$emit("update:fetching", true);
+      let url = this.resourceUrl;
+      if (this.queryString) {
+        url = `${url}?${this.queryString}`;
+      }
+      console.log(this.query)
+      console.log(url)
+      this.$http
+        .get(url)
+        .then(res => {
+          this.updatePagination(res.data.pagination, res.data.links);
+          this.$emit("update", res.data.data);
+        })
+        .finally(() => {
+          this.stopLoading();
+          this.$emit("update:fetching", false);
+        });
+    },
+    updatePagination: function(pagination, links) {
+      this.pagination = pagination;
+      this.links = links;
+    },
+    fetchNext: function(){
+      let url = this.links.next.replace(/^.*\/\/[^\/]+/, '')
+      this.startLoading();
+      this.$emit("update:fetching", true);
+      this.$http.get(url)
+      .then(res => {
+        this.updatePagination(res.data.pagination, res.data.links)
+        this.$emit('update',res.data.data)
+      })
+      .finally(() => {
+          this.stopLoading();
+          this.$emit("update:fetching", false);
+        });
+    }
+  },
+  computed: {
+    queryString: function() {
+      let theQuery = this.defaultQuery;
+      if (!this.isEmptyObject(this.query)) {
+        theQuery = Object.assign(theQuery, this.query)
+      }
+      return Object.keys(theQuery)
+        .map(key => key + "=" + theQuery[key])
+        .join("&");
+    },
+    disableNextPage: function(){
+      if(this.links && this.links.next){
+        return false
+      }
+      return true;
+    },
+    disablePrevious: function(){
+      if(this.links && this.links.prev){
+        return false
+      }
+      return true;
+    },
+    currentPage: function(){
+      
+    },
+    totalPages: function(){
+
+    }
+  }
+};
+</script>
+
+<style>
+</style>

@@ -33,34 +33,34 @@
 </template>
 
 <script>
-import store from "@/store";
-import http from "@/http";
+import store from '@/store';
+import http from '@/http';
 
 export default {
   computed: {
-    initiative: function() {
+    initiative() {
       return this.$store.getters.initiative;
-    }
+    },
   },
   beforeRouteUpdate: (to, from, next) => {
     if (to.params.id === from.params.id) {
-      console.log("Same initiative, dont load");
+      console.log('Same initiative, dont load');
       next();
     } else {
-      console.log("First time entering, getting initiative...");
+      console.log('First time entering, getting initiative...');
       http
         .get(`/v1/initiatives/${to.params.id}`)
-        .then(response => {
-          store.commit("setInitiative", response.data.data);
-          console.log("GET OK - Got initiative");
+        .then((response) => {
+          store.commit('setInitiative', response.data.data);
+          console.log('GET OK - Got initiative');
           next();
         })
-        .catch(error => {
-          console.log("Fetching data failed.", error);
-          next({ name: "home" });
+        .catch((error) => {
+          console.log('Fetching data failed.', error);
+          next({ name: 'home' });
         });
     }
-  }
+  },
 };
 </script>
 

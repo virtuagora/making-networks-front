@@ -53,10 +53,13 @@ $colors: ("white": ($white, $black),
 // $navbar-item-hover-color: $white;
 // $navbar-item-hover-background-color: transparent;
 
+$title-color: #FFF;
+$subtitle-color: rgb(236, 236, 236);
 
 // Input
 $input-shadow: none;
 $input-focus-box-shadow-size: none;
 
 // FORM
-$label-color: $black
+$label-color: $black;
+$card-color: $dark;

@@ -14,28 +14,28 @@
 <script>
 export default {
   props: {
-    city : {
-      type: Object
-    }
+    city: {
+      type: Object,
+    },
   },
-  data(){
+  data() {
     return {
       fetchingCityData: true,
-      cityData: null
-    }
+      cityData: null,
+    };
   },
   methods: {
-    getCity: function(){
-      if(this.cityData == null){
+    getCity() {
+      if (this.cityData == null) {
         this.$http.get(`/v1/cities/${this.city.id}`)
-        .then(res => {
-          this.cityData = res.data.data
-          this.fetchingCityData = false
-        })
+          .then((res) => {
+            this.cityData = res.data.data;
+            this.fetchingCityData = false;
+          });
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -45,4 +45,3 @@ p{
   font-size: 14px;
 }
 </style>
-

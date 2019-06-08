@@ -20,10 +20,10 @@
 </template>
 
 <script>
-import Map from "@/components/Map.vue";
+import Map from '@/components/Map.vue';
 
 export default {
-  components: { Map }
+  components: { Map },
 };
 </script>
 
@@ -55,4 +55,3 @@ export default {
   // color: #FFF
 }
 </style>
-

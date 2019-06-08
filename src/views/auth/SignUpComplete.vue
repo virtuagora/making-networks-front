@@ -121,10 +121,10 @@ export default {
         this.$http.post('/v1/users', this.getPayload())
           .then((res) => {
             console.log(res);
-            this.response.ok = true
+            this.response.ok = true;
           }).catch((err) => {
-             console.error(err);
-            if(err.response && err.response.data) this.$toast.open(err.response.data.message);
+            console.error(err);
+            if (err.response && err.response.data) this.$toast.open(err.response.data.message);
           }).finally(() => {
             this.stopLoading();
           });

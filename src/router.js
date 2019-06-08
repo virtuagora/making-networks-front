@@ -15,6 +15,21 @@ import NewInitiative from './views/initiatives/New.vue';
 import ListInitiatives from './views/initiatives/List.vue';
 import Initiative from './views/initiative/Initiative.vue';
 import InitiativeAbout from './views/initiative/About.vue';
+// Admin panel
+import Admin from './views/admin/Admin.vue';
+import AdminIndex from './views/admin/AdminIndex.vue';
+import AdminConfigAdministrators from './views/admin/config/Administrators.vue';
+import AdminInitiativesList from './views/admin/initiatives/List.vue';
+import AdminInitiativesNew from './views/admin/initiatives/New.vue';
+import AdminInitiativesListCities from './views/admin/initiatives/Cities.vue';
+import AdminMapCitiesList from './views/admin/map/cities/List.vue';
+import AdminMapCitiesNew from './views/admin/map/cities/New.vue';
+import AdminMapCountriesList from './views/admin/map/countries/List.vue';
+import AdminMapRegionsList from './views/admin/map/regions/List.vue';
+// User panel
+import User from './views/user/User.vue';
+import UserIndex from './views/user/UserIndex.vue';
+import UserAccountChangePassword from './views/user/account/ChangePassword.vue';
 
 Vue.use(Router);
 
@@ -26,18 +41,14 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: Home,
-      meta: {
-        withNavbar: true,
-        withFooter: true,
-      },
+      meta: {},
     },
     {
       path: '/map',
       name: 'map',
       component: Map,
       meta: {
-        withNavbar: true,
-        withFooter: false,
+        hideFooter: true,
       },
     },
     {
@@ -45,8 +56,7 @@ const router = new Router({
       name: 'newInitiative',
       component: NewInitiative,
       meta: {
-        withNavbar: true,
-        withFooter: false,
+        hideFooter: true,
         requiresAuth: true,
       },
     },
@@ -55,8 +65,6 @@ const router = new Router({
       name: 'listInitiatives',
       component: ListInitiatives,
       meta: {
-        withNavbar: true,
-        withFooter: false,
         requiresAuth: true,
       },
     },
@@ -73,11 +81,7 @@ const router = new Router({
           name: 'Initiative',
           component: InitiativeAbout,
           props: true,
-          meta: {
-            withNavbar: true,
-            withFooter: true,
-            // requiresAnon: false,
-          },
+          meta: {},
         },
       ],
       beforeEnter: (to, from, next) => {
@@ -107,8 +111,8 @@ const router = new Router({
           name: 'login',
           component: Login,
           meta: {
-            withNavbar: false,
-            withFooter: false,
+            hideNavbar: true,
+            hideFooter: true,
             requiresAnon: true,
           },
         },
@@ -117,8 +121,8 @@ const router = new Router({
           name: 'signup',
           component: SignUp,
           meta: {
-            withNavbar: false,
-            withFooter: false,
+            hideNavbar: true,
+            hideFooter: true,
             requiresAnon: true,
           },
         },
@@ -128,8 +132,8 @@ const router = new Router({
           component: SignUpComplete,
           props: true,
           meta: {
-            withNavbar: false,
-            withFooter: false,
+            hideNavbar: true,
+            hideFooter: true,
             requiresAnon: true,
           },
         },
@@ -138,8 +142,8 @@ const router = new Router({
           name: 'recoverRequest',
           component: RecoverPasswordRequest,
           meta: {
-            withNavbar: false,
-            withFooter: false,
+            hideNavbar: true,
+            hideFooter: true,
             requiresAnon: true,
           },
         },
@@ -149,9 +153,109 @@ const router = new Router({
           component: RecoverPassword,
           props: true,
           meta: {
-            withNavbar: false,
-            withFooter: false,
+            hideNavbar: true,
+            hideFooter: true,
             requiresAnon: true,
+          },
+        },
+      ],
+    },
+    {
+      path: '/admin',
+      component: Admin,
+      children: [
+        {
+          path: '',
+          name: 'admin',
+          component: AdminIndex,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'map/config/administrators',
+          name: 'adminConfigAdministrators',
+          component: AdminConfigAdministrators,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'map/initiatives/new',
+          name: 'adminInitiativesNew',
+          component: AdminInitiativesNew,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'map/initiatives/list',
+          name: 'adminInitiativesList',
+          component: AdminInitiativesList,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'map/initiatives/list/cities',
+          name: 'adminInitiativesListCities',
+          component: AdminInitiativesListCities,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'map/cities/new',
+          name: 'adminMapCitiesNew',
+          component: AdminMapCitiesNew,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'map/cities/list',
+          name: 'adminMapCitiesList',
+          component: AdminMapCitiesList,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'map/countries/list',
+          name: 'adminMapCountriesList',
+          component: AdminMapCountriesList,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'map/regions/list',
+          name: 'adminMapRegionsList',
+          component: AdminMapRegionsList,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+      ],
+    },
+    {
+      path: '/user',
+      component: User,
+      children: [
+        {
+          path: '',
+          name: 'user',
+          component: UserIndex,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'account/change-password',
+          name: 'userAccountChangePassword',
+          component: UserAccountChangePassword,
+          meta: {
+            requiresAdmin: true,
           },
         },
       ],
@@ -200,7 +304,7 @@ router.beforeEach(async (to, from, next) => {
     }
     if (requiresAdmin) {
       console.log('-- Requires admin role');
-      const isAdmin = store.state.user.isAdmin || false;
+      const isAdmin = store.getters.isAdmin || false;
       if (isAdmin) {
         console.log('--- is Admin! Go on');
         next();

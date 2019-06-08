@@ -1,5 +1,6 @@
 <template>
   <section>
+    <router-link :to="{name: 'home'}" class="logo"><img src="/iso-cn.svg" class="image" alt=""></router-link>
       <div class="control-header">
         <div class="field">
           <div class="control">
@@ -32,11 +33,11 @@
 </template>
 
 <script>
-import InitiativeMap from "@/components/InitiativeMap.vue";
+import InitiativeMap from '@/components/InitiativeMap.vue';
 
 export default {
   components: { InitiativeMap },
-  data(){
+  data() {
     return {
       mapLoaded: true,
       fetchingCities: true,
@@ -44,56 +45,54 @@ export default {
       queryCity: '',
       selectedCity: null,
       mapReady: false,
-    }
+    };
   },
-  created: function(){
-    this.getCities()
+  created() {
+    this.getCities();
   },
   methods: {
-    getCities: function(){
-      this.$http.get('/v1/cities').then( res => {
-        this.cities = res.data.data
-        this.fetchingCities = false
-      })
+    getCities() {
+      this.$http.get('/v1/cities').then((res) => {
+        this.cities = res.data.data;
+        this.fetchingCities = false;
+      });
     },
-    selectCity: function(city){
+    selectCity(city) {
       if (city == null) return;
-      this.selectedCity = city
-      this.$refs['initiativeMap'].flyTo(city.space.point.coordinates)
+      this.selectedCity = city;
+      this.$refs.initiativeMap.flyTo(city.space.point.coordinates);
     },
-    randomDesination: function(){
-      let randomCity = null
+    randomDesination() {
+      let randomCity = null;
       do {
-       randomCity = this.cities[Math.floor(Math.random() * this.cities.length)]
-      } while (randomCity.name == (this.selectedCity && this.selectedCity.name) )
-      this.queryCity = randomCity.name
-      this.selectedCity = randomCity
-      this.$refs['initiativeMap'].flyTo(randomCity.space.point.coordinates)
-    }
+        randomCity = this.cities[Math.floor(Math.random() * this.cities.length)];
+      } while (randomCity.name === (this.selectedCity && this.selectedCity.name));
+      this.queryCity = randomCity.name;
+      this.selectedCity = randomCity;
+      this.$refs.initiativeMap.flyTo(randomCity.space.point.coordinates);
+    },
   },
   computed: {
-    placeholderInput: function(){
-      if(!this.fetchingCities){
-        if(!this.mapReady) return 'Getting map ready.. get ready!'
-        return 'Where do you want to go today? ✈'
+    placeholderInput() {
+      if (!this.fetchingCities) {
+        if (!this.mapReady) return 'Getting map ready.. get ready!';
+        return 'Where do you want to go today? ✈';
       }
-      return 'Fetching cities, hold on!'
+      return 'Fetching cities, hold on!';
     },
-    disableInput: function(){
-      return this.fetchingCities || !this.mapReady
+    disableInput() {
+      return this.fetchingCities || !this.mapReady;
     },
-    filteredCities: function() {
-      if(!this.cities) return []
-      return this.cities.filter(option => {
-        return (
-          option
-            .toString()
-            .toLowerCase()
-            .indexOf(this.queryCity.toLowerCase()) >= 0
-        );
-      });
-    }
-  }
+    filteredCities() {
+      if (!this.cities) return [];
+      return this.cities.filter(option => (
+        option
+          .toString()
+          .toLowerCase()
+          .indexOf(this.queryCity.toLowerCase()) >= 0
+      ));
+    },
+  },
 };
 </script>
 
@@ -116,13 +115,21 @@ export default {
   z-index: 10;
     margin: 0 auto;
   }
+  .logo{
+    position:fixed;
+    left:12px;
+    top:12px;
+    width: 27px;
+    z-index: 20;
+  }
   .control-header {
-    width: 70%;    
-    position: fixed;
+    width: 100%;
+    position: absolute;
+    padding-right: 65px;
+    padding-left: 40px;
     top: 10px;
     left: 10px;
-  z-index: 10;
-    margin: 0 auto;
+    z-index: 10;
     @include from($desktop) {
     width: 30%;
   }
@@ -151,4 +158,3 @@ export default {
 //   // color: #FFF
 // }
 </style>
-

@@ -19,7 +19,7 @@
           class="textarea"
           v-model="model.description"
           rows="6"
-          v-validate="{required:true, max:4000}"
+          v-validate="{required:true, max:500 }"
           :data-vv-as="$t('forms.user.addInitiative.step2.fields[0].fieldName')"
           :placeholder="$t('forms.user.addInitiative.step2.fields[0].placeholder')"
         ></textarea>
@@ -43,23 +43,23 @@ export default {
   props: {
     model: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
-    goForward: function() {
-      this.$validator.validateAll().then(valid => {
+    goForward() {
+      this.$validator.validateAll().then((valid) => {
         if (!valid) {
           this.$toast.open({
-            message: this.$t("globals.errors.formNotValid"),
-            type: "is-warning",
-            position: "is-bottom"
+            message: this.$t('globals.errors.formNotValid'),
+            type: 'is-warning',
+            position: 'is-bottom',
           });
           return;
         }
-        this.$emit("forward");
+        this.$emit('forward');
       });
-    }
-  }
+    },
+  },
 };
 </script>

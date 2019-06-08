@@ -19,9 +19,7 @@ axios.interceptors.request.use(
     }
     return config;
   },
-  (err) => {
-    return Promise.reject(err);
-  },
+  err => Promise.reject(err),
 );
 
 axios.interceptors.response.use(

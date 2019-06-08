@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="content">
-      <p 
-        class="has-text-centered is-italic"      
+      <p
+        class="has-text-centered is-italic"
       v-for="(p,index) in $t('forms.user.addInitiative.step3.conversation')" :key="index">{{p}}</p>
     </div>
     <h1 class="subtitle is-5 has-text-centered">
@@ -97,19 +97,20 @@
 </template>
 
 <script>
-import AddCityModal from '@/components/initiatives/new/AddCityModal'
+import AddCityModal from '@/components/initiatives/new/AddCityModal';
+
 export default {
   props: {
     model: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      queryRegion: "",
-      queryCountry: "",
-      queryCity: "",
+      queryRegion: '',
+      queryCountry: '',
+      queryCity: '',
       dataRegions: [],
       dataCountries: [],
       dataCities: [],
@@ -119,143 +120,137 @@ export default {
       selectedRegion: null,
       selectedCountry: null,
       selectedCity: null,
-      notInACity: false
+      notInACity: false,
     };
   },
-  created: function() {
+  created() {
     this.fetchRegions();
   },
   methods: {
-    goForward: function() {
-      this.$validator.validateAll().then(valid => {
+    goForward() {
+      this.$validator.validateAll().then((valid) => {
         if (!valid) {
           this.$toast.open({
-            message: this.$t("globals.errors.formNotValid"),
-            type: "is-warning",
-            position: "is-bottom"
+            message: this.$t('globals.errors.formNotValid'),
+            type: 'is-warning',
+            position: 'is-bottom',
           });
           return;
         }
-        this.model.selectedRegion = this.selectedRegion
-        this.model.selectedCountry = this.selectedCountry
-        this.model.selectedCity = this.selectedCity
-        this.$emit("forward");
+        this.model.selectedRegion = this.selectedRegion;
+        this.model.selectedCountry = this.selectedCountry;
+        this.model.selectedCity = this.selectedCity;
+        this.$emit('forward');
       });
     },
-    fetchRegions: function() {
+    fetchRegions() {
       this.$http
-        .get(`/v1/regions?size=100`)
-        .then(res => {
+        .get('/v1/regions?size=100')
+        .then((res) => {
           this.dataRegions = res.data.data;
         })
         .finally(() => {
           this.fetchingRegions = false;
         });
     },
-    selectRegion: function(selectedRegion) {
+    selectRegion(selectedRegion) {
       this.fetchingCountries = true;
       this.selectedRegion = selectedRegion;
-      this.queryCountry = "";
-      this.queryCity = "";
+      this.queryCountry = '';
+      this.queryCity = '';
       this.selectedCountry = null;
       this.selectedCity = null;
       this.$http
         .get(`/v1/countries?size=100&region_id=${selectedRegion.id}`)
-        .then(res => {
+        .then((res) => {
           this.dataCountries = res.data.data;
         })
         .finally(() => {
           this.fetchingCountries = false;
         });
     },
-    selectCountry: function(selectedCountry) {
+    selectCountry(selectedCountry) {
       if (selectedCountry == null) return;
       this.fetchingCities = true;
       this.selectedCountry = selectedCountry;
-      this.queryCity = "";
+      this.queryCity = '';
       this.selectedCity = null;
       this.$http
         .get(`/v1/registered-cities?size=100&country_id=${selectedCountry.id}`)
-        .then(res => {
+        .then((res) => {
           this.dataCities = res.data.data;
         })
         .finally(() => {
           this.fetchingCities = false;
         });
     },
-    skip: function(){
-      this.model.selectedRegion = null
-      this.model.selectedCountry = null
-      this.model.selectedCity = null
-      this.$emit("forward");
+    skip() {
+      this.model.selectedRegion = null;
+      this.model.selectedCountry = null;
+      this.model.selectedCity = null;
+      this.$emit('forward');
     },
-    selectCity: function(selectedCity) {
+    selectCity(selectedCity) {
       if (selectedCity === null) return;
       // this.fetchingCities = true;
       this.selectedCity = selectedCity;
     },
-    notLocatedInACity: function() {
+    notLocatedInACity() {
       this.notInACity = true;
     },
-    isLocatedInACity: function() {
+    isLocatedInACity() {
       this.selectedCity = null;
       this.notInACity = false;
     },
-    openModalAddCity: function() {
+    openModalAddCity() {
       this.$modal.open({
         parent: this,
         component: AddCityModal,
-        hasModalCard: true
+        hasModalCard: true,
       });
-    }
+    },
   },
   computed: {
-    placeholderRegions: function() {
+    placeholderRegions() {
       return this.fetchingRegions
         ? this.$t('forms.user.addInitiative.step3.fetchingRegions')
         : this.$t('forms.user.addInitiative.step3.startTypingRegion');
     },
-    placeholderCountries: function() {
+    placeholderCountries() {
       return this.fetchingCountries
         ? this.$t('forms.user.addInitiative.step3.fetchingCountries')
         : this.$t('forms.user.addInitiative.step3.startTypingCountry');
     },
-    placeholderCities: function() {
+    placeholderCities() {
       return this.fetchingCities
         ? this.$t('forms.user.addInitiative.step3.fetchingCities')
         : this.$t('forms.user.addInitiative.step3.startTypingCity');
     },
-    filteredRegions: function() {
-      return this.dataRegions.filter(option => {
-        return (
-          option.name
-            .toString()
-            .toLowerCase()
-            .indexOf(this.queryRegion.toLowerCase()) >= 0
-        );
-      });
+    filteredRegions() {
+      return this.dataRegions.filter(option => (
+        option.name
+          .toString()
+          .toLowerCase()
+          .indexOf(this.queryRegion.toLowerCase()) >= 0
+      ));
     },
-    filteredCountries: function() {
-      return this.dataCountries.filter(option => {
-        return (
-          option.name
-            .toString()
-            .toLowerCase()
-            .indexOf(this.queryCountry.toLowerCase()) >= 0
-        );
-      });
+    filteredCountries() {
+      return this.dataCountries.filter(option => (
+        option.name
+          .toString()
+          .toLowerCase()
+          .indexOf(this.queryCountry.toLowerCase()) >= 0
+      ));
     },
-    filteredCities: function() {
-      return this.dataCities.filter(option => {
-        return (
-          option.name
-            .toString()
-            .toLowerCase()
-            .indexOf(this.queryCity.toLowerCase()) >= 0
-        );
-      });
-    }
-  }
+    filteredCities() {
+      return this.dataCities.filter(option => (
+        option.name
+          .toString()
+          .toLowerCase()
+          .indexOf(this.queryCity.toLowerCase()) >= 0
+      ));
+    },
+  },
 };
 </script>
 

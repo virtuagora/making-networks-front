@@ -7,14 +7,14 @@
       <p
         class="has-text-centered is-italic"
       >{{$t('forms.user.addInitiative.step4.conversation[1]')}}</p>
-      <p 
+      <p
         class="has-text-centered is-italic"
       >{{$t('forms.user.addInitiative.step4.conversation[2]')}}</p>
     </div>
     <div class="columns is-centered">
       <div class="column is-8">
         <div class="map-container">
-          <Map 
+          <Map
           :name="model.name"
           :description="model.description"
           :coordinates="model.selectedCity.point.coordinates"
@@ -35,31 +35,31 @@
 </template>
 
 <script>
-import Map from '@/components/initiatives/new/Map'
+import Map from '@/components/initiatives/new/Map';
+
 export default {
-  components:{
-    Map
+  components: {
+    Map,
   },
   props: {
     model: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
- 
+
     };
   },
-   created: function(){
-    if(this.model.selectedCity == null){
-      this.$emit("forward");
+  created() {
+    if (this.model.selectedCity == null) {
+      this.$emit('forward');
     }
-    return
   },
   methods: {
-    goForward: function() {
-      this.$emit("forward");
+    goForward() {
+      this.$emit('forward');
     },
   },
 };
