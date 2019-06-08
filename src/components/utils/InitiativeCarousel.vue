@@ -15,6 +15,8 @@
       navigationPrevLabel="<i class='fas fa-angle-double-left fa-2x has-text-white'></i>"
     >
       <slide class="item-carousel" v-for="initiative in initiatives" :key="initiative.id">
+        <router-link :to="{name: 'initiative', params: { id: initiative.id }}">
+
         <div class="box-initiative">
           <div>
             <div class="to-bottom">
@@ -35,6 +37,7 @@
             </div>
           </div>
         </div>
+        </router-link>
       </slide>
       <slide class="item-carousel">
         <router-link :to="{name: user ? 'newInitiative' : 'login'}">

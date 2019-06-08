@@ -45,6 +45,9 @@ export default {
 <style lang="scss" scoped>
 #hero{
   position: relative;
+  background-image: url('/map-bg-2.png');
+    background-position: center center;
+    background-size: cover;
   .hero-body{
     z-index: 10;
     border-bottom: 1px solid rgba(255, 255, 255, 0.397);
