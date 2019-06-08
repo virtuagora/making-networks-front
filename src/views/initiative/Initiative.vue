@@ -5,7 +5,8 @@
         <div class="hero-body">
           <div class="container">
             <br class="is-hidden-desktop">
-            <div class="title is-1 is-size-3-touch has-text-centered">{{initiative.name}}</div>
+            <p class="title is-1 is-size-3-touch has-text-centered">{{initiative.name}}</p>
+            <p class="subtitle is-5 is-size-6-touch has-text-centered">Initiative #{{initiative.id}}</p>
           </div>
         </div>
         <div class="hero-foot">

@@ -22,11 +22,11 @@
             <div class="to-bottom">
               <div class="field is-grouped is-grouped-multiline">
                 <div class="control">
-                  <div class="tags">
+                  <div class="tags has-addons">
                     <span class="tag is-dark">
                       <i class="fas fa-map-marker-alt"></i>
                     </span>
-                    <!-- <span class="tag is-white">In map</span> -->
+                    <span class="tag is-white">#{{initiative.id}}</span>
                   </div>
                 </div>
               </div>

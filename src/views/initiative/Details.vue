@@ -1,5 +1,5 @@
 <template>
-  <section class="has-text-centered">
+  <section>
     <h1 class="subtitle is-5 has-text-primary">Founding Year</h1>
     <div class="content">
       <p><b>{{initiative.name}}</b> was founded the year {{initiative.public_data.founding_year}}</p>
