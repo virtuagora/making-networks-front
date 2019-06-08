@@ -1,5 +1,5 @@
 const home = {
-  subtitle: 'Soon we will be connecting the dots',
+  subtitle: 'Where you want to go today?',
   buttons: {
     seeMap: 'See the map now',
   },

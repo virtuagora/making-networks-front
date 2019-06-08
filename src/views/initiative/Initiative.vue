@@ -1,21 +1,25 @@
 <template>
   <section>
     <section>
-      <div id="hero" class="hero is-dark">
+      <div id="hero" class="hero is-medium is-dark">
         <div class="hero-body">
           <div class="container">
-            <div class="title is-1 has-text-centered">{{initiative.name}}</div>
+            <br class="is-hidden-desktop">
+            <div class="title is-1 is-size-3-touch has-text-centered">{{initiative.name}}</div>
           </div>
         </div>
         <div class="hero-foot">
           <nav class="tabs is-centered is-boxed">
             <div class="container">
               <ul>
-                <li class="is-active">
-                  <router-link :to="{name: 'home'}">Overview</router-link>
-                </li>
                 <li>
-                  <router-link :to="{name: 'home'}">Contact</router-link>
+                  <router-link :to="{ name: 'home'}">&nbsp;<i class="fas fa-home fa-lg"></i>&nbsp;</router-link>
+                </li>
+                <li :class="{'is-active': $route.name === 'initiative'}">
+                  <router-link :to="{ name: 'initiative', params: { id: initiative.id } }">Overview</router-link>
+                </li>
+                <li :class="{'is-active': $route.name === 'initiativeDetails'}">
+                  <router-link :to="{ name: 'initiativeDetails', params: { id: initiative.id } }">Details</router-link>
                 </li>
               </ul>
             </div>
@@ -26,7 +30,11 @@
     </section>
     <div class="section">
       <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-8">
         <router-view></router-view>
+          </div>
+        </div>
       </div>
     </div>
   </section>

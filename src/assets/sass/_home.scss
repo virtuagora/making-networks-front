@@ -1,0 +1,81 @@
+.initiative-carousel {
+  .item-carousel {
+    .box-initiative {
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#faaa35+5,f36d22+94 */
+      background: #faaa35; /* Old browsers */
+      background: -moz-linear-gradient(
+        -45deg,
+        #faaa35 5%,
+        #f36d22 94%
+      ); /* FF3.6-15 */
+      background: -webkit-linear-gradient(
+        -45deg,
+        #faaa35 5%,
+        #f36d22 94%
+      ); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(
+        135deg,
+        #faaa35 5%,
+        #f36d22 94%
+      ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#faaa35', endColorstr='#f36d22',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+      // background-image: url('/map-bg.png');
+      border-radius: 5px;
+      -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1),
+        0 0 0 1px rgba(10, 10, 10, 0.1);
+      box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1),
+        0 0 0 1px rgba(10, 10, 10, 0.1);
+      display: block;
+      margin: 0 5px;
+      color: #fff;
+      position: relative;
+      height: 200px;
+      & > div {
+        border-radius: 5px;
+        height: 100%;
+        position: relative;
+        .to-bottom {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          padding: 1rem;
+        }
+      }
+      .title,
+      .subtitle {
+        color: #fff;
+        text-shadow: -1px 1px 3px #00000096;
+        line-height: normal;
+      }
+      p {
+        text-shadow: -1px 1px 3px #00000080;
+        font-size: 0.9rem;
+        line-height: normal;
+      }
+    }
+    .box-add-initiative {
+      background-image: url('/map-bg.png');
+      background-size: cover;
+      background-position: center, center;
+      border-radius: 5px;
+      -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1),
+        0 0 0 1px rgba(10, 10, 10, 0.1);
+      box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1),
+        0 0 0 1px rgba(10, 10, 10, 0.1);
+      display: flex;
+      margin: 0 5px;
+      color: #fff;
+      position: relative;
+      height: 200px;
+      border: 1px solid #da8313;
+      align-items: center;
+      justify-content: center;
+      .center-stuff {
+        width: 90%;
+         p {
+        text-shadow: -1px 1px 3px #00000080;
+      }
+      }
+    }
+  }
+}

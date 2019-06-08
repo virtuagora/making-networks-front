@@ -7,7 +7,7 @@
       <div class="card-content">
         <b-table :data="regions" :loading="fetching" striped>
           <template slot-scope="props">
-            <b-table-column field="name" label="Country name">{{ getSpaceLocalization(props.row) }}</b-table-column>
+            <b-table-column field="name" label="Region name">{{ getSpaceLocalization(props.row) }}</b-table-column>
           </template>
           <template slot="empty">
             <empty-table></empty-table>

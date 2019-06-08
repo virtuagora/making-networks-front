@@ -1,15 +1,15 @@
 <template>
   <section>
-    <h1 class="title is-3">List of initiatives</h1>
-    <p>Take a look at the initiatives added to the platform</p>
+    <h1 class="title is-3">List of my initiatives</h1>
+    <p>Take a look at your initiatives</p>
     <br>
     <div class="card">
       <div class="card-content">
-        <b-table :data="initiatives" :loading="fetching" striped>
+        Available soon
+        <!-- <b-table :data="initiatives" :loading="fetching" striped>
           <template slot-scope="props">
             <b-table-column field="id" label="ID" width="40" numeric>{{ props.row.id }}</b-table-column>
-            <b-table-column field="name" label="Name" sortable>
-              <router-link :to="{ name: 'initiative', params: { id: props.row.id } }">{{ props.row.name }}</router-link></b-table-column>
+            <b-table-column field="name" label="Name" sortable>{{ props.row.name }}</b-table-column>
             <b-table-column field="created_at" label="Created">{{ props.row.created_at }}</b-table-column>
           </template>
           <template slot="empty">
@@ -21,7 +21,7 @@
           resource-url="/v1/initiatives"
           @update="getInitiatives"
           :fetching.sync="fetching"
-        ></pagination-bar>
+        ></pagination-bar> -->
       </div>
     </div>
   </section>

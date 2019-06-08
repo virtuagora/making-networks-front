@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h1 class="subitle is-5">Description</h1>
+    <h1 class="subtitle is-5 has-text-primary">Description</h1>
     <div class="content">
       <p>{{initiative.description}}</p>
     </div>

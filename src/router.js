@@ -13,8 +13,10 @@ import RecoverPassword from './views/auth/RecoverPassword.vue';
 import RecoverPasswordRequest from './views/auth/RecoverPasswordRequest.vue';
 import NewInitiative from './views/initiatives/New.vue';
 import ListInitiatives from './views/initiatives/List.vue';
+// Initiative
 import Initiative from './views/initiative/Initiative.vue';
 import InitiativeAbout from './views/initiative/About.vue';
+import InitiativeDetails from './views/initiative/Details.vue';
 // Admin panel
 import Admin from './views/admin/Admin.vue';
 import AdminIndex from './views/admin/AdminIndex.vue';
@@ -30,6 +32,7 @@ import AdminMapRegionsList from './views/admin/map/regions/List.vue';
 import User from './views/user/User.vue';
 import UserIndex from './views/user/UserIndex.vue';
 import UserAccountChangePassword from './views/user/account/ChangePassword.vue';
+import UserInitiativesList from './views/user/initiatives/List.vue';
 
 Vue.use(Router);
 
@@ -78,8 +81,15 @@ const router = new Router({
       children: [
         {
           path: '',
-          name: 'Initiative',
+          name: 'initiative',
           component: InitiativeAbout,
+          props: true,
+          meta: {},
+        },
+        {
+          path: 'details',
+          name: 'initiativeDetails',
+          component: InitiativeDetails,
           props: true,
           meta: {},
         },
@@ -254,6 +264,14 @@ const router = new Router({
           path: 'account/change-password',
           name: 'userAccountChangePassword',
           component: UserAccountChangePassword,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'initiatives',
+          name: 'userInitiativesList',
+          component: UserInitiativesList,
           meta: {
             requiresAdmin: true,
           },

@@ -31,6 +31,11 @@ const globals = {
     remove: 'Remove',
     retry: 'Retry',
   },
+  role_of_youth: {
+    targetAudience: 'Target Audience',
+    leadership: 'Leadership',
+    membership: 'Membership',
+  },
 };
 
 export default globals;

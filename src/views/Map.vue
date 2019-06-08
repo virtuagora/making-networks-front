@@ -75,8 +75,8 @@ export default {
   computed: {
     placeholderInput() {
       if (!this.fetchingCities) {
-        if (!this.mapReady) return 'Getting map ready.. get ready!';
-        return 'Where do you want to go today? ✈';
+        if (!this.mapReady) return 'Preparing your flight.. get ready!';
+        return 'Where do you want to flight today? ✈';
       }
       return 'Fetching cities, hold on!';
     },
@@ -86,7 +86,7 @@ export default {
     filteredCities() {
       if (!this.cities) return [];
       return this.cities.filter(option => (
-        option
+        option.name
           .toString()
           .toLowerCase()
           .indexOf(this.queryCity.toLowerCase()) >= 0
@@ -131,8 +131,8 @@ export default {
     left: 10px;
     z-index: 10;
     @include from($desktop) {
-    width: 30%;
-  }
+      width: 30%;
+    }
   }
 .map-container {
   height: 100vh;
