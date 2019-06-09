@@ -3,8 +3,8 @@
     <router-link :to="{name: 'home'}"><img src="/iso-cn.svg" class="image logo" alt=""></router-link>
   <aside class="menu">
   <ul class="menu-list">
-    <li><router-link :to="{name: 'user'}">Start</router-link></li>
-    <li><router-link :to="{name: 'home'}"><i class="fas fa-arrow-left"></i>&nbsp;Go Back</router-link></li>
+    <li><router-link :to="{name: 'home'}"><i class="fas fa-arrow-left"></i>&nbsp;Home</router-link></li>
+    <li><router-link :to="{name: 'user'}">Dashboard</router-link></li>
   </ul>
   <p class="menu-label">
     My initiatives
@@ -17,7 +17,7 @@
     My account
   </p>
   <ul class="menu-list">
-    <li><router-link :to="{name: 'userChangePassword'}">Change password</router-link></li>
+    <li><router-link :to="{name: 'userAccountChangePassword'}">Change password</router-link></li>
   </ul>
 </aside>
   </div>

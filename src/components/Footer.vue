@@ -4,6 +4,8 @@
       <p><b>Creating Networks</b><br>a Youth Observatory project</p>
       <p class="is-size-7">Powered by <a href="https://virtuagora.org" title="Virtuágora" class="has-text-primary">Virtuágora</a></p>
       <br>
+      <p class="is-size-7"><i class="fas fa-bug"></i>&nbsp;Bugs? Something is broken? Feedback maybe? <a href="https://docs.google.com/forms/d/e/1FAIpQLSf02YyfE8ddsf5B0u2wSF_ZggEYQi_-U0fQQcSaqfdtKmpWng/viewform" target="_blank" title="Support and feedback form" class="has-text-warning ">Click here and fill the form</a></p>
+      <br>
       <br>
       <div class="columns">
         <div class="column"><img src="/ISOC.svg" alt=""></div>

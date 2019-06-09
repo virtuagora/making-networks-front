@@ -5,7 +5,7 @@
     <br>
     <div class="card">
       <div class="card-content">
-        Available soon
+        Soon to be available for you!
         <!-- <b-table :data="initiatives" :loading="fetching" striped>
           <template slot-scope="props">
             <b-table-column field="id" label="ID" width="40" numeric>{{ props.row.id }}</b-table-column>

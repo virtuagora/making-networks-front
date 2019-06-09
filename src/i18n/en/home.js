@@ -1,7 +1,15 @@
 const home = {
-  subtitle: 'Where you want to go today?',
+  subtitle: [
+    'Where do you want to go today?',
+    'Let\'s explore together!',
+    'Where should we go?',
+    'Let\'s check the map!',
+    'Our next destiny awaits!',
+    'I wonder if there is a new destiny',
+    'Look all the friends you can connect!',
+  ],
   buttons: {
-    seeMap: 'See the map now',
+    seeMap: 'Check the map now',
   },
   question: [
     'What is the Project Creating Networks?',

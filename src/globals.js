@@ -45,6 +45,17 @@ const globals = {
       }
       return space.name;
     },
+    makeUserAvatar(sub) {
+      if (sub) {
+        switch (sub.img_type) {
+          case 1:
+            return `https://www.gravatar.com/avatar/${sub.img_hash}?d=mm&s=256`;
+          default:
+            return `https://www.gravatar.com/avatar/${sub.img_hash}?d=mm&s=256`;
+        }
+      }
+      return 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp';
+    },
     // sizeFile(bytes) {
     //   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     //   if (bytes == 0) return '-';

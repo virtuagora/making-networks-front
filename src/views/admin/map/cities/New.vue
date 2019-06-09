@@ -1,11 +1,11 @@
 <template>
   <section>
-    <h1 class="title is-3">List of initiatives</h1>
-    <p>Take a look at the initiatives added to the platform</p>
+    <h1 class="title is-3">New city</h1>
+    <p>Add a new city in the platform</p>
     <br>
     <div class="card">
       <div class="card-content">
-        <p>To Do</p>
+        <p>Soon to be aded</p>
       </div>
     </div>
   </section>

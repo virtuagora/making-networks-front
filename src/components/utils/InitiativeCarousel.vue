@@ -54,13 +54,16 @@
         </router-link>
       </slide>
     </carousel>
+    <div v-else class="notification is-light">
+      <i class="fas fa-info-circle"></i> There are no iniciatives. Try again later.
+    </div>
   </div>
   <div v-else>
     <div class="section has-text-centered">
-      <p>
-        <i class="fas fa-sync fa-spin fa-lg"></i>
+      <p class="animated bounce infinite">
+        <i class="fas fa-sync fa-spin"></i>
       </p>
-      <p>Loading...</p>
+      <p>Loading</p>
     </div>
   </div>
 </template>
@@ -85,7 +88,7 @@ export default {
   methods: {
     fetch: function() {
       this.isFetching = true;
-      this.$http.get("/v1/initiatives?size=8").then(res => {
+      this.$http.get("/v1/initiatives?size=10").then(res => {
         this.initiatives = this.shuffleArray(res.data.data);
         this.isFetching = false;
       });

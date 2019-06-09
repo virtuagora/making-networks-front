@@ -158,7 +158,7 @@ const router = new Router({
           },
         },
         {
-          path: 'recover/:token',
+          path: 'complete-recover/:userId/:token',
           name: 'recoverPassword',
           component: RecoverPassword,
           props: true,

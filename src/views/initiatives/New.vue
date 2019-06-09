@@ -8,7 +8,8 @@
               <div class="column is-8">
                 <div class="the-head">
                   <h1 class="title is-1 is-size-3-touch has-text-centered has-text-primary">
-                    <i class="fas fa-map-marker"></i>&nbsp;{{$t('forms.user.addInitiative.title')}}
+    <router-link :to="{name: 'home'}"><img src="/iso-cn.svg" class="image logo" alt=""></router-link>
+                    {{$t('forms.user.addInitiative.title')}}
                   </h1>
                 </div>
                 <transition name="component-fade" mode="out-in">
@@ -138,5 +139,14 @@ export default {
 .component-fade-enter, .component-fade-leave-to
 /* .component-fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+.logo{
+  width: 30px;
+  margin: 0 auto 10px;
+  @include from($desktop){
+    margin: 0;
+  display: inline;
+  vertical-align: sub;
+  }
 }
 </style>
