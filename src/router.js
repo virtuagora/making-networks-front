@@ -287,6 +287,7 @@ const router = new Router({
 });
 
 const isEmpty = obj => !obj || Object.keys(obj).length === 0;
+const enableLogger = process.env.NODE_ENV !== 'production';
 
 router.beforeEach(async (to, from, next) => {
   // next();
@@ -295,48 +296,48 @@ router.beforeEach(async (to, from, next) => {
   const requiresAnon = to.matched.find(record => Object.prototype.hasOwnProperty.call(record.meta, 'requiresAnon'));
   const requiresAuth = to.matched.find(record => Object.prototype.hasOwnProperty.call(record.meta, 'requiresAuth'));
   const requiresAdmin = to.matched.find(record => Object.prototype.hasOwnProperty.call(record.meta, 'requiresAdmin'));
-  console.log('requiresAnon', requiresAnon);
-  console.log('requiresAuth', requiresAuth);
-  console.log('requiresAdmin', requiresAdmin);
+  if (enableLogger) console.log('requiresAnon', requiresAnon);
+  if (enableLogger) console.log('requiresAuth', requiresAuth);
+  if (enableLogger) console.log('requiresAdmin', requiresAdmin);
   if (requiresAnon) {
-    console.log('- Requires anon');
+    if (enableLogger) console.log('- Requires anon');
     // Is anonymous
     const isAnon = isEmpty(store.getters.user);
     if (isAnon) {
-      console.log('-- is anon, go on');
+      if (enableLogger) console.log('-- is anon, go on');
       next();
     } else {
-      console.log('-- NOT ANON, kick to home');
+      if (enableLogger) console.log('-- NOT ANON, kick to home');
       next({
         name: 'home',
       });
     }
   } else if (requiresAuth) {
-    console.log('- Requires auth');
+    if (enableLogger) console.log('- Requires auth');
     const isAuth = store.state.isAuthenticated;
     if (!isAuth) {
-      console.log('-/ Not logged in.. FORBIDDEN');
+      if (enableLogger) console.log('-/ Not logged in.. FORBIDDEN');
       next({
         name: 'forbidden',
       });
     }
     if (requiresAdmin) {
-      console.log('-- Requires admin role');
+      if (enableLogger) console.log('-- Requires admin role');
       const isAdmin = store.getters.isAdmin || false;
       if (isAdmin) {
-        console.log('--- is Admin! Go on');
+        if (enableLogger) console.log('--- is Admin! Go on');
         next();
       } else {
-        console.log('--- NO ADMIN, GET OUT OF HERE');
+        if (enableLogger) console.log('--- NO ADMIN, GET OUT OF HERE');
         next({
           name: 'forbidden',
         });
       }
     }
-    console.log('-- is logged, go on');
+    if (enableLogger) console.log('-- is logged, go on');
     next();
   } else {
-    console.log('- All good, go on');
+    if (enableLogger) console.log('- All good, go on');
     next();
   }
 
