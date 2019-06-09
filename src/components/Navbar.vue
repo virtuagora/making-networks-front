@@ -22,7 +22,7 @@
       </b-dropdown-item>
     </b-dropdown>
   </nav>
-  <router-link :to="{name: 'login'}" class="floating-navbar has-text-primary" v-else><i class="fas fa-sign-in-alt fa-2x"></i></router-link>
+  <router-link :to="{name: 'login'}" class="floating-navbar has-text-primary" :class="extraClasses" v-else><i class="fas fa-sign-in-alt fa-2x"></i></router-link>
 </template>
 
 <script>
