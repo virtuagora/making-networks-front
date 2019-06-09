@@ -3,10 +3,13 @@
     <div class="content">
       <p
         class="has-text-centered is-italic"
-      v-for="(p,index) in $t('forms.user.addInitiative.step3.conversation')" :key="index">{{p}}</p>
+        v-for="(p,index) in $t('forms.user.addInitiative.step3.conversation')"
+        :key="index"
+      >{{p}}</p>
     </div>
     <h1 class="subtitle is-5 has-text-centered">
-      <span class="is-500 has-text-primary">3.</span>&nbsp;{{$t('forms.user.addInitiative.step3.fields[0].question')}}
+      <span class="is-500 has-text-primary">3.</span>
+      &nbsp;{{$t('forms.user.addInitiative.step3.fields[0].question')}}
     </h1>
     <div class="columns is-centered">
       <div class="column is-8">
@@ -53,10 +56,10 @@
             <b-autocomplete
               rounded
               v-model="queryCity"
-              :data="filteredCities"
+              :data="dataCities"
               :placeholder="placeholderCities"
-              :open-on-focus="true"
               :loading="fetchingCities"
+              @typing="getCityAsync"
               icon="search"
               size="is-medium"
               field="name"
@@ -75,15 +78,19 @@
         </div>
         <div class="notification is-dark animated fadeIn" v-if="notInACity">
           <span @click="isLocatedInACity" class="delete"></span>
-          <i class="fas fa-info"></i>&nbsp;&nbsp; {{$t('forms.user.addInitiative.step3.notificationNoCity')}}
+          <i class="fas fa-info"></i>
+          &nbsp;&nbsp; {{$t('forms.user.addInitiative.step3.notificationNoCity')}}
         </div>
       </div>
     </div>
     <br>
     <div class="content">
-    <p class="has-text-centered">
-      <a @click="skip" class="has-text-primary"><i class="fas fa-share"></i>&nbsp;{{$t('forms.user.addInitiative.step3.skip')}}</a>
-    </p>
+      <p class="has-text-centered">
+        <a @click="skip" class="has-text-primary">
+          <i class="fas fa-share"></i>
+          &nbsp;{{$t('forms.user.addInitiative.step3.skip')}}
+        </a>
+      </p>
     </div>
     <div class="buttons is-centered">
       <button @click="$emit('backward')" class="button is-rounded is-white is-outlined is-medium">
@@ -97,20 +104,21 @@
 </template>
 
 <script>
-import AddCityModal from '@/components/initiatives/new/AddCityModal';
+import AddCityModal from "@/components/initiatives/new/AddCityModal";
+import debounce from "lodash/debounce";
 
 export default {
   props: {
     model: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
-      queryRegion: '',
-      queryCountry: '',
-      queryCity: '',
+      queryRegion: "",
+      queryCountry: "",
+      queryCity: "",
       dataRegions: [],
       dataCountries: [],
       dataCities: [],
@@ -120,7 +128,7 @@ export default {
       selectedRegion: null,
       selectedCountry: null,
       selectedCity: null,
-      notInACity: false,
+      notInACity: false
     };
   },
   created() {
@@ -128,25 +136,25 @@ export default {
   },
   methods: {
     goForward() {
-      this.$validator.validateAll().then((valid) => {
+      this.$validator.validateAll().then(valid => {
         if (!valid) {
           this.$toast.open({
-            message: this.$t('globals.errors.formNotValid'),
-            type: 'is-warning',
-            position: 'is-bottom',
+            message: this.$t("globals.errors.formNotValid"),
+            type: "is-warning",
+            position: "is-bottom"
           });
           return;
         }
         this.model.selectedRegion = this.selectedRegion;
         this.model.selectedCountry = this.selectedCountry;
         this.model.selectedCity = this.selectedCity;
-        this.$emit('forward');
+        this.$emit("forward");
       });
     },
     fetchRegions() {
       this.$http
-        .get('/v1/regions?size=100')
-        .then((res) => {
+        .get("/v1/regions?size=100")
+        .then(res => {
           this.dataRegions = res.data.data;
         })
         .finally(() => {
@@ -156,13 +164,13 @@ export default {
     selectRegion(selectedRegion) {
       this.fetchingCountries = true;
       this.selectedRegion = selectedRegion;
-      this.queryCountry = '';
-      this.queryCity = '';
+      this.queryCountry = "";
+      this.queryCity = "";
       this.selectedCountry = null;
       this.selectedCity = null;
       this.$http
         .get(`/v1/countries?size=100&region_id=${selectedRegion.id}`)
-        .then((res) => {
+        .then(res => {
           this.dataCountries = res.data.data;
         })
         .finally(() => {
@@ -171,24 +179,40 @@ export default {
     },
     selectCountry(selectedCountry) {
       if (selectedCountry == null) return;
-      this.fetchingCities = true;
       this.selectedCountry = selectedCountry;
-      this.queryCity = '';
+      this.queryCity = "";
       this.selectedCity = null;
+      // this.$http
+      //   .get(`/v1/registered-cities?size=100&country_id=${selectedCountry.id}`)
+      //   .then(res => {
+      //     this.dataCities = res.data.data;
+      //   })
+      //   .finally(() => {
+      //     this.fetchingCities = false;
+      //   });
+    },
+    getCityAsync: debounce(function(name) {
+      if (!name.length) {
+        this.dataCities = [];
+        return;
+      }
+      this.fetchingCities = true;
       this.$http
-        .get(`/v1/registered-cities?size=100&country_id=${selectedCountry.id}`)
-        .then((res) => {
+        .get(
+          `/v1/registered-cities?size=100&country_id=${this.selectedCountry.id}&s=${name}`
+        )
+        .then(res => {
           this.dataCities = res.data.data;
         })
         .finally(() => {
           this.fetchingCities = false;
         });
-    },
+    }, 500),
     skip() {
       this.model.selectedRegion = null;
       this.model.selectedCountry = null;
       this.model.selectedCity = null;
-      this.$emit('forward');
+      this.$emit("forward");
     },
     selectCity(selectedCity) {
       if (selectedCity === null) return;
@@ -206,51 +230,54 @@ export default {
       this.$modal.open({
         parent: this,
         component: AddCityModal,
-        hasModalCard: true,
+        hasModalCard: true
       });
-    },
+    }
   },
   computed: {
     placeholderRegions() {
       return this.fetchingRegions
-        ? this.$t('forms.user.addInitiative.step3.fetchingRegions')
-        : this.$t('forms.user.addInitiative.step3.startTypingRegion');
+        ? this.$t("forms.user.addInitiative.step3.fetchingRegions")
+        : this.$t("forms.user.addInitiative.step3.startTypingRegion");
     },
     placeholderCountries() {
       return this.fetchingCountries
-        ? this.$t('forms.user.addInitiative.step3.fetchingCountries')
-        : this.$t('forms.user.addInitiative.step3.startTypingCountry');
+        ? this.$t("forms.user.addInitiative.step3.fetchingCountries")
+        : this.$t("forms.user.addInitiative.step3.startTypingCountry");
     },
     placeholderCities() {
       return this.fetchingCities
-        ? this.$t('forms.user.addInitiative.step3.fetchingCities')
-        : this.$t('forms.user.addInitiative.step3.startTypingCity');
+        ? this.$t("forms.user.addInitiative.step3.fetchingCities")
+        : this.$t("forms.user.addInitiative.step3.startTypingCity");
     },
     filteredRegions() {
-      return this.dataRegions.filter(option => (
-        option.name
-          .toString()
-          .toLowerCase()
-          .indexOf(this.queryRegion.toLowerCase()) >= 0
-      ));
+      return this.dataRegions.filter(
+        option =>
+          option.name
+            .toString()
+            .toLowerCase()
+            .indexOf(this.queryRegion.toLowerCase()) >= 0
+      );
     },
     filteredCountries() {
-      return this.dataCountries.filter(option => (
-        option.name
-          .toString()
-          .toLowerCase()
-          .indexOf(this.queryCountry.toLowerCase()) >= 0
-      ));
+      return this.dataCountries.filter(
+        option =>
+          option.name
+            .toString()
+            .toLowerCase()
+            .indexOf(this.queryCountry.toLowerCase()) >= 0
+      );
     },
-    filteredCities() {
-      return this.dataCities.filter(option => (
-        option.name
-          .toString()
-          .toLowerCase()
-          .indexOf(this.queryCity.toLowerCase()) >= 0
-      ));
-    },
-  },
+    // filteredCities() {
+    //   return this.dataCities.filter(
+    //     option =>
+    //       option.name
+    //         .toString()
+    //         .toLowerCase()
+    //         .indexOf(this.queryCity.toLowerCase()) >= 0
+    //   );
+    // }
+  }
 };
 </script>
 
@@ -258,8 +285,8 @@ export default {
 .autocomplete.control .dropdown-menu {
   position: relative;
 }
-.map-container{
-      position: relative;
-    height: 300px;
+.map-container {
+  position: relative;
+  height: 300px;
 }
 </style>
