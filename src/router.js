@@ -296,7 +296,7 @@ router.beforeEach(async (to, from, next) => {
     const expirationDate = new Date(store.state.userToken.expiration * 1000)
     if (today > expirationDate) {
       console.info('- user token is expired!')
-      store.commit('logout')
+      store.dispatch('logout')
       next({ name: 'login', query: { redirect: to.path } });
     }
   }
