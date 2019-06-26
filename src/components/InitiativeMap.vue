@@ -10,7 +10,7 @@
       @load="onMapLoad"
     >
       <MglNavigationControl></MglNavigationControl>
-      <MglMarker :coordinates="city.space.point.coordinates" v-for="city in cities" :key="city.id" :color="colorMarker">
+      <MglMarker :coordinates="city.space.point.coordinates" anchor="bottom" v-for="city in cities" :key="city.id" :color="colorMarker">
         <MglPopup @open="fireCityFetch(`city-${city.id}`)">
           <CityPopUp :city="city" :ref="`city-${city.id}`"></CityPopUp>
         </MglPopup>
