@@ -290,6 +290,16 @@ const isEmpty = obj => !obj || Object.keys(obj).length === 0;
 const enableLogger = process.env.NODE_ENV !== 'production';
 
 router.beforeEach(async (to, from, next) => {
+  // Check if token is expired
+  if (store.state.userToken) {
+    const today = new Date()
+    const expirationDate = new Date(store.state.userToken.expiration * 1000)
+    if (today > expirationDate) {
+      console.info('- user token is expired!')
+      store.commit('logout')
+      next({ name: 'login', query: { redirect: to.path } });
+    }
+  }
   // next();
   // if (to.meta.withNavbar) document.documentElement.classList.add('has-navbar-fixed-top');
   // else document.documentElement.classList.remove('has-navbar-fixed-top');
