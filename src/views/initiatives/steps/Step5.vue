@@ -16,7 +16,7 @@
             class="textarea"
             v-model="model.public_data.goals"
             rows="2"
-            v-validate="{required:true, max:4000}"
+            v-validate="{required:true, max:750}"
             :data-vv-as="$t('forms.user.addInitiative.step5.fields[0].fieldName')"
             :placeholder="$t('forms.user.addInitiative.step5.fields[0].placeholder')"
           ></textarea>
