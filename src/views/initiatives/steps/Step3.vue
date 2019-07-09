@@ -86,9 +86,15 @@
     <br>
     <div class="content">
       <p class="has-text-centered">
-        <a @click="skip" class="has-text-primary">
+        <a @click="$emit('goTo',5)" class="has-text-primary">
           <i class="fas fa-share"></i>
           &nbsp;{{$t('forms.user.addInitiative.step3.skip')}}
+        </a>
+      </p>
+      <p class="has-text-centered">
+        <a @click="skip" class="has-text-primary">
+          <i class="fas fa-info-circle"></i>
+          &nbsp;{{$t('forms.user.addInitiative.step3.cantLocate')}}
         </a>
       </p>
     </div>
@@ -105,6 +111,7 @@
 
 <script>
 import AddCityModal from "@/components/initiatives/new/AddCityModal";
+import ModalSkipStep3 from "@/components/initiatives/new/ModalSkipStep3.vue"
 import debounce from "lodash/debounce";
 
 export default {
@@ -182,14 +189,6 @@ export default {
       this.selectedCountry = selectedCountry;
       this.queryCity = "";
       this.selectedCity = null;
-      // this.$http
-      //   .get(`/v1/registered-cities?size=100&country_id=${selectedCountry.id}`)
-      //   .then(res => {
-      //     this.dataCities = res.data.data;
-      //   })
-      //   .finally(() => {
-      //     this.fetchingCities = false;
-      //   });
     },
     getCityAsync: debounce(function(name) {
       if (!name.length) {
@@ -209,14 +208,19 @@ export default {
         });
     }, 500),
     skip() {
-      this.model.selectedRegion = null;
-      this.model.selectedCountry = null;
-      this.model.selectedCity = null;
-      this.$emit("forward");
+      this.$modal.open({
+        parent: this,
+        component: ModalSkipStep3,
+        hasModalCard: true,
+        events: {
+          continue: () => {
+            this.$emit('goTo',5)
+          }
+        }
+      });
     },
     selectCity(selectedCity) {
       if (selectedCity === null) return;
-      // this.fetchingCities = true;
       this.selectedCity = selectedCity;
     },
     notLocatedInACity() {
@@ -268,15 +272,6 @@ export default {
             .indexOf(this.queryCountry.toLowerCase()) >= 0
       );
     },
-    // filteredCities() {
-    //   return this.dataCities.filter(
-    //     option =>
-    //       option.name
-    //         .toString()
-    //         .toLowerCase()
-    //         .indexOf(this.queryCity.toLowerCase()) >= 0
-    //   );
-    // }
   }
 };
 </script>
