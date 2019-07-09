@@ -11,6 +11,7 @@
             <b-table-column field="name" label="Name" sortable>
               <router-link :to="{ name: 'initiative', params: { id: props.row.id } }">{{ props.row.name }}</router-link></b-table-column>
             <b-table-column field="created_at" label="Created">{{ props.row.created_at }}</b-table-column>
+            <b-table-column width="50"><a @click="openModalDelete(props.row)" class="has-text-danger">Delete</a></b-table-column>
           </template>
           <template slot="empty">
             <empty-table></empty-table>
@@ -18,6 +19,7 @@
         </b-table>
         <br>
         <pagination-bar
+          ref="paginator"
           resource-url="/v1/initiatives"
           @update="getInitiatives"
           :fetching.sync="fetching"
@@ -30,6 +32,7 @@
 <script>
 import PaginationBar from "@/components/utils/PaginationBar";
 import EmptyTable from "@/components/utils/EmptyTable";
+import ConfirmDelete from "@/components/utils/modals/ConfirmDelete"
 
 export default {
   components: {
@@ -46,6 +49,40 @@ export default {
   methods: {
     getInitiatives: function(data) {
       this.initiatives = data;
+    },
+    openModalDelete: function(resource){
+      this.$modal.open({
+        parent: this,
+        component: ConfirmDelete,
+        props: {
+          resourceType: 'initiative',
+          resource: resource
+        },
+        hasModalCard: true,
+        events: {
+          confirm: (resource) => {
+            this.deleteInitiative(resource)
+          }
+        }
+      });
+    },
+    deleteInitiative: function(resource){
+      this.startLoading()
+      this.$http.delete(`/v1/initiatives/${resource.id}`)
+      .then(res => {
+         this.$toast.open({
+            message: `<i class="fas fa-check"></i>&nbsp;The initiative has been deleted`,
+            type: 'is-success',
+          })
+          this.$refs.paginator.getResource()
+      }).catch(err => {
+        console.error(err)
+        this.$toast.open({
+            message: `<i class="fas fa-times"></i>&nbsp;Error while adding administrator`,
+            type: 'is-danger',
+          })
+        this.stopLoading()
+      })
     }
   }
 };

@@ -207,7 +207,7 @@ export default {
           this.fetchingCities = false;
         });
     }, 500),
-    skip() {
+    skip: function() {
       this.$modal.open({
         parent: this,
         component: ModalSkipStep3,
