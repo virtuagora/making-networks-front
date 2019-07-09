@@ -1,7 +1,7 @@
 <template>
   <section>
     <h1 class="subtitle is-5 has-text-primary">Description</h1>
-    <div class="content">
+    <div class="content add-br">
       <p>{{initiative.description}}</p>
     </div>
   </section>

@@ -5,7 +5,7 @@
       <p><b>{{initiative.name}}</b> was founded the year {{initiative.public_data.founding_year}}</p>
     </div>
     <h1 class="subtitle is-5 has-text-primary">Our goals</h1>
-    <div class="content">
+    <div class="content add-br">
       <p>{{initiative.public_data.goals}}</p>
     </div>
     <h1 class="subtitle is-5 has-text-primary">Role of Youth</h1>
