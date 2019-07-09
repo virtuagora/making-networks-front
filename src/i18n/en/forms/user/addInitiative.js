@@ -55,7 +55,8 @@ const addInitiative = {
     noCity: 'My initiative is not located in a city',
     cantFindCity: 'Can\t find your city? Click here',
     notificationNoCity: 'The initiative is not located in a city',
-    skip: 'Skip this step, I cannot locate my city in a map',
+    skip: 'Skip this step, my initiative cannot be placed in a location',
+    cantLocate: 'I cannot find my city in the list',
     feature: {
       title: 'This feature will be available soon',
       text: 'Sorry! We will add this feature in a future update, stay tuned!',

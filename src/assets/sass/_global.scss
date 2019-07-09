@@ -64,3 +64,7 @@ img.is-centered {
     @include font-weight(100 * $i, ) 
   }
 }
+
+.add-br{
+  white-space: pre-wrap;
+}

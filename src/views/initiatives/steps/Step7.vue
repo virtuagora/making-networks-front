@@ -111,7 +111,4 @@ export default {
 .card-content {
   color: #161616;
 }
-.add-br{
-  white-space: pre-wrap;
-}
 </style>
