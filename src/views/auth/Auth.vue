@@ -4,7 +4,7 @@
       <div class="container">
         <div class="columns is-centered">
           <div class="column is-4">
-            <img src="@/assets/img/logo-v-white.svg" class="logo-v image is-centered" alt="">
+            <img src="/iso-cn.svg" class="logo-v image is-centered" alt="">
             <router-view></router-view>
           </div>
         </div>
