@@ -62,6 +62,13 @@
             <label for class="label">{{$t('forms.user.addInitiative.step7.labels')['roleOfYouth']}}</label>
             <p>{{$t('forms.user.addInitiative.step5.fields[2].options')[model.public_data.role_of_youth]}}</p>
           </div>
+          <div class="field">
+            <label for class="label">{{$t('forms.user.addInitiative.step7.labels')['Networks']}}</label>
+            <p v-if="model.public_data.website"><i class="fas fa-globe"></i>&nbsp;<a :href="`https://${model.public_data.website}`">https://{{model.public_data.website}}</a></p>
+            <p v-if="model.public_data.facebook"><i class="fab fa-facebook"></i>&nbsp;<a :href="`https://facebook.com/${model.public_data.facebook}`">https://facebook.com/{{model.public_data.facebook}}</a></p>
+            <p v-if="model.public_data.twitter"><i class="fab fa-twitter"></i>&nbsp;<a :href="`https://twitter.com${model.public_data.twitter}`">https://twitter.com/{{model.public_data.twitter}}</a></p>
+            <p v-if="model.public_data.other_network"><i class="fas fa-asterisk"></i>&nbsp;<a :href="`https://${model.public_data.other_network}`">https://{{model.public_data.other_network}}</a></p>
+          </div>
         </div>
       </div>
       <div class="card">
@@ -75,7 +82,8 @@
             {{$t('forms.user.addInitiative.step7.labels')['contact']}}
             <span class="has-text-danger is-400">({{$t('forms.user.addInitiative.step7.labels')['private']}})</span>
           </label>
-          <p>{{model.private_data.contact_email}}</p>
+          <p><i class="fas fa-envelope"></i>&nbsp;{{model.private_data.contact_email}}</p>
+          <p><i class="fas fa-phone"></i>&nbsp;{{model.private_data.contact_phone || '- - - - - - -'}}</p>
         </div>
       </div>
       <br>

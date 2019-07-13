@@ -47,9 +47,14 @@ export default {
         goals: this.model.public_data.goals,
         founding_year: this.model.public_data.founding_year,
         role_of_youth: this.model.public_data.role_of_youth,
+        website: this.isOptional(this.model.public_data.website),
+        facebook: this.isOptional(this.model.public_data.facebook),
+        twitter: this.isOptional(this.model.public_data.twitter),
+        other_network: this.isOptional(this.model.public_data.other_network),
       }),
       (data.private_data = {
         contact_email: this.model.private_data.contact_email,
+        contact_phone: this.isOptional(this.model.private_data.contact_phone),
       });
       if (this.model.selectedCity) {
         options.registered_city_id = this.model.selectedCity.id;
