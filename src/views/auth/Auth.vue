@@ -4,8 +4,12 @@
       <div class="container">
         <div class="columns is-centered">
           <div class="column is-4">
-            <img src="/iso-cn.svg" class="logo-v image is-centered" alt="">
+            <router-link :to="{name: 'home'}"><img src="/iso-cn.svg" class="logo-v image is-centered" alt="Creating Networks Logo"></router-link>
             <router-view></router-view>
+            <br>
+             <p class="has-text-centered">
+      <router-link :to="{name: 'home'}" class="has-text-primary">Go back</router-link>
+    </p>
           </div>
         </div>
       </div>
