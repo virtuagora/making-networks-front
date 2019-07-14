@@ -22,10 +22,11 @@ import Admin from './views/admin/Admin.vue';
 import AdminIndex from './views/admin/AdminIndex.vue';
 import AdminConfigAdministrators from './views/admin/config/Administrators.vue';
 import AdminInitiativesList from './views/admin/initiatives/List.vue';
-import AdminInitiativesNew from './views/admin/initiatives/New.vue';
+import AdminInitiativesCreate from './views/admin/initiatives/Create.vue';
+import AdminInitiativesEdit from './views/admin/initiatives/Edit.vue';
 import AdminInitiativesListCities from './views/admin/initiatives/Cities.vue';
 import AdminMapCitiesList from './views/admin/map/cities/List.vue';
-import AdminMapCitiesNew from './views/admin/map/cities/New.vue';
+import AdminMapCitiesAdd from './views/admin/map/cities/Add.vue';
 import AdminMapCountriesList from './views/admin/map/countries/List.vue';
 import AdminMapRegionsList from './views/admin/map/regions/List.vue';
 // User panel
@@ -33,6 +34,7 @@ import User from './views/user/User.vue';
 import UserIndex from './views/user/UserIndex.vue';
 import UserAccountChangePassword from './views/user/account/ChangePassword.vue';
 import UserInitiativesList from './views/user/initiatives/List.vue';
+import UserInitiativesEdit from './views/user/initiatives/Edit.vue';
 
 Vue.use(Router);
 
@@ -191,15 +193,24 @@ const router = new Router({
           },
         },
         {
-          path: 'map/initiatives/new',
-          name: 'adminInitiativesNew',
-          component: AdminInitiativesNew,
+          path: 'initiatives/create',
+          name: 'adminInitiativesCreate',
+          component: AdminInitiativesCreate,
           meta: {
             requiresAdmin: true,
           },
         },
         {
-          path: 'map/initiatives/list',
+          path: 'initiatives/:id/edit',
+          name: 'adminInitiativesEdit',
+          component: AdminInitiativesEdit,
+          props: true,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'initiatives',
           name: 'adminInitiativesList',
           component: AdminInitiativesList,
           meta: {
@@ -207,7 +218,7 @@ const router = new Router({
           },
         },
         {
-          path: 'map/initiatives/list/cities',
+          path: 'initiatives/cities',
           name: 'adminInitiativesListCities',
           component: AdminInitiativesListCities,
           meta: {
@@ -215,9 +226,9 @@ const router = new Router({
           },
         },
         {
-          path: 'map/cities/new',
-          name: 'adminMapCitiesNew',
-          component: AdminMapCitiesNew,
+          path: 'map/cities/add',
+          name: 'adminMapCitiesAdd',
+          component: AdminMapCitiesAdd,
           meta: {
             requiresAdmin: true,
           },
@@ -272,6 +283,15 @@ const router = new Router({
           path: 'initiatives',
           name: 'userInitiativesList',
           component: UserInitiativesList,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'initiatives/:id/edit',
+          name: 'userInitiativesEdit',
+          component: UserInitiativesEdit,
+          props: true,
           meta: {
             requiresAdmin: true,
           },

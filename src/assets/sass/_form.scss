@@ -45,4 +45,18 @@
       border-color: $primary
     }
   }
+  .control textarea.textarea{
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #6e6e6e;
+    border-left: 5px solid #6e6e6e;
+    border-top-right-radius: 3px;
+    color: #000;
+    &::placeholder {
+      color: #000;
+      opacity: 0.3;
+    }
+    &:focus{
+      border-color: $primary
+    }
+  }
 }
