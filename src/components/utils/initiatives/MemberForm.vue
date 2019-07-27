@@ -1,7 +1,7 @@
 <template>
   <section>
-    <h1 class="title is-3 has-text-dark">Owners of the initiative</h1>
-    <p>Here you can see and add new owner of the initiative</p>
+    <h1 class="title is-3 has-text-dark">Members of the initiative</h1>
+    <p>Here you can see and add new member of the initiative</p>
     <br />
     <b-table :data="subjects" :loading="fetching" striped>
       <template slot-scope="props">
@@ -36,7 +36,7 @@
     ></pagination-bar>
     <hr>
     <div class="field">
-      <label for class="label">Add a new owner</label>
+      <label for class="label">Add a new member</label>
       <div class="control">
         <input
           v-model="emailInput"
@@ -47,7 +47,7 @@
           v-validate="{email: true}"
           @keyup.enter="findUser"
         />
-        <p class="help is-dark">Write the new email of a new owner</p>
+        <p class="help is-dark">Write the new email of a new member</p>
         <p class="help is-danger" :v-show="errors.has('Email')">{{errors.first('Email')}}</p>
       </div>
     </div>
@@ -62,7 +62,7 @@
         <p>
           Found user
           <b>{{userFound.display_name}}</b>
-          <br />Do you want to add the user as one owner of the initiative?
+          <br />Do you want to add the user as one member of the initiative?
         </p>
         <div class="buttons">
           <button @click="submit" class="button is-primary is-small">

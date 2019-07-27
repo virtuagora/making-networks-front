@@ -19,7 +19,7 @@
 <script>
 import DataForm from "@/components/utils/initiatives/DataForm.vue";
 import LocationForm from "@/components/utils/initiatives/LocationForm.vue";
-import OwnerForm from "@/components/utils/initiatives/OwnerForm.vue";
+import MemberForm from "@/components/utils/initiatives/MemberForm.vue";
 import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 
@@ -28,7 +28,7 @@ export default {
   components: {
     DataForm,
     LocationForm,
-    OwnerForm
+    MemberForm
   },
   data() {
     return {

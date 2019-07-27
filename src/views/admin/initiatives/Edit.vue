@@ -12,7 +12,7 @@
       <div class="card-content">
         <DataForm ref="data" v-show="activeTab == 0" @update="submit" edit :model.sync="model" />
         <LocationForm ref="location" v-show="activeTab ==  1" @update="submit" edit :model.sync="model" />
-        <OwnerForm ref="location" v-show="activeTab ==  2" :model.sync="model" :id="id" />
+        <MemberForm ref="location" v-show="activeTab ==  2" :model.sync="model" :id="id" />
       </div>
     </div>
   </section>
@@ -21,7 +21,7 @@
 <script>
 import DataForm from "@/components/utils/initiatives/DataForm.vue";
 import LocationForm from "@/components/utils/initiatives/LocationForm.vue";
-import OwnerForm from "@/components/utils/initiatives/OwnerForm.vue";
+import MemberForm from "@/components/utils/initiatives/MemberForm.vue";
 import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 
@@ -30,7 +30,7 @@ export default {
   components: {
     DataForm,
     LocationForm,
-    OwnerForm
+    MemberForm
   },
   data() {
     return {
