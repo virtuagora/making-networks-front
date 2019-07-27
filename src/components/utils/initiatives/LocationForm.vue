@@ -89,7 +89,7 @@
         </div>
       </div>
     </div>
-    <div v-if="mode == 'edit'">
+    <div v-if="edit">
       <hr>
       <div class="field">
         <div class="control">
@@ -113,8 +113,8 @@ export default {
       type: Object,
       required: true
     },
-    mode: {
-      type: String
+    edit: {
+      type: Boolean
     }
   },
   data() {
