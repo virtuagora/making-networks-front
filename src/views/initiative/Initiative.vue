@@ -6,7 +6,22 @@
           <div class="container">
             <br class="is-hidden-desktop">
             <p class="title is-1 is-size-3-touch has-text-centered">{{initiative.name}}</p>
-            <p class="subtitle is-5 is-size-6-touch has-text-centered">Initiative #{{initiative.id}}</p>
+            <p v-if="initiative.city" class="subtitle is-6 is-size-7-touch has-text-centered">Located in <b>{{`${getSpaceLocalization(initiative.city.country.region)}, ${getSpaceLocalization(initiative.city.country)}, ${getSpaceLocalization(initiative.city)}`}}</b></p>
+            <div class="columns is-centered is-mobile">
+              <div class="column is-narrow">
+              <a :href="`https://${initiative.public_data.website}`" target="_blank" class="has-text-white" v-if="initiative.public_data.website"><i class="fas fa-globe fa-lg fa-fw"></i></a>
+              </div>
+              <div class="column is-narrow">
+              <a :href="`https://facebook.com/${initiative.public_data.facebook}`" target="_blank" class="has-text-white" v-if="initiative.public_data.facebook"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+              </div>
+              <div class="column is-narrow">
+              <a :href="`https://twitter.com/${initiative.public_data.twitter}`" target="_blank" class="has-text-white" v-if="initiative.public_data.twitter"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+              </div>
+              <div class="column is-narrow">
+              <a :href="`https://${initiative.public_data.other_network}`" target="_blank" class="has-text-white" v-if="initiative.public_data.other_network"><i class="fas fa-external-link-alt fa-lg fa-fw"></i></a>
+              </div>
+            </div>
+
           </div>
         </div>
         <div class="hero-foot">
@@ -33,7 +48,7 @@
       <div class="container">
         <div class="columns is-centered">
           <div class="column is-8">
-        <router-view></router-view>
+            <router-view></router-view>
           </div>
         </div>
       </div>

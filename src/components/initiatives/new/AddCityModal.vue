@@ -20,8 +20,3 @@
   </div>
 </template>
 
-<style scoped>
-.modal-card {
-  color: #000;
-}
-</style>

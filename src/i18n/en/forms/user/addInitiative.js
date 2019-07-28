@@ -1,5 +1,6 @@
 const addInitiative = {
   title: 'Add your initiative',
+  optional: '(Optional)',
   step0: {
     title: 'Welcome!',
     text: [
@@ -93,6 +94,19 @@ const addInitiative = {
           membership: 'Membership',
         },
       },
+      {
+        question: '(Optional) What are your networks?',
+        inputs: {
+          website: 'Website',
+          facebook: 'Facebook',
+          twitter: 'Twitter',
+          other_network: 'Other network',
+        },
+        labels: {
+          other_network: '(Optional) URL to other network',
+          test: 'Click here to test the link!',
+        },
+      },
     ],
   },
   step6: {
@@ -105,6 +119,11 @@ const addInitiative = {
         question: 'Please provide us a contact email of the initiative',
         placeholder: 'address@domain.com',
         fieldName: 'Initiative contact email',
+      },
+      {
+        question: '(Optional) You can also provide us a telephone number',
+        placeholder: 'Ex: +54 9 11 321 123456 (Int. format)',
+        fieldName: 'Initiative phone number',
       },
     ],
   },
@@ -122,6 +141,7 @@ const addInitiative = {
       location: 'Location',
       goals: 'Goals',
       roleOfYouth: 'Role of Youth',
+      networks: 'Networks',
       contact: 'Contact',
       private: 'Private data',
     },

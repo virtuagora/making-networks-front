@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" ref="app">
     <Navbar v-if="!$route.meta.hideNavbar"/>
     <RouterView />
     <b-loading ref="loader" :active="isLoading"></b-loading>

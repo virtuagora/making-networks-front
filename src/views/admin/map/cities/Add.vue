@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h1 class="title is-3">New city</h1>
+    <h1 class="title is-3">Add city</h1>
     <p>Add a new city in the platform</p>
     <br>
     <div class="card">

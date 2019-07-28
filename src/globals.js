@@ -1,5 +1,7 @@
 import store from '@/store';
 // import http from '@/http';
+// import { transform, isEqual, isObject } from 'lodash';
+import { transform, isEqual } from 'lodash';
 
 const globals = {
   methods: {
@@ -56,24 +58,25 @@ const globals = {
       }
       return 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp';
     },
-    // sizeFile(bytes) {
-    //   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    //   if (bytes == 0) return '-';
-    //   const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-    //   return `${Math.round(bytes / Math.pow(1024, i), 2)} ${sizes[i]}`;
-    // },
-    // updateOrganizacion(id) {
-    //   console.log('Updating organizacion...');
-    //   http
-    //     .get(`/organizacion/${id}`)
-    //     .then((response) => {
-    //       store.commit('setOrganizacion', response.data);
-    //       console.log('GET OK - Got organizacion');
-    //     })
-    //     .catch((error) => {
-    //       console.log('Fetching data failed.', error);
-    //     });
-    // },
+    /**
+     * Deep diff between two object, using lodash
+     * @param  {Object} original  Original object not modified
+     * @param  {Object} modified  Original object but modified
+     * @return {Object} Return a new object who represent the diff
+     */
+    diffObject(original, modified) {
+      // return transform(object, (result, value, key) => {
+      //   if (!isEqual(value, base[key])) {
+      //     result[key] = isObject(value) && isObject(base[key]) ? this.diffObject(value, base[key]) : value;
+      //   }
+      // });
+      return transform(modified, (result, value, key) => {
+        if (!isEqual(value, original[key])) {
+          // eslint-disable-next-line no-param-reassign
+          result[key] = value;
+        }
+      });
+    },
   },
   computed: {
     apiUrl() {

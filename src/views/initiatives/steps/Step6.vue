@@ -26,6 +26,27 @@
         </div>
       </div>
     <br>
+      <h1 class="subtitle is-5 has-text-centered">
+        <span class="is-500 has-text-primary">5.</span>&nbsp;{{$t('forms.user.addInitiative.step6.fields[1].question')}}
+      </h1>
+      <div class="field">
+        <div class="control">
+          <input
+            type="text"
+            v-model="model.private_data.contact_phone"
+            v-validate="{required: false, min: 5, max: 30 }"
+            :data-vv-as="$t('forms.user.addInitiative.step6.fields[1].fieldName')"
+            name="contact_phone"
+            class="input is-medium has-text-centered"
+            :placeholder="$t('forms.user.addInitiative.step6.fields[1].placeholder')"
+          >
+          <div
+            class="help is-danger"
+            v-if="errors.has('contact_phone')"
+          >{{errors.first('contact_phone')}}</div>
+        </div>
+      </div>
+    <br>
     <div class="buttons is-centered">
       <button @click="$emit('backward')" class="button is-rounded is-white is-outlined is-medium">
         <i class="fas fa-arrow-left"></i>

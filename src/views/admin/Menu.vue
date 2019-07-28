@@ -10,7 +10,7 @@
     Initiative management
   </p>
   <ul class="menu-list">
-    <li><router-link :to="{name: 'adminInitiativesNew'}"><i class="fas fa-plus"></i>&nbsp;New initiative</router-link></li>
+    <li><router-link :to="{name: 'adminInitiativesCreate'}"><i class="fas fa-plus"></i>&nbsp;New initiative</router-link></li>
     <li><router-link :to="{name: 'adminInitiativesList'}">List initiatives</router-link></li>
     <li><router-link :to="{name: 'adminInitiativesListCities'}">List cities with initiative</router-link></li>
   </ul>
@@ -18,7 +18,7 @@
     Map management
   </p>
   <ul class="menu-list">
-    <li><router-link :to="{name: 'adminMapCitiesNew'}"><i class="fas fa-plus"></i>&nbsp;New city</router-link></li>
+    <li><router-link :to="{name: 'adminMapCitiesAdd'}"><i class="fas fa-plus"></i>&nbsp;New city</router-link></li>
     <li><router-link :to="{name: 'adminMapCitiesList'}">List cities</router-link></li>
     <li><router-link :to="{name: 'adminMapCountriesList'}">List countries</router-link></li>
     <li><router-link :to="{name: 'adminMapRegionsList'}">List regions</router-link></li>

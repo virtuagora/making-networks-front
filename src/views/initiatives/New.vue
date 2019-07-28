@@ -52,10 +52,15 @@ export default {
         public_data: {
           goals: null,
           founding_year: null,
+          website: null,
+          facebook: null,
+          twitter: null,
+          other_network: null,
           role_of_youth: null,
         },
         private_data: {
           contact_email: null,
+          contact_phone: null,
         },
         selectedRegion: null,
         selectedCountry: null,
