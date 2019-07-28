@@ -88,7 +88,7 @@ export default {
   methods: {
     fetch: function() {
       this.isFetching = true;
-      this.$http.get("/v1/initiatives?size=10").then(res => {
+      this.$http.get("/v1/initiatives?size=10&sort=random").then(res => {
         this.initiatives = this.shuffleArray(res.data.data);
         this.isFetching = false;
       });

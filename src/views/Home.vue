@@ -24,7 +24,7 @@
     </div>
     <div class="section">
       <div class="container">
-        <h1 class="title is-3">Latest initiatives</h1>
+        <h1 class="title is-3">A few initiatives</h1>
         <initiative-carousel></initiative-carousel>
       </div>
     </div>
