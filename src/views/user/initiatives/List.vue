@@ -20,9 +20,10 @@
         <br>
         <pagination-bar
           ref="paginator"
-          resource-url="/v1/initiatives"
+          :resource-url="`/v1/users/${this.user.id}/groups`"
           @update="getInitiatives"
           :fetching.sync="fetching"
+          :query="query"
         ></pagination-bar>
       </div>
     </div>
@@ -84,6 +85,14 @@ export default {
         this.stopLoading()
       })
     },
+  },
+  computed:{
+    query: function(){
+      return {
+        type: 'Initiative',
+        relation: 'owner'
+      }
+    }
   }
 };
 </script>
