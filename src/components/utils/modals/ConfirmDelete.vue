@@ -28,6 +28,7 @@ export default {
   },
   methods: {
     confirm: function(){
+      this.$parent.close();
       this.$emit('confirm', this.resource)
     }
   }
