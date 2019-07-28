@@ -9,8 +9,8 @@
     </b-tabs>
     <div class="card">
       <div class="card-content">
-        <DataForm ref="data" v-show="activeTab == 0" @update="submit" mode="edit" :model.sync="model" />
-        <LocationForm ref="location" v-show="activeTab ==  1" @update="submit" mode="edit" :model.sync="model" />
+        <DataForm ref="data" v-show="activeTab == 0" @update="submit" edit :model.sync="model" />
+        <LocationForm ref="location" v-show="activeTab ==  1" @update="submit" edit :model.sync="model" />
       </div>
     </div>
   </section>
