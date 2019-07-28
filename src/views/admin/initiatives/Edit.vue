@@ -10,8 +10,8 @@
     </b-tabs>
     <div class="card">
       <div class="card-content">
-        <DataForm ref="data" v-show="activeTab == 0" @update="submit" edit :model.sync="model" />
-        <LocationForm ref="location" v-show="activeTab ==  1" @update="submit" edit :model.sync="model" />
+        <DataForm ref="data" v-show="activeTab == 0" @update="submitData" edit :model.sync="model" />
+        <LocationForm ref="location" v-show="activeTab ==  1" @update="submitLocation" edit :model.sync="model" />
         <MemberForm ref="location" v-show="activeTab ==  2" :model.sync="model" :id="id" />
       </div>
     </div>
@@ -53,8 +53,11 @@ export default {
         },
         selectedRegion: null,
         selectedCountry: null,
-        selectedCity: null
-      }
+        selectedCity: null,
+        city: null,
+      },
+      originalDataPayload: null,
+      originalLocationPayload: null
     };
   },
   beforeMount: function(){
@@ -63,6 +66,8 @@ export default {
     .then(res => {
       console.log(res.data.data)
       this.model = merge(this.model, res.data.data)
+      this.originalDataPayload = this.createPayloadDataForm()
+      this.originalLocationPayload = this.createPayloadLocationForm()
     }).catch(err => {
       console.error(err)
       this.$toast.open(err.response.data.message);
@@ -71,9 +76,8 @@ export default {
     })
   },
   methods: {
-    getPayload() {
+    createPayloadDataForm() {
       const data = {};
-      const options = {};
       data.name = this.model.name;
       data.description = this.model.description;
       (data.public_data = {
@@ -89,19 +93,25 @@ export default {
           contact_email: this.model.private_data.contact_email,
           contact_phone: this.isOptional(this.model.private_data.contact_phone)
         });
-      if (this.model.selectedCity) {
-        options.registered_city_id = this.model.selectedCity.id;
-      } else {
-        options.registered_city_id = null;
-      }
-      // If user is admin, tell the api to not set the current user (admin) as the owner
-      options.set_owner = false;
-      return {
-        data,
-        options
-      };
+      return data;
     },
-    submit() {
+    createPayloadLocationForm() {
+      const data = {};
+      if (this.model.city) {
+        data.registered_city_id = this.model.city.id;
+      } else {
+        if (this.model.selectedCity) {
+          data.registered_city_id = this.model.selectedCity.id;
+        } else {
+        data.registered_city_id = null;
+        }
+      }
+      return data;
+    },
+    makePayload(data) {
+      return {data: data}
+    },
+    submitData() {
       Promise.all([this.$refs.data.validate()]).then(values => {
         if (
           values.some(x => {
@@ -116,11 +126,13 @@ export default {
           return;
         }
         this.startLoading();
+        let dataPayloadModified = this.createPayloadDataForm()
+        let payload = this.diffObject(this.originalDataPayload, dataPayloadModified)
         this.$http
-          .post("/v1/initiatives", this.getPayload())
+          .patch(`/v1/initiatives/${this.id}`, this.makePayload(payload))
           .then(res => {
             this.$toast.open({
-              message: `<i class="fas fa-check"></i>&nbsp;New initiative has been created`,
+              message: `<i class="fas fa-check"></i>&nbsp;Initiative has been updated`,
               type: "is-success"
             });
             this.$router.push({name: "adminInitiativesList"});
@@ -136,6 +148,50 @@ export default {
       }).catch(err => {
         this.$toast.open(err.response.data.message);
       });
+    },
+    submitLocation() {
+      this.startLoading();
+      let locationPayloadModified = this.createPayloadLocationForm()
+      let payload = this.diffObject(this.originalLocationPayload, locationPayloadModified)
+      if(payload.registered_city_id == null){
+        this.$http.delete(`/v1/initiatives/${this.id}/city`)
+        .then(res => {
+          this.$toast.open({
+            message: `<i class="fas fa-check"></i>&nbsp;Initiative has been updated`,
+            type: "is-success"
+          });
+          this.$router.push({name: "adminInitiativesList"});
+        })
+        .catch(err => {
+          console.error(err);
+          if (err.response && err.response.data)
+            this.$toast.open(err.response.data.message);
+        })
+        .finally(() => {
+          this.stopLoading();
+          return
+        });
+      }
+      if(payload.registered_city_id){
+        this.$http
+        .post(`/v1/initiatives/${this.id}/city`, this.makePayload(payload))
+        .then(res => {
+          this.$toast.open({
+            message: `<i class="fas fa-check"></i>&nbsp;Initiative has been updated`,
+            type: "is-success"
+          });
+          this.$router.push({name: "adminInitiativesList"});
+        })
+        .catch(err => {
+          console.error(err);
+          if (err.response && err.response.data)
+            this.$toast.open(err.response.data.message);
+        })
+        .finally(() => {
+          this.stopLoading();
+          return
+        });
+      }
     }
   }
 };

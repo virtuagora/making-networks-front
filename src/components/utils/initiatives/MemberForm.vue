@@ -29,7 +29,7 @@
     <br />
     <pagination-bar
       ref="paginator"
-      :resource-url="`v1/initiatives/${id}/subjects`"
+      :resource-url="`v1/initiatives/${id}/members`"
       @update="getSubjects"
       :fetching.sync="fetching"
       :query="query"
@@ -102,7 +102,9 @@ export default {
       userFound: null
     };
   },
-  mounted: function() {},
+  mounted: function() {
+
+  },
   methods: {
     getSubjects: function(data) {
       this.subjects = data;
