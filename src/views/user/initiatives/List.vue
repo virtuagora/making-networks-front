@@ -79,7 +79,7 @@ export default {
       }).catch(err => {
         console.error(err)
         this.$toast.open({
-            message: `<i class="fas fa-times"></i>&nbsp;Error while adding administrator`,
+            message: `<i class="fas fa-times"></i>&nbsp;Error while deleting an initiative`,
             type: 'is-danger',
           })
         this.stopLoading()
