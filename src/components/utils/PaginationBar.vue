@@ -1,6 +1,6 @@
 <template>
   <nav class="pagination is-small" role="navigation" aria-label="pagination">
-    <a :disabled="disablePrevious" class="pagination-previous">Previous</a>
+    <a :disabled="disablePrevious" @click="fetchPrevious" class="pagination-previous">Previous</a>
     <a :disabled="disableNextPage" @click="fetchNext" class="pagination-next">Next page</a>
     <ul class="pagination-list">
       <li>
@@ -87,6 +87,20 @@ export default {
     },
     fetchNext: function(){
       let url = this.links.next.replace(/^.*\/\/[^\/]+/, '')
+      this.startLoading();
+      this.$emit("update:fetching", true);
+      this.$http.get(url)
+      .then(res => {
+        this.updatePagination(res.data.pagination, res.data.links)
+        this.$emit('update',res.data.data)
+      })
+      .finally(() => {
+          this.stopLoading();
+          this.$emit("update:fetching", false);
+        });
+    },
+    fetchPrevious: function(){
+      let url = this.links.prev.replace(/^.*\/\/[^\/]+/, '')
       this.startLoading();
       this.$emit("update:fetching", true);
       this.$http.get(url)
