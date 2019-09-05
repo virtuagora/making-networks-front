@@ -7,12 +7,14 @@
       <b-tab-item label="Information" icon="scroll" icon-pack="fas"></b-tab-item>
       <b-tab-item label="Location" icon="map-marker-alt" icon-pack="fas"></b-tab-item>
       <b-tab-item label="Owner" icon="user" icon-pack="fas"></b-tab-item>
+      <b-tab-item label="Areas of Interest" icon="tag" icon-pack="fas"></b-tab-item>
     </b-tabs>
     <div class="card">
       <div class="card-content">
-        <DataForm ref="data" v-show="activeTab == 0" @update="submitData" edit :model.sync="model" />
-        <LocationForm ref="location" v-show="activeTab ==  1" @update="submitLocation" edit :model.sync="model" />
-        <MemberForm ref="location" v-show="activeTab ==  2" :model.sync="model" :id="id" />
+        <DataForm ref="data" v-if="activeTab == 0" @update="submitData" edit :model.sync="model" />
+        <LocationForm ref="location" v-if="activeTab ==  1" @update="submitLocation" edit :model.sync="model" />
+        <MemberForm ref="member" v-if="activeTab ==  2" :model.sync="model" :id="id" />
+        <AreasOfInterestForm ref="areasOfInterest" v-if="activeTab ==  3" :model.sync="model" :id="id" @updateModel="silentFetch" />
       </div>
     </div>
   </section>
@@ -22,6 +24,7 @@
 import DataForm from "@/components/utils/initiatives/DataForm.vue";
 import LocationForm from "@/components/utils/initiatives/LocationForm.vue";
 import MemberForm from "@/components/utils/initiatives/MemberForm.vue";
+import AreasOfInterestForm from "@/components/utils/initiatives/AreasOfInterestForm.vue";
 import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 
@@ -30,7 +33,8 @@ export default {
   components: {
     DataForm,
     LocationForm,
-    MemberForm
+    MemberForm,
+    AreasOfInterestForm
   },
   data() {
     return {
@@ -76,6 +80,17 @@ export default {
     })
   },
   methods: {
+    silentFetch(){
+      this.$http.get(`/v1/initiatives/${this.id}`)
+        .then(res => {
+          this.model = merge(this.model, res.data.data)
+          this.originalDataPayload = this.createPayloadDataForm()
+          this.originalLocationPayload = this.createPayloadLocationForm()
+        }).catch(err => {
+          console.error(err)
+          this.$toast.open(err.response.data.message);
+        })
+    },
     createPayloadDataForm() {
       const data = {};
       data.name = this.model.name;
