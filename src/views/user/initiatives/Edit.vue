@@ -6,11 +6,13 @@
     <b-tabs type="is-toggle" v-model="activeTab" expanded class="is-marginless">
       <b-tab-item label="Information" icon="scroll" icon-pack="fas"></b-tab-item>
       <b-tab-item label="Location" icon="map-marker-alt" icon-pack="fas"></b-tab-item>
+      <b-tab-item label="Areas of interest" icon="tag" icon-pack="fas"></b-tab-item>
     </b-tabs>
     <div class="card">
       <div class="card-content">
-        <DataForm ref="data" v-show="activeTab == 0" @update="submitData" edit :model.sync="model" />
-        <LocationForm ref="location" v-show="activeTab ==  1" @update="submitLocation" edit :model.sync="model" />
+        <DataForm ref="data" v-if="activeTab == 0" @update="submitData" edit :model.sync="model" />
+        <LocationForm ref="location" v-if="activeTab ==  1" @update="submitLocation" edit :model.sync="model" />
+        <AreasOfInterestForm ref="location" v-if="activeTab ==  2" @update="submitLocation" edit :id="id" :model.sync="model" />
       </div>
     </div>
   </section>
@@ -20,6 +22,7 @@
 import DataForm from "@/components/utils/initiatives/DataForm.vue";
 import LocationForm from "@/components/utils/initiatives/LocationForm.vue";
 import MemberForm from "@/components/utils/initiatives/MemberForm.vue";
+import AreasOfInterestForm from "@/components/utils/initiatives/AreasOfInterestForm.vue";
 import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 
@@ -28,7 +31,8 @@ export default {
   components: {
     DataForm,
     LocationForm,
-    MemberForm
+    MemberForm,
+    AreasOfInterestForm
   },
   data() {
     return {
