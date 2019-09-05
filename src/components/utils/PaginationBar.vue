@@ -3,8 +3,8 @@
     <a :disabled="disablePrevious" @click="fetchPrevious" class="pagination-previous">Previous</a>
     <a :disabled="disableNextPage" @click="fetchNext" class="pagination-next">Next page</a>
     <ul class="pagination-list">
-      <li>
-      <a class="pagination-ellipsis">Page X of Y</a>
+      <li v-if="!isLoading">
+      <a class="pagination-ellipsis">Page {{this.currentPage}} of {{this.totalPages}}</a>
       </li>
       <!-- <li>
         <a class="pagination-link" aria-label="Goto page 1">1</a>
@@ -54,7 +54,8 @@ export default {
         size: null,
         total: 0
       },
-      links: null
+      links: null,
+      isLoading: false
     };
   },
   created: function() {
@@ -62,6 +63,7 @@ export default {
   },
   methods: {
     getResource: function() {
+      this.isLoading = true;
       this.startLoading();
       this.$emit("update:fetching", true);
       let url = this.resourceUrl;
@@ -77,6 +79,7 @@ export default {
           this.$emit("update", res.data.data);
         })
         .finally(() => {
+          this.isLoading = false;
           this.stopLoading();
           this.$emit("update:fetching", false);
         });
@@ -137,10 +140,13 @@ export default {
       return true;
     },
     currentPage: function(){
-      
+      return ((this.pagination.offset / this.pagination.size) + 1)
     },
     totalPages: function(){
-
+      if(this.pagination.total % this.pagination.size) {
+        return Math.floor(this.pagination.total / this.pagination.size) + 1
+      } 
+      return (this.pagination.total / this.pagination.size)
     }
   }
 };
