@@ -29,6 +29,8 @@ import AdminMapCitiesList from './views/admin/map/cities/List.vue';
 import AdminMapCitiesAdd from './views/admin/map/cities/Add.vue';
 import AdminMapCountriesList from './views/admin/map/countries/List.vue';
 import AdminMapRegionsList from './views/admin/map/regions/List.vue';
+import AdminAreasOfInterestCreate from './views/admin/areas-of-interest/Create.vue';
+import AdminAreasOfInterestList from './views/admin/areas-of-interest/List.vue';
 // User panel
 import User from './views/user/User.vue';
 import UserIndex from './views/user/UserIndex.vue';
@@ -253,6 +255,22 @@ const router = new Router({
           path: 'map/regions/list',
           name: 'adminMapRegionsList',
           component: AdminMapRegionsList,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'map/areas-of-interest/create',
+          name: 'adminAreasOfInterestCreate',
+          component: AdminAreasOfInterestCreate,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'map/areas-of-interest/list',
+          name: 'adminAreasOfInterestList',
+          component: AdminAreasOfInterestList,
           meta: {
             requiresAdmin: true,
           },
