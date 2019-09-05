@@ -8,6 +8,7 @@
         <b-table :data="terms" :loading="fetching" striped>
           <template slot-scope="props">
             <b-table-column field="name" label="Areas" sortable>{{ props.row.name }}</b-table-column>
+            <b-table-column width="50"><a @click="openModalDelete(props.row)" class="has-text-danger">Delete</a></b-table-column>
           </template>
           <template slot="empty">
             <empty-table></empty-table>
@@ -26,11 +27,13 @@
 </template>
 
 <script>
+import ConfirmDelete from "@/components/utils/modals/ConfirmDelete"
 import PaginationBar from "@/components/utils/PaginationBar";
 import EmptyTable from "@/components/utils/EmptyTable";
 
 export default {
   components: {
+    ConfirmDelete,
     PaginationBar,
     EmptyTable
   },
@@ -47,7 +50,41 @@ export default {
   methods: {
     getTerms: function(data) {
       this.terms = data;
-    }
+    },
+    openModalDelete: function(resource){
+      this.$modal.open({
+        parent: this,
+        component: ConfirmDelete,
+        props: {
+          resourceType: 'areaOfInterest',
+          resource: resource
+        },
+        hasModalCard: true,
+        events: {
+          confirm: (resource) => {
+            this.deleteAreaOfInterest(resource)
+          }
+        }
+      });
+    },
+    deleteAreaOfInterest: function(resource){
+      this.startLoading()
+      this.$http.delete(`/v1/terms/${resource.id}`)
+      .then(res => {
+         this.$toast.open({
+            message: `<i class="fas fa-check"></i>&nbsp;The area of interest has been deleted`,
+            type: 'is-success',
+          })
+          this.$refs.paginator.getResource()
+      }).catch(err => {
+        console.error(err)
+        this.$toast.open({
+            message: `<i class="fas fa-times"></i>&nbsp;Error while deleting the area of interest`,
+            type: 'is-danger',
+          })
+        this.stopLoading()
+      })
+    },
   }
 };
 </script>

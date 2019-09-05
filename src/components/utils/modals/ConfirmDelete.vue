@@ -6,6 +6,11 @@
         <p>There is no going back after deleting it!</p>
         <p>Are you sure you want to delete the initiative <b>{{resource.name}}</b></p>
       </div>
+      <div class="content" v-if="resourceType == 'areaOfInterest'">
+        <h1 class="subtitle is-3 has-text-danger">You are about to delete an area of interest</h1>
+        <p>There is no going back after deleting it!</p>
+        <p>Are you sure you want to delete the area of interest <b>{{resource.name}}</b></p>
+      </div>
       <div class="buttons is-centered">
         <button class="button" type="button" @click="$parent.close()">Close</button>
         <button class="button is-danger" @click="confirm"><i class="fas fa-delete"></i>&nbsp;Delete it</button>
