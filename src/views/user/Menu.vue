@@ -17,6 +17,8 @@
     My account
   </p>
   <ul class="menu-list">
+    <li><router-link :to="{name: 'userProfile'}">My profile</router-link></li>
+    <li><router-link :to="{name: 'userAreasOfInterest'}">My areas of interest</router-link></li>
     <li><router-link :to="{name: 'userAccountChangePassword'}">Change password</router-link></li>
   </ul>
 </aside>

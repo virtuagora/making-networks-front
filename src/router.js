@@ -37,6 +37,8 @@ import UserIndex from './views/user/UserIndex.vue';
 import UserAccountChangePassword from './views/user/account/ChangePassword.vue';
 import UserInitiativesList from './views/user/initiatives/List.vue';
 import UserInitiativesEdit from './views/user/initiatives/Edit.vue';
+import UserProfile from './views/user/account/Profile.vue';
+import UserAreasOfInterest from './views/user/account/AreasOfInterest.vue';
 
 Vue.use(Router);
 
@@ -286,7 +288,7 @@ const router = new Router({
           name: 'user',
           component: UserIndex,
           meta: {
-            requiresAdmin: true,
+            requiresAuth: true,
           },
         },
         {
@@ -294,7 +296,7 @@ const router = new Router({
           name: 'userAccountChangePassword',
           component: UserAccountChangePassword,
           meta: {
-            requiresAdmin: true,
+            requiresAuth: true,
           },
         },
         {
@@ -302,7 +304,23 @@ const router = new Router({
           name: 'userInitiativesList',
           component: UserInitiativesList,
           meta: {
-            requiresAdmin: true,
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'profile',
+          name: 'userProfile',
+          component: UserProfile,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'areas-of-interest',
+          name: 'userAreasOfInterest',
+          component: UserAreasOfInterest,
+          meta: {
+            requiresAuth: true,
           },
         },
         {
@@ -311,7 +329,7 @@ const router = new Router({
           component: UserInitiativesEdit,
           props: true,
           meta: {
-            requiresAdmin: true,
+            requiresAuth: true,
           },
         },
       ],
@@ -330,11 +348,11 @@ const enableLogger = process.env.NODE_ENV !== 'production';
 router.beforeEach(async (to, from, next) => {
   // Check if token is expired
   if (store.state.userToken) {
-    const today = new Date()
-    const expirationDate = new Date(store.state.userToken.expiration * 1000)
+    const today = new Date();
+    const expirationDate = new Date(store.state.userToken.expiration * 1000);
     if (today > expirationDate) {
-      console.info('- user token is expired!')
-      store.dispatch('logout')
+      console.info('- user token is expired!');
+      store.dispatch('logout');
       next({ name: 'login', query: { redirect: to.path } });
     }
   }

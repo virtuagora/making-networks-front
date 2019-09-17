@@ -1,7 +1,7 @@
 import create from './create';
 
 const initiatives = {
-  create
+  create,
 };
 
 export default initiatives;

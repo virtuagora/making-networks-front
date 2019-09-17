@@ -1,7 +1,7 @@
 <template>
   <section>
-    <h1 class="title is-3">List of my initiatives</h1>
-    <p>Take a look at your initiatives</p>
+    <h1 class="title is-3">Change my password</h1>
+    <p>Here you can change your password</p>
     <br>
     <section v-if="!response.ok">
       <div class="card">
