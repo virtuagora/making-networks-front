@@ -20,6 +20,7 @@ export default new Vuex.Store({
     lastTimeUpdated: Date.now(),
     fetchService: {
       initiative: null,
+      userProfile: null,
     },
   },
   mutations: {
@@ -39,6 +40,10 @@ export default new Vuex.Store({
       // eslint-disable-next-line
       state.fetchService.initiative = initiative
     },
+    setUserProfile(state, userProfile) {
+      // eslint-disable-next-line
+      state.fetchService.userProfile = userProfile
+    },
   },
   getters: {
     isLoading: state => state.isLoading,
@@ -52,6 +57,10 @@ export default new Vuex.Store({
     },
     initiative: (state) => {
       if (state.fetchService.initiative) return state.fetchService.initiative;
+      return null;
+    },
+    userProfile: (state) => {
+      if (state.fetchService.userProfile) return state.fetchService.userProfile;
       return null;
     },
     isAdmin: (state) => {

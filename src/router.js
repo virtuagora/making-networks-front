@@ -17,6 +17,9 @@ import ListInitiatives from './views/initiatives/List.vue';
 import Initiative from './views/initiative/Initiative.vue';
 import InitiativeAbout from './views/initiative/About.vue';
 import InitiativeDetails from './views/initiative/Details.vue';
+import InitiativeMembers from './views/initiative/Members.vue';
+// User Profile
+import Profile from './views/profile/Profile.vue';
 // Admin panel
 import Admin from './views/admin/Admin.vue';
 import AdminIndex from './views/admin/AdminIndex.vue';
@@ -99,6 +102,13 @@ const router = new Router({
           props: true,
           meta: {},
         },
+        {
+          path: 'members',
+          name: 'initiativeMembers',
+          component: InitiativeMembers,
+          props: true,
+          meta: {},
+        },
       ],
       beforeEnter: (to, from, next) => {
         console.log('First time entering, getting initiative...');
@@ -107,6 +117,26 @@ const router = new Router({
           .then((response) => {
             store.commit('setInitiative', response.data.data);
             console.log('GET OK - Got initiative');
+            next();
+          })
+          .catch((error) => {
+            console.log('Fetching data failed.', error);
+            next({ name: 'home' });
+          });
+      },
+    },
+    {
+      path: '/profile/:id',
+      component: Profile,
+      name: 'profile',
+      props: true,
+      beforeEnter: (to, from, next) => {
+        console.log('First time entering, getting user profile...');
+        http
+          .get(`/v1/users/${to.params.id}`)
+          .then((response) => {
+            store.commit('setUserProfile', response.data.data);
+            console.log('GET OK - Got user profile');
             next();
           })
           .catch((error) => {

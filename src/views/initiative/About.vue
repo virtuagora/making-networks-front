@@ -23,7 +23,6 @@
               :href="`https://facebook.com/${initiative.public_data.facebook}`"
               target="_blank"
               class="has-text-white"
-              v-if="initiative.public_data.facebook"
             >
               <i class="fab fa-facebook-f fa-lg fa-fw"></i>
               &nbsp; https://facebook.com/{{initiative.public_data.facebook}}
@@ -34,7 +33,6 @@
               :href="`https://twitter.com/${initiative.public_data.twitter}`"
               target="_blank"
               class="has-text-white"
-              v-if="initiative.public_data.twitter"
             >
               <i class="fab fa-twitter fa-lg fa-fw"></i>
               &nbsp; https://twitter.com/{{initiative.public_data.twitter}}
@@ -51,6 +49,11 @@
             </a>
           </p>
         </div>
+        <div v-if="!hasSocialNetworks">
+          <p>
+            <i>The initiative didn't add social networks</i>
+          </p>
+        </div>
       </div>
       <div class="column">
         <h1 class="subtitle is-5 has-text-primary">Areas of interest</h1>
@@ -61,11 +64,6 @@
           <span class="tag is-rounded is-medium is-primary" v-for="area in initiative.terms" :key="area.id">{{area.name}}</span>
         </div>
       </div>
-    </div>
-    <div v-if="!hasSocialNetworks">
-      <p>
-        <i>The initiative didn't add social networks</i>
-      </p>
     </div>
   </section>
 </template>
