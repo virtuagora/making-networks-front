@@ -98,7 +98,7 @@ export default {
       this.startLoading();
       this.$http
         .post(
-          `/v1/initiatives/${this.id}/terms`,
+          `/v1/users/${this.user.id}/terms`,
           this.getPayload()
         )
         .then(res => {
@@ -127,7 +127,7 @@ export default {
       this.startLoading();
       this.$http
         .delete(
-          `/v1/initiatives/${this.id}/terms/${id}`
+          `/v1/users/${this.user.id}/terms/${id}`
         )
         .then(res => {
           this.currentAreas = this.currentAreas.filter( area => {
