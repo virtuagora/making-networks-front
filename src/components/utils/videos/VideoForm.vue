@@ -115,7 +115,7 @@ export default {
       noVideoId: false
     };
   },
-  beforeMount: function(){
+  mounted: function(){
     if(this.edit){
       this.urlInput = `https://youtube.com/watch?v=${this.model.public_data.youtube}`
       this.showYoutubePanel = true;

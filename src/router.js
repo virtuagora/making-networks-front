@@ -13,6 +13,9 @@ import RecoverPassword from './views/auth/RecoverPassword.vue';
 import RecoverPasswordRequest from './views/auth/RecoverPasswordRequest.vue';
 import NewInitiative from './views/initiatives/New.vue';
 import ListInitiatives from './views/initiatives/List.vue';
+// Creating Networks TV
+import CreatingNetworksTVCatalog from './views/creating-networks-tv/Catalog.vue'
+import CreatingNetworksTVView from './views/creating-networks-tv/View.vue'
 // Initiative
 import Initiative from './views/initiative/Initiative.vue';
 import InitiativeAbout from './views/initiative/About.vue';
@@ -81,6 +84,32 @@ const router = new Router({
       component: ListInitiatives,
       meta: {
         requiresAuth: true,
+      },
+    },
+    {
+      path: '/creating-networks-tv',
+      name: 'catalogCreatingNetworksTv',
+      component: CreatingNetworksTVCatalog,
+      meta: {},
+    },
+     {
+      path: '/creating-networks-tv/:id',
+      component: CreatingNetworksTVView,
+      name: 'viewCreatingNetworksTv',
+      props: true,
+      beforeEnter: (to, from, next) => {
+        console.log('First time entering, getting video...');
+        http
+          .get(`/v1/videos/${to.params.id}`)
+          .then((response) => {
+            store.commit('setVideo', response.data.data);
+            console.log('GET OK - Got video');
+            next();
+          })
+          .catch((error) => {
+            console.log('Fetching data failed.', error);
+            next({ name: 'home' });
+          });
       },
     },
     {
