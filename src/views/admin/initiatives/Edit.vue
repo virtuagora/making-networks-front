@@ -68,7 +68,6 @@ export default {
     this.startLoading()
     this.$http.get(`/v1/initiatives/${this.id}`)
     .then(res => {
-      console.log(res.data.data)
       this.model = merge(this.model, res.data.data)
       this.originalDataPayload = this.createPayloadDataForm()
       this.originalLocationPayload = this.createPayloadLocationForm()

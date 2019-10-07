@@ -34,6 +34,9 @@ import AdminMapCountriesList from './views/admin/map/countries/List.vue';
 import AdminMapRegionsList from './views/admin/map/regions/List.vue';
 import AdminAreasOfInterestCreate from './views/admin/areas-of-interest/Create.vue';
 import AdminAreasOfInterestList from './views/admin/areas-of-interest/List.vue';
+import AdminCreatingNetworksTvCreate from './views/admin/creating-networks-tv/Create.vue';
+import AdminCreatingNetworksTvList from './views/admin/creating-networks-tv/List.vue';
+import AdminCreatingNetworksTvEdit from './views/admin/creating-networks-tv/Edit.vue';
 // User panel
 import User from './views/user/User.vue';
 import UserIndex from './views/user/UserIndex.vue';
@@ -292,7 +295,7 @@ const router = new Router({
           },
         },
         {
-          path: 'map/areas-of-interest/create',
+          path: 'areas-of-interest/create',
           name: 'adminAreasOfInterestCreate',
           component: AdminAreasOfInterestCreate,
           meta: {
@@ -300,9 +303,34 @@ const router = new Router({
           },
         },
         {
-          path: 'map/areas-of-interest/list',
+          path: 'areas-of-interest/list',
           name: 'adminAreasOfInterestList',
           component: AdminAreasOfInterestList,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'creating-networks-tv/create',
+          name: 'adminCreatingNetworksTvCreate',
+          component: AdminCreatingNetworksTvCreate,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'creating-networks-tv/:id/edit',
+          name: 'adminCreatingNetworksTvEdit',
+          component: AdminCreatingNetworksTvEdit,
+          props: true,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'creating-networks-tv/list',
+          name: 'adminCreatingNetworksTvList',
+          component: AdminCreatingNetworksTvList,
           meta: {
             requiresAdmin: true,
           },

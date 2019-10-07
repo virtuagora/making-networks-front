@@ -146,6 +146,7 @@ export default {
       if(this.pagination.total % this.pagination.size) {
         return Math.floor(this.pagination.total / this.pagination.size) + 1
       } 
+      if(this.pagination.total == 0) return 1
       return (this.pagination.total / this.pagination.size)
     }
   }

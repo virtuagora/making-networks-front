@@ -1,11 +1,10 @@
 const home = {
   subtitle: [
     'Where do you want to go today?',
-    'Let\'s explore together!',
+    'Let\'s explore!',
     'Where should we go?',
     'Let\'s check the map!',
     'Our next destiny awaits!',
-    'I wonder if there is a new destiny',
     'Look all the friends you can connect!',
   ],
   buttons: {
