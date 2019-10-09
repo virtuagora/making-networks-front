@@ -3,11 +3,13 @@
     <div id="hero" class="hero is-dark is-medium is-mobile">
       <div class="hero-body">
         <div class="container">
-          <br class="is-hidden-desktop">
+          <br class="is-hidden-desktop" />
           <div class="logo-container">
-            <img src="/iso-cn.svg" class="image logo-cn" alt>
+            <img src="/iso-cn.svg" class="image logo-cn" alt />
           </div>
-          <div class="subtitle is-italic is-4 is-size-5-touch has-text-centered-touch">"{{getSubtitle()}}"</div>
+          <div
+            class="subtitle is-italic is-4 is-size-5-touch has-text-centered-touch"
+          >"{{getSubtitle()}}"</div>
           <div class="title is-1 is-size-3-touch has-text-centered-touch">{{$t('globals.title')}}</div>
           <div class="buttons">
             <router-link :to="{name: 'map'}" class="button is-dark is-inverted is-outlined">
@@ -24,14 +26,59 @@
     </div>
     <div class="section">
       <div class="container">
-        <h1 class="title is-3">A few initiatives</h1>
+        <div class="is-clearfix">
+          <h1 class="title is-1 is-size-3-touch is-pulled-left">Look at some initiatives</h1>
+          <router-link
+            :to="{name: 'map'}"
+            class="title is-3 is-hidden-touch has-text-info is-pulled-right"
+          >
+            Go to Map
+            <i class="fas fa-arrow-right"></i>
+          </router-link>
+        </div>
         <initiative-carousel></initiative-carousel>
+        <br class="is-hidden-desktop" />
+        <div class="buttons is-centered is-hidden-desktop">
+          <router-link :to="{name: 'map'}" class="button is-white is-outlined">
+            <i class="fas fa-map"></i>
+            &nbsp;{{$t('home.buttons.seeMap')}}
+          </router-link>
+        </div>
+      </div>
+    </div>
+    <div class="hero is-dark creating-network-tv">
+      <div class="hero-body">
+        <div class="container">
+          <!-- <initiative-carousel></initiative-carousel> -->
+          <div class="columns is-centered is-vcentered">
+            <div class="column is-6 has-text-centered">
+               <h1
+              class="subtitle is-4 is-size-6-touch is-italic"
+            >Why Netflix, when you have...</h1>
+            <h1 class="title is-1 is-size-3-touch">Creating Networks TV!</h1>
+            <router-link
+              :to="{name: 'catalogCreatingNetworksTv'}"
+              class="title is-4 has-text-warning "
+            >
+              Watch our episodes
+              <i class="fas fa-arrow-right"></i>
+            </router-link>
+            </div>
+            <div class="column is-2 vhs-container">
+              <router-link 
+              :to="{name: 'catalogCreatingNetworksTv'}" >
+              <div class="vhs-effect"></div>
+              <img src="/cntv.svg" class="image" />
+              </router-link>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="hero is-medium is-link is-bold">
       <div class="hero-body">
         <div class="container">
-          <img src="/YO-NET.svg" class="float-logo" alt>
+          <img src="/YO-NET.svg" class="float-logo" alt />
           <div class="columns">
             <div class="column is-8">
               <h1 class="title is-1 is-size-3-touch">{{$t("home.question[0]")}}</h1>
@@ -42,7 +89,7 @@
             <div class="column is-8 is-offset-2 has-text-centered has-text-left-touch">
               <h1 class="title is-1 is-size-3-touch">{{$t("home.question[1]")}}</h1>
               <p>{{$t("home.answer[0]")}}</p>
-              <br>
+              <br />
               <div class="buttons is-centered">
                 <router-link
                   :to="{name: 'login'}"
@@ -68,20 +115,18 @@
 </template>
 
 <script>
-import InitiativeCarousel from '@/components/utils/InitiativeCarousel.vue'
+import InitiativeCarousel from "@/components/utils/InitiativeCarousel.vue";
 export default {
   components: {
     InitiativeCarousel
   },
   methods: {
-    getSubtitle: function(){
-      let ammount = this.$t('home.subtitle').length
-      return this.$t('home.subtitle')[Math.floor(Math.random() * (ammount))]
+    getSubtitle: function() {
+      let ammount = this.$t("home.subtitle").length;
+      return this.$t("home.subtitle")[Math.floor(Math.random() * ammount)];
     }
   },
-  computed: {
-
-  },
+  computed: {}
 };
 </script>
 
@@ -147,5 +192,29 @@ export default {
   @media screen and (max-width: 768px) {
     display: none;
   }
+}
+.vhs-container {
+  position: relative;
+  max-width: 200px;
+  @include until($desktop) {
+  margin: 0 auto;
+      }
+  .vhs-effect {
+    position: absolute;
+    width: 59%;
+    height: 51%;
+    left: 11%;
+    top: 32%;
+
+    border-radius: 20px;
+    background-image: url("../assets/img/tv-static02.gif");
+    background-position: center center;
+    background-size: cover;
+  }
+}
+.creating-network-tv{
+    border-top: 1px solid rgba(255, 255, 255, 0.397);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.397);
+  
 }
 </style>

@@ -1,65 +1,55 @@
 <template>
   <div class="column is-6-mobile is-3-desktop">
-    <router-link :to="{name: 'viewCreatingNetworksTv', params: {id: video.id}}" class="has-text-white">
-      <div class="thumbnail-container">
-        <span
-          v-if="!fetching"
-          class="tag is-black"
-        >{{ISO8601toDuration(responseData.items[0].contentDetails.duration)}}</span>
-        <span v-else class="tag is-black">
-          <i class="fas fa-spinner fa-spin"></i>
-        </span>
-        <img
-          :src="`https://img.youtube.com/vi/${video.public_data.youtube}/maxresdefault.jpg`"
-          class="image is-16x9"
-          alt
-        />
-      </div>
-      <br />
-      <p v-if="!fetching" class="is-size-7">
-        <i class="fas fa-eye"></i>
-        &nbsp;{{responseData.items[0].statistics.viewCount}}
-        <i class="fas fa-thumbs-up fa-fw"></i>
-        {{responseData.items[0].statistics.likeCount}}
-      </p>
-      <p class="is-size-7" v-else>
-        <i class="fas fa-spinner fa-spin"></i> Loading...
-      </p>
-      <p class="has-text-primary">{{video.title}}</p>
-    </router-link>
+      <router-link
+        :to="{name: 'viewCreatingNetworksTv', params: {id: video.id}}"
+        class="has-text-white"
+      >
+        <div class="thumbnail-container">
+          <span
+            v-if="metadata"
+            class="tag is-black"
+          >{{ISO8601toDuration(metadata.contentDetails.duration)}}</span>
+          <span v-else class="tag is-black">
+            <i class="fas fa-spinner fa-spin"></i>
+          </span>
+          <img
+            :src="`https://img.youtube.com/vi/${video.public_data.youtube}/maxresdefault.jpg`"
+            class="image"
+            alt
+          />
+        </div>
+        <div class="video-card-info">
+
+        <p v-if="metadata" class="is-size-7">
+          <i class="fas fa-eye"></i>
+          &nbsp;{{nFormatter(metadata.statistics.viewCount)}}
+          <i
+            class="fas fa-thumbs-up fa-fw"
+          ></i>
+          {{nFormatter(metadata.statistics.likeCount)}}
+        </p>
+        <p class="is-size-7" v-else>
+          <i class="fas fa-spinner fa-spin"></i> Loading...
+        </p>
+        </div>
+        <p class="has-text-primary is-500">{{video.title}}</p>
+      </router-link>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
-  props: ["video"],
+  props: ["video", "metadata"],
   data() {
     return {
-      fetching: true,
-      responseData: null
+      // fetching: false,
     };
   },
   mounted: function() {
-    this.fetch();
+    console.log(this.metadata)
   },
   methods: {
-    fetch: function() {
-      let axiosInstance = axios.create();
-      axiosInstance({
-        url: `https://www.googleapis.com/youtube/v3/videos?part=contentDetails,statistics&key=${process.env.VUE_APP_YOUTUBE_API_KEY}&id=${this.video.public_data.youtube}`,
-        method: "get"
-      })
-        .then(res => {
-          console.log(res.data);
-          this.fetching = false;
-          this.responseData = res.data;
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
     formatTimeUnit: function(input, unit) {
       var index = input.indexOf(unit);
       var output = "00";
@@ -85,12 +75,38 @@ export default {
       }
 
       return H + M + ":" + S;
+    },
+    nFormatter: function (num, digits) {
+      var si = [
+        { value: 1, symbol: "" },
+        { value: 1E3, symbol: "k" },
+        { value: 1E6, symbol: "M" },
+        { value: 1E9, symbol: "G" },
+        { value: 1E12, symbol: "T" },
+        { value: 1E15, symbol: "P" },
+        { value: 1E18, symbol: "E" }
+      ];
+      var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+      var i;
+      for (i = si.length - 1; i > 0; i--) {
+        if (num >= si[i].value) {
+          break;
+        }
+      }
+      return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.video-card-info{
+  background-color: rgba(0, 0, 0, 0.473);
+  padding: 3px 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin-bottom: 3px;
+}
 .thumbnail-container {
   position: relative;
   .tag {

@@ -21,6 +21,7 @@
     "vue-i18n": "^8.14.1",
     "vue-infinite-loading": "^2.4.4",
     "vue-mapbox": "^0.4.1",
+    "vue-masonry": "^0.11.8",
     "vue-particles": "^1.0.9",
     "vue-recaptcha": "^1.2.0",
     "vue-router": "^3.1.3",

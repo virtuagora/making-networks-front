@@ -7,7 +7,7 @@ import ptValidationMessages from 'vee-validate/dist/locale/pt_BR';
 import VeeValidate from 'vee-validate';
 import VueParticles from 'vue-particles';
 import VueAnalytics from 'vue-analytics';
-
+import { VueMasonryPlugin } from 'vue-masonry';
 
 import globals from './globals';
 import translations from './i18n';
@@ -22,6 +22,7 @@ Vue.mixin(globals);
 Vue.use(VueI18n);
 Vue.use(VueParticles);
 Vue.use(Buefy, getTranslation().globals.buefyOptions);
+Vue.use(VueMasonryPlugin);
 Vue.use(VueAnalytics, {
   id: process.env.VUE_APP_GOOGLE_ANALYTICS_ID,
   router,

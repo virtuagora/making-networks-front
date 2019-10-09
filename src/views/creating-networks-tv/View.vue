@@ -6,10 +6,12 @@
           <div class="container">
             <div class="columns is-centered">
               <div class="column is-6">
-                <p><router-link :to="{name: 'catalogCreatingNetworksTv'}" class="has-text-white">
-                  <i class="fas fa-arrow-left"></i> Go back to catalog
-                </router-link></p>
-                <br>
+                <p>
+                  <router-link :to="{name: 'catalogCreatingNetworksTv'}" class="has-text-white">
+                    <i class="fas fa-arrow-left"></i> Go back to catalog
+                  </router-link>
+                </p>
+                <br />
                 <div class="videoWrapper">
                   <iframe
                     width="100%"
@@ -28,20 +30,28 @@
       </div>
       <div class="section">
         <div class="container">
-            <div class="columns is-centered">
-              <div class="column is-6">
-
-        <h1 class="title is-1">{{video.title}} </h1>
-        <div class="buttons">
-          <a :href="`https://www.youtube.com/watch?v=${video.public_data.youtube}`" class="button is-primary"><i class="fas fa-thumbs-up"></i>&nbsp;Dale Like en&nbsp;<i class="fab fa-youtube fa-fw"></i></a>
-        </div>
-        <p class="add-br">{{video.content}}</p>
-        <br>
-        <p><router-link :to="{name: 'catalogCreatingNetworksTv'}" class="has-text-link">
-                  <i class="fas fa-arrow-left"></i> Go back to catalog
-                </router-link></p>
+          <div class="columns is-centered">
+            <div class="column is-6">
+              <h1 class="title is-2">{{video.title}}</h1>
+              <div class="buttons">
+                <a
+                  :href="`https://www.youtube.com/watch?v=${video.public_data.youtube}`"
+                  class="button is-primary is-outlined"
+                >
+                  <i class="fas fa-thumbs-up"></i>&nbsp;Like it on YouTube!
+                </a>
               </div>
+              <p class="add-br">{{video.content}}</p>
+              <br />
+              <p>
+                <router-link :to="{name: 'catalogCreatingNetworksTv'}" class="has-text-link">
+                  <i class="fas fa-arrow-left"></i> Go back to Creating Network TV Catalog!
+                </router-link>
+              </p>
+              <br>
+              <img src="/cntv.svg" class="image is-centered is-64x64" alt />
             </div>
+          </div>
         </div>
       </div>
     </section>
