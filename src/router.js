@@ -82,9 +82,6 @@ const router = new Router({
       path: '/initiatives',
       name: 'listInitiatives',
       component: ListInitiatives,
-      meta: {
-        requiresAuth: true,
-      },
     },
     {
       path: '/creating-networks-tv',
@@ -92,7 +89,7 @@ const router = new Router({
       component: CreatingNetworksTVCatalog,
       meta: {},
     },
-     {
+    {
       path: '/creating-networks-tv/:id',
       component: CreatingNetworksTVView,
       name: 'viewCreatingNetworksTv',
