@@ -49,7 +49,17 @@
                       :to="{ name: 'initiative', params: { id: props.row.id } }"
                     ><b>{{ props.row.name }}</b>
                     </router-link>
-                    <p class="is-size-7 is-hidden-touch add-br"><b>Goals:</b>&nbsp;{{props.row.public_data.goals}}</p>
+                    <p class="is-size-7 add-br"><b>Goals:</b>&nbsp;{{props.row.public_data.goals}}</p>
+                  </b-table-column>
+                  <b-table-column
+                    label="Networks"
+                    width="90"
+                    centered
+                  >
+                    <a :href="`https://${props.row.public_data.website}`" v-if="props.row.public_data.website" target="_blank"><i class="fas fa-globe fa-fw"></i></a>
+                    <a :href="`https://facebook.com/${props.row.public_data.facebook}`" v-if="props.row.public_data.facebook" target="_blank"><i class="fab fa-facebook-f fa-fw"></i></a>
+                    <a :href="`https://twitter.com/${props.row.public_data.twitter}`" v-if="props.row.public_data.twitter" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+                    <a :href="`https://${props.row.public_data.other_network}`" v-if="props.row.public_data.other_network" target="_blank"><i class="fas fa-external-link-alt fa-fw"></i></a>
                   </b-table-column>
                   <b-table-column
                     field="public_data.founding_year"
@@ -145,8 +155,8 @@ export default {
     },
     fetchInitiatives: debounce(function() {
       this.fetchingInitiatives = true;
+      this.page = 0
       let queryString = {
-        offset: this.page * 30,
         size: 30
       }
       if(this.inputSearchName) queryString.s = this.inputSearchName
