@@ -37,6 +37,9 @@
                 <li :class="{'is-active': $route.name === 'initiativeDetails'}">
                   <router-link :to="{ name: 'initiativeDetails', params: { id: initiative.id } }">Details</router-link>
                 </li>
+                <li :class="{'is-active': $route.name === 'initiativeMembers'}" v-if="initiative.city">
+                  <router-link :to="{ name: 'initiativeLocation', params: { id: initiative.id } }">Location</router-link>
+                </li>
                 <li :class="{'is-active': $route.name === 'initiativeMembers'}">
                   <router-link :to="{ name: 'initiativeMembers', params: { id: initiative.id } }">Members</router-link>
                 </li>

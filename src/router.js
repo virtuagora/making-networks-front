@@ -21,6 +21,7 @@ import Initiative from './views/initiative/Initiative.vue';
 import InitiativeAbout from './views/initiative/About.vue';
 import InitiativeDetails from './views/initiative/Details.vue';
 import InitiativeMembers from './views/initiative/Members.vue';
+import InitiativeLocation from './views/initiative/Location.vue';
 // User Profile
 import Profile from './views/profile/Profile.vue';
 // Admin panel
@@ -128,6 +129,13 @@ const router = new Router({
           path: 'details',
           name: 'initiativeDetails',
           component: InitiativeDetails,
+          props: true,
+          meta: {},
+        },
+        {
+          path: 'location',
+          name: 'initiativeLocation',
+          component: InitiativeLocation,
           props: true,
           meta: {},
         },
