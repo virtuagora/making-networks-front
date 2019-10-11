@@ -32,20 +32,44 @@
       <div class="container">
         <div class="is-clearfix">
           <h1 class="title is-1 is-size-3-touch is-pulled-left">Look at some initiatives</h1>
+          <p class="is-pulled-right has-text-right">
+
           <router-link
             :to="{name: 'map'}"
-            class="title is-3 is-hidden-touch has-text-info is-pulled-right"
+            class="title is-4 is-hidden-touch has-text-primary"
           >
-            Go to Map
+            List
+            <i class="fas fa-arrow-right"></i>
+          </router-link><br>
+          <router-link
+            :to="{name: 'map'}"
+            class="title is-4 is-hidden-touch has-text-primary"
+          >
+            Map
             <i class="fas fa-arrow-right"></i>
           </router-link>
+          
+          </p>
         </div>
         <initiative-carousel></initiative-carousel>
+        
+        <br />
+        <div class="buttons is-centered">
+
+         <router-link :to="{name: user ? 'newInitiative' : 'login'}" class="button is-link is-large animated infinite pulse">
+            <i class="fas fa-plus"></i>
+            &nbsp;Add a new Initiative
+          </router-link>
+        </div>
         <br class="is-hidden-desktop" />
         <div class="buttons is-centered is-hidden-desktop">
           <router-link :to="{name: 'map'}" class="button is-white is-outlined">
             <i class="fas fa-map"></i>
             &nbsp;{{$t('home.buttons.seeMap')}}
+          </router-link>
+          <router-link :to="{name: 'listInitiatives'}" class="button is-white is-outlined">
+            <i class="fas fa-map"></i>
+            &nbsp;List initiatives
           </router-link>
         </div>
       </div>

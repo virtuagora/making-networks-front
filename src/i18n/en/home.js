@@ -8,7 +8,7 @@ const home = {
     'Look all the friends you can connect!',
   ],
   buttons: {
-    seeMap: 'Check the map now',
+    seeMap: 'Check the map',
   },
   question: [
     'What is the Project Creating Networks?',

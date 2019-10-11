@@ -17,19 +17,21 @@
             />
           </div>
         </div>
-        <div class="subtitle is-4 is-size-6-touch has-text-centered">Filter by Areas of interest</div>
-        <div class="subtitle is-4 is-size-6-touch has-text-centered" v-if="fetchingAreas">
-          <i class="fa fa-spinner fa-spin"></i>
-        </div>
-        <div class="buttons is-centered" v-else>
-          <button
-            class="button is-rounded is-small"
-            @click="toggleArea(area.id)"
-            :class="getAreaButtonClass(area.id)"
-            v-for="area in areas"
-            :key="area.id"
-          >{{area.name}}</button>
-        </div>
+        <h1 class="subtitle is-4 is-size-6-touch has-text-centered"><a @click="toggleShowAreasFilter" class="has-text-light">Filter by Areas of interest&nbsp;&nbsp;<i class="fas fa-fw" :class="classToggleShowAreasFilter"></i></a><a @click="clearAreasQuery" v-if="selectedAreas.length" class="has-text-light"><i class="fas fa-trash fa-fw"></i></a></h1>
+          <div class="subtitle is-4 is-size-6-touch has-text-centered" v-if="fetchingAreas && showFilterAreaOfInteres">
+            <i class="fa fa-spinner fa-spin"></i>
+          </div>
+          <div class="buttons is-centered" v-else-if="!fetchingAreas && showFilterAreaOfInteres">
+            <a
+              class="button is-rounded is-small"
+              @click="toggleArea(area.id)"
+              :class="getAreaButtonClass(area.id)"
+              v-for="area in areas"
+              :key="area.id"
+            >{{area.name}}</a>
+          </div>
+        <h1 class="subtitle is-4 is-size-6-touch has-text-centered"><a @click="toggleShowLocationFilter" class="has-text-light">Filter by Location&nbsp;&nbsp;<i class="fas fa-fw" :class="classToggleShowLocationFilter"></i></a><a @click="clearSelectedCity" v-if="selectedCity" class="has-text-light"><i class="fas fa-trash fa-fw"></i></a></h1>
+        <LocationFilter ref="locationFilter" v-if="showFilterLocation" @save="saveLocationQuery"/>
       </div>
     </section>
     <div class="hero is-light is-bold border-bottom">
@@ -82,6 +84,11 @@
                   <p>Nothing here</p>
                 </div>
               </infinite-loading>
+              <div class="section" v-if="fetchingInitiatives">
+                <h1 class="subtitle is-4 has-text-centered">
+                  <i class="fa fa-spinner fa-spin"></i> Fetching initiatives
+                </h1>
+              </div>
             </div>
           </div>
         </div>
@@ -93,9 +100,11 @@
 <script>
 import InfiniteLoading from "vue-infinite-loading";
 import { debounce } from "lodash";
+import LocationFilter from '@/components/initiatives/list/LocationFilter.vue'
 export default {
   components: {
     InfiniteLoading,
+    LocationFilter
   },
   data() {
     return {
@@ -106,7 +115,10 @@ export default {
       initiatives: [],
       inputSearchName: null,
       page: 0,
-      firstLoadDone: false
+      firstLoadDone: false,
+      showFilterAreaOfInteres: false,
+      showFilterLocation: false,
+      selectedCity: null,
     };
   },
   mounted: function() {
@@ -137,6 +149,7 @@ export default {
         size: 30
       }
       if(this.inputSearchName) queryString.s = this.inputSearchName
+      if(this.selectedCity) queryString.city_id = this.selectedCity.id
       this.$http
         .get(`/v1/initiatives`, {
           params: queryString
@@ -160,6 +173,7 @@ export default {
         size: 30
       }
       if(this.inputSearchName) queryString.s = this.inputSearchName
+      if(this.selectedCity) queryString.city_id = this.selectedCity.id
       this.$http
         .get(`/v1/initiatives`, {
           params: queryString
@@ -184,11 +198,55 @@ export default {
       } else {
         this.selectedAreas.push(areaId);
       }
+      this.fetchingInitiatives = true;
+      this.initiatives = []
+      this.fetchInitiatives()
+
+
+    },
+    toggleShowAreasFilter: function(){
+      this.showFilterAreaOfInteres = !this.showFilterAreaOfInteres
+      if(!this.showFilterAreaOfInteres){
+        this.clearAreasQuery()
+      }
+    },
+    toggleShowLocationFilter: function(){
+      this.showFilterLocation = !this.showFilterLocation
+      if(!this.showFilterLocation){
+        this.clearSelectedCity()
+      }
     },
     getAreaButtonClass: function(areaId) {
       return this.selectedAreas.includes(areaId)
         ? "is-white"
         : "is-white is-outlined";
+    },
+    saveLocationQuery: function(location){
+      this.selectedCity = location
+      this.fetchingInitiatives = true;
+      this.initiatives = []
+      this.fetchInitiatives()
+    },
+    clearAreasQuery: function(){
+      this.selectedAreas = []
+      this.fetchingInitiatives = true;
+      this.initiatives = []
+      this.fetchInitiatives()
+    },
+    clearSelectedCity: function(){
+      this.selectedCity = null
+      this.fetchingInitiatives = true;
+      this.initiatives = []
+      this.$refs.locationFilter.resetState()
+      this.fetchInitiatives()
+    }
+  },
+  computed: {
+    classToggleShowAreasFilter: function(){
+      return this.showFilterAreaOfInteres ? 'fa-minus-square' : 'fa-plus-square'
+    },
+    classToggleShowLocationFilter: function(){
+      return this.showFilterLocation ? 'fa-minus-square' : 'fa-plus-square'
     }
   },
   watch: {
