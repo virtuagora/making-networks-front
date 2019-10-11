@@ -35,7 +35,7 @@
           <p class="is-pulled-right has-text-right">
 
           <router-link
-            :to="{name: 'map'}"
+            :to="{name: 'listInitiatives'}"
             class="title is-4 is-hidden-touch has-text-primary"
           >
             List
