@@ -1,6 +1,6 @@
 <template>
   <section>
-    <b-field grouped position="is-centered">
+    <b-field grouped position="is-centered" v-if="!notInACity">
       <b-field>
         <b-autocomplete
           rounded
@@ -53,6 +53,11 @@
         </b-autocomplete>
       </b-field>
     </b-field>
+    <div class="buttons is-centered">
+      <a class="button is-white is-rounded" :class="{'is-outlined': !notInACity}" @click="toggleNotInACity">
+        Not in a city
+      </a>
+    </div>
   </section>
 </template>
 
@@ -98,6 +103,7 @@ export default {
       this.queryCity = "";
       this.selectedCountry = null;
       this.selectedCity = null;
+      this.$emit("saveRegion", selectedRegion);
       this.$http
         .get(`/v1/countries?size=100&region_id=${selectedRegion.id}`)
         .then(res => {
@@ -112,6 +118,7 @@ export default {
       this.selectedCountry = selectedCountry;
       this.queryCity = "";
       this.selectedCity = null;
+      this.$emit("saveCountry", selectedCountry);
     },
     getCityAsync: debounce(function(name) {
       if (!name.length) {
@@ -133,11 +140,13 @@ export default {
     selectCity(selectedCity) {
       if (selectedCity === null) return;
       this.selectedCity = selectedCity;
-      this.$emit("save", this.selectedCity);
+      this.$emit("saveCity", selectedCity);
     },
-    // confirmLocation: function() {
-    //   this.resetState();
-    // },
+    toggleNotInACity: function() {
+      this.notInACity = !this.notInACity;
+      if(this.notInACity) this.$emit("saveNotLocated")
+      else this.$emit("deleteNotLocated")
+    },
     resetState: function() {
       this.queryRegion = "";
       this.queryCountry = "";
@@ -151,7 +160,7 @@ export default {
       this.selectedRegion = null;
       this.selectedCountry = null;
       this.selectedCity = null;
-      this.notInACity = false;
+      // this.notInACity = false;
       this.fetchRegions();
     }
   },

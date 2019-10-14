@@ -18,6 +18,9 @@
           </div>
         </div>
         <h1 class="subtitle is-4 is-size-6-touch has-text-centered"><a @click="toggleShowAreasFilter" class="has-text-light">Filter by Areas of interest&nbsp;&nbsp;<i class="fas fa-fw" :class="classToggleShowAreasFilter"></i></a><a @click="clearAreasQuery" v-if="selectedAreas.length" class="has-text-light"><i class="fas fa-trash fa-fw"></i></a></h1>
+          <div class="content">
+          <p class="is-size-7 has-text-centered" v-if="showFilterAreaOfInteres">The retrieved initiatives matches ALL the selected areas of interest</p>
+          </div>
           <div class="subtitle is-4 is-size-6-touch has-text-centered" v-if="fetchingAreas && showFilterAreaOfInteres">
             <i class="fa fa-spinner fa-spin"></i>
           </div>
@@ -30,8 +33,8 @@
               :key="area.id"
             >{{area.name}}</a>
           </div>
-        <h1 class="subtitle is-4 is-size-6-touch has-text-centered"><a @click="toggleShowLocationFilter" class="has-text-light">Filter by Location&nbsp;&nbsp;<i class="fas fa-fw" :class="classToggleShowLocationFilter"></i></a><a @click="clearSelectedCity" v-if="selectedCity" class="has-text-light"><i class="fas fa-trash fa-fw"></i></a></h1>
-        <LocationFilter ref="locationFilter" v-if="showFilterLocation" @save="saveLocationQuery"/>
+        <h1 class="subtitle is-4 is-size-6-touch has-text-centered"><a @click="toggleShowLocationFilter" class="has-text-light">Filter by Location&nbsp;&nbsp;<i class="fas fa-fw" :class="classToggleShowLocationFilter"></i></a><a @click="clearSelectedCity" v-if="selectedRegion" class="has-text-light"><i class="fas fa-trash fa-fw"></i></a></h1>
+        <LocationFilter ref="locationFilter" v-if="showFilterLocation" @saveRegion="saveRegionQuery" @saveCountry="saveCountryQuery" @saveCity="saveCityQuery" @saveNotLocated="saveNotLocated" @deleteNotLocated="deleteNotLocated"/>
       </div>
     </section>
     <div class="hero is-light is-bold border-bottom">
@@ -77,11 +80,11 @@
                   </p>
                   <p>End of the list!</p>
                 </div>
-                <div slot="no-results">
+                <div slot="no-results" class="section">
                   <p>
-                    <i class="far fa-frown fa-2x"></i>
+                    <i class="far fa-smile fa-2x"></i>
                   </p>
-                  <p>Nothing here</p>
+                  <p>End of results</p>
                 </div>
               </infinite-loading>
               <div class="section" v-if="fetchingInitiatives">
@@ -118,7 +121,10 @@ export default {
       firstLoadDone: false,
       showFilterAreaOfInteres: false,
       showFilterLocation: false,
+      selectedRegion: null,
+      selectedCountry: null,
       selectedCity: null,
+      notLocated: false,
     };
   },
   mounted: function() {
@@ -148,8 +154,12 @@ export default {
         offset: this.page * 30,
         size: 30
       }
+      if(this.selectedAreas.length) queryString.terms = this.selectedAreas.join(',')
       if(this.inputSearchName) queryString.s = this.inputSearchName
+      if(this.selectedRegion) queryString.region_id = this.selectedRegion.id
+      if(this.selectedCountry) queryString.country_id = this.selectedCountry.id
       if(this.selectedCity) queryString.city_id = this.selectedCity.id
+      if(this.notLocated) queryString.city_id = -1
       this.$http
         .get(`/v1/initiatives`, {
           params: queryString
@@ -168,12 +178,17 @@ export default {
     },
     fetchInitiatives: debounce(function() {
       this.fetchingInitiatives = true;
+      this.firstLoadDone = false
       this.page = 0
       let queryString = {
         size: 30
       }
+      if(this.selectedAreas.length) queryString.terms = this.selectedAreas.join(',')
       if(this.inputSearchName) queryString.s = this.inputSearchName
+      if(this.selectedRegion) queryString.region_id = this.selectedRegion.id
+      if(this.selectedCountry) queryString.country_id = this.selectedCountry.id
       if(this.selectedCity) queryString.city_id = this.selectedCity.id
+      if(this.notLocated) queryString.city_id = -1
       this.$http
         .get(`/v1/initiatives`, {
           params: queryString
@@ -221,8 +236,26 @@ export default {
         ? "is-white"
         : "is-white is-outlined";
     },
-    saveLocationQuery: function(location){
+    saveRegionQuery: function(location){
+      this.selectedCountry = null
+      this.selectedCity = null
+      this.selectedRegion = location
+      this.notLocated = false
+      this.fetchingInitiatives = true;
+      this.initiatives = []
+      this.fetchInitiatives()
+    },
+    saveCountryQuery: function(location){
+      this.selectedCity = null
+      this.selectedCountry = location
+      this.notLocated = false
+      this.fetchingInitiatives = true;
+      this.initiatives = []
+      this.fetchInitiatives()
+    },
+    saveCityQuery: function(location){
       this.selectedCity = location
+      this.notLocated = false
       this.fetchingInitiatives = true;
       this.initiatives = []
       this.fetchInitiatives()
@@ -234,11 +267,27 @@ export default {
       this.fetchInitiatives()
     },
     clearSelectedCity: function(){
+      this.selectedRegion = null
+      this.selectedCountry = null
       this.selectedCity = null
+      this.notLocated = false
       this.fetchingInitiatives = true;
       this.initiatives = []
       this.$refs.locationFilter.resetState()
       this.fetchInitiatives()
+    },
+    saveNotLocated: function(){
+      this.selectedRegion = null
+      this.selectedCountry = null
+      this.selectedCity = null
+      this.notLocated = true
+      this.fetchingInitiatives = true;
+      this.initiatives = []
+      this.$refs.locationFilter.resetState()
+      this.fetchInitiatives()
+    },
+    deleteNotLocated: function(){
+      this.clearSelectedCity()
     }
   },
   computed: {
