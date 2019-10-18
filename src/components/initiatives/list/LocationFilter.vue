@@ -87,7 +87,7 @@ export default {
   methods: {
     fetchRegions() {
       this.$http
-        .get("/v1/regions?size=100")
+        .get("/v1/regions?having=cities&size=100")
         .then(res => {
           this.dataRegions = res.data.data;
         })
@@ -105,7 +105,7 @@ export default {
       this.selectedCity = null;
       this.$emit("saveRegion", selectedRegion);
       this.$http
-        .get(`/v1/countries?size=100&region_id=${selectedRegion.id}`)
+        .get(`/v1/countries?having=cities&size=100&region_id=${selectedRegion.id}`)
         .then(res => {
           this.dataCountries = res.data.data;
         })
@@ -128,7 +128,7 @@ export default {
       this.fetchingCities = true;
       this.$http
         .get(
-          `/v1/registered-cities?size=100&country_id=${this.selectedCountry.id}&s=${name}`
+          `/v1/registered-cities?&ize=100&country_id=${this.selectedCountry.id}&s=${name}`
         )
         .then(res => {
           this.dataCities = res.data.data;

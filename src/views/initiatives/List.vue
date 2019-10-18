@@ -156,9 +156,12 @@ export default {
       }
       if(this.selectedAreas.length) queryString.terms = this.selectedAreas.join(',')
       if(this.inputSearchName) queryString.s = this.inputSearchName
-      if(this.selectedRegion) queryString.region_id = this.selectedRegion.id
-      if(this.selectedCountry) queryString.country_id = this.selectedCountry.id
-      if(this.selectedCity) queryString.city_id = this.selectedCity.id
+      if (this.selectedCity) queryString.city_id = this.selectedCity.id
+      else if(this.selectedCountry) {
+        queryString.country_id = this.selectedCountry.id
+      } else if(this.selectedRegion) {
+        queryString.region_id = this.selectedRegion.id
+      }
       if(this.notLocated) queryString.city_id = -1
       this.$http
         .get(`/v1/initiatives`, {
