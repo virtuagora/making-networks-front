@@ -13,10 +13,17 @@ import RecoverPassword from './views/auth/RecoverPassword.vue';
 import RecoverPasswordRequest from './views/auth/RecoverPasswordRequest.vue';
 import NewInitiative from './views/initiatives/New.vue';
 import ListInitiatives from './views/initiatives/List.vue';
+// Creating Networks TV
+import CreatingNetworksTVCatalog from './views/creating-networks-tv/Catalog.vue'
+import CreatingNetworksTVView from './views/creating-networks-tv/View.vue'
 // Initiative
 import Initiative from './views/initiative/Initiative.vue';
 import InitiativeAbout from './views/initiative/About.vue';
 import InitiativeDetails from './views/initiative/Details.vue';
+import InitiativeMembers from './views/initiative/Members.vue';
+import InitiativeLocation from './views/initiative/Location.vue';
+// User Profile
+import Profile from './views/profile/Profile.vue';
 // Admin panel
 import Admin from './views/admin/Admin.vue';
 import AdminIndex from './views/admin/AdminIndex.vue';
@@ -29,12 +36,19 @@ import AdminMapCitiesList from './views/admin/map/cities/List.vue';
 import AdminMapCitiesAdd from './views/admin/map/cities/Add.vue';
 import AdminMapCountriesList from './views/admin/map/countries/List.vue';
 import AdminMapRegionsList from './views/admin/map/regions/List.vue';
+import AdminAreasOfInterestCreate from './views/admin/areas-of-interest/Create.vue';
+import AdminAreasOfInterestList from './views/admin/areas-of-interest/List.vue';
+import AdminCreatingNetworksTvCreate from './views/admin/creating-networks-tv/Create.vue';
+import AdminCreatingNetworksTvList from './views/admin/creating-networks-tv/List.vue';
+import AdminCreatingNetworksTvEdit from './views/admin/creating-networks-tv/Edit.vue';
 // User panel
 import User from './views/user/User.vue';
 import UserIndex from './views/user/UserIndex.vue';
 import UserAccountChangePassword from './views/user/account/ChangePassword.vue';
 import UserInitiativesList from './views/user/initiatives/List.vue';
 import UserInitiativesEdit from './views/user/initiatives/Edit.vue';
+import UserProfile from './views/user/account/Profile.vue';
+import UserAreasOfInterest from './views/user/account/AreasOfInterest.vue';
 
 Vue.use(Router);
 
@@ -69,8 +83,31 @@ const router = new Router({
       path: '/initiatives',
       name: 'listInitiatives',
       component: ListInitiatives,
-      meta: {
-        requiresAuth: true,
+    },
+    {
+      path: '/creating-networks-tv',
+      name: 'catalogCreatingNetworksTv',
+      component: CreatingNetworksTVCatalog,
+      meta: {},
+    },
+    {
+      path: '/creating-networks-tv/:id',
+      component: CreatingNetworksTVView,
+      name: 'viewCreatingNetworksTv',
+      props: true,
+      beforeEnter: (to, from, next) => {
+        console.log('First time entering, getting video...');
+        http
+          .get(`/v1/videos/${to.params.id}`)
+          .then((response) => {
+            store.commit('setVideo', response.data.data);
+            console.log('GET OK - Got video');
+            next();
+          })
+          .catch((error) => {
+            console.log('Fetching data failed.', error);
+            next({ name: 'home' });
+          });
       },
     },
     {
@@ -95,6 +132,20 @@ const router = new Router({
           props: true,
           meta: {},
         },
+        {
+          path: 'location',
+          name: 'initiativeLocation',
+          component: InitiativeLocation,
+          props: true,
+          meta: {},
+        },
+        {
+          path: 'members',
+          name: 'initiativeMembers',
+          component: InitiativeMembers,
+          props: true,
+          meta: {},
+        },
       ],
       beforeEnter: (to, from, next) => {
         console.log('First time entering, getting initiative...');
@@ -103,6 +154,26 @@ const router = new Router({
           .then((response) => {
             store.commit('setInitiative', response.data.data);
             console.log('GET OK - Got initiative');
+            next();
+          })
+          .catch((error) => {
+            console.log('Fetching data failed.', error);
+            next({ name: 'home' });
+          });
+      },
+    },
+    {
+      path: '/profile/:id',
+      component: Profile,
+      name: 'profile',
+      props: true,
+      beforeEnter: (to, from, next) => {
+        console.log('First time entering, getting user profile...');
+        http
+          .get(`/v1/users/${to.params.id}`)
+          .then((response) => {
+            store.commit('setUserProfile', response.data.data);
+            console.log('GET OK - Got user profile');
             next();
           })
           .catch((error) => {
@@ -257,6 +328,47 @@ const router = new Router({
             requiresAdmin: true,
           },
         },
+        {
+          path: 'areas-of-interest/create',
+          name: 'adminAreasOfInterestCreate',
+          component: AdminAreasOfInterestCreate,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'areas-of-interest/list',
+          name: 'adminAreasOfInterestList',
+          component: AdminAreasOfInterestList,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'creating-networks-tv/create',
+          name: 'adminCreatingNetworksTvCreate',
+          component: AdminCreatingNetworksTvCreate,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'creating-networks-tv/:id/edit',
+          name: 'adminCreatingNetworksTvEdit',
+          component: AdminCreatingNetworksTvEdit,
+          props: true,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: 'creating-networks-tv/list',
+          name: 'adminCreatingNetworksTvList',
+          component: AdminCreatingNetworksTvList,
+          meta: {
+            requiresAdmin: true,
+          },
+        },
       ],
     },
     {
@@ -268,7 +380,7 @@ const router = new Router({
           name: 'user',
           component: UserIndex,
           meta: {
-            requiresAdmin: true,
+            requiresAuth: true,
           },
         },
         {
@@ -276,7 +388,7 @@ const router = new Router({
           name: 'userAccountChangePassword',
           component: UserAccountChangePassword,
           meta: {
-            requiresAdmin: true,
+            requiresAuth: true,
           },
         },
         {
@@ -284,7 +396,23 @@ const router = new Router({
           name: 'userInitiativesList',
           component: UserInitiativesList,
           meta: {
-            requiresAdmin: true,
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'profile',
+          name: 'userProfile',
+          component: UserProfile,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'areas-of-interest',
+          name: 'userAreasOfInterest',
+          component: UserAreasOfInterest,
+          meta: {
+            requiresAuth: true,
           },
         },
         {
@@ -293,7 +421,7 @@ const router = new Router({
           component: UserInitiativesEdit,
           props: true,
           meta: {
-            requiresAdmin: true,
+            requiresAuth: true,
           },
         },
       ],
@@ -312,11 +440,11 @@ const enableLogger = process.env.NODE_ENV !== 'production';
 router.beforeEach(async (to, from, next) => {
   // Check if token is expired
   if (store.state.userToken) {
-    const today = new Date()
-    const expirationDate = new Date(store.state.userToken.expiration * 1000)
+    const today = new Date();
+    const expirationDate = new Date(store.state.userToken.expiration * 1000);
     if (today > expirationDate) {
-      console.info('- user token is expired!')
-      store.dispatch('logout')
+      console.info('- user token is expired!');
+      store.dispatch('logout');
       next({ name: 'login', query: { redirect: to.path } });
     }
   }

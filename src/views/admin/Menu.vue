@@ -23,6 +23,21 @@
     <li><router-link :to="{name: 'adminMapCountriesList'}">List countries</router-link></li>
     <li><router-link :to="{name: 'adminMapRegionsList'}">List regions</router-link></li>
   </ul>
+  <p class="menu-label">
+    Areas of interest management
+  </p>
+  <ul class="menu-list">
+    <li><router-link :to="{name: 'adminAreasOfInterestCreate'}"><i class="fas fa-plus"></i>&nbsp;New area of interest</router-link></li>
+    <li><router-link :to="{name: 'adminAreasOfInterestList'}">List areas of interest</router-link></li>
+  </ul>
+  <p class="menu-label">
+    Creating Networks TV
+  </p>
+  <ul class="menu-list">
+    <li><router-link :to="{name: 'adminCreatingNetworksTvCreate'}"><i class="fas fa-plus"></i>&nbsp;New video</router-link></li>
+    <li><router-link :to="{name: 'adminCreatingNetworksTvList'}">List videos</router-link></li>
+
+  </ul>
    <p class="menu-label">
     Configuration
   </p>

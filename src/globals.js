@@ -1,7 +1,7 @@
+import { transform, isEqual } from 'lodash';
 import store from '@/store';
 // import http from '@/http';
 // import { transform, isEqual, isObject } from 'lodash';
-import { transform, isEqual } from 'lodash';
 
 const globals = {
   methods: {
@@ -76,6 +76,20 @@ const globals = {
           result[key] = value;
         }
       });
+    },
+    fullDiffObject(original, modified) {
+      return transform(modified, (result, value, key) => {
+        if (!isEqual(value, original[key])) {
+          // eslint-disable-next-line no-param-reassign
+          result[key] = this.isObject(value) && this.isObject(original[key]) ? this.fullDiffObject(value, original[key]) : value;
+        }
+      });
+      // return transform(modified, (result, value, key) => {
+      //   if (!isEqual(value, original[key])) {
+      //     // eslint-disable-next-line no-param-reassign
+      //     result[key] = value;
+      //   }
+      // });
     },
   },
   computed: {

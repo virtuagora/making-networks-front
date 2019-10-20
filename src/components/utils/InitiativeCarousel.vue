@@ -5,7 +5,7 @@
       class="initiative-carousel"
       v-if="initiatives.length > 0"
       :autoplay="autoplayEnabled"
-      :loop="false"
+      :loop="true"
       :autoplay-timeout="timeout"
       :per-page-custom="responsiveLayout"
       :navigation-enabled="navigationEnabled"
@@ -74,7 +74,8 @@ export default {
   data() {
     return {
       initiatives: [],
-      isFetching: true
+      isFetching: true,
+      timeout: 7000
     };
   },
   components: {

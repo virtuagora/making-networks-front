@@ -5,8 +5,8 @@
       <img class="image" :src="userAvatarUrl">
       </div>
       <b-dropdown-item custom aria-role="menuitem">
-        Logged as
-        <b>{{user.display_name}}</b>
+        <router-link :to="{name: 'profile', params:{ id: user.id}}" class="has-text-dark">Logged as
+        <b>{{user.display_name}}</b></router-link>
       </b-dropdown-item>
       <b-dropdown-item aria-role="listitem" has-link v-if="user">
       <router-link :to="{name: 'user'}" class="has-text-link">My panel</router-link>

@@ -20,6 +20,8 @@ export default new Vuex.Store({
     lastTimeUpdated: Date.now(),
     fetchService: {
       initiative: null,
+      userProfile: null,
+      video: null,
     },
   },
   mutations: {
@@ -39,6 +41,14 @@ export default new Vuex.Store({
       // eslint-disable-next-line
       state.fetchService.initiative = initiative
     },
+    setUserProfile(state, userProfile) {
+      // eslint-disable-next-line
+      state.fetchService.userProfile = userProfile
+    },
+    setVideo(state, video) {
+      // eslint-disable-next-line
+      state.fetchService.video = video
+    },
   },
   getters: {
     isLoading: state => state.isLoading,
@@ -52,6 +62,14 @@ export default new Vuex.Store({
     },
     initiative: (state) => {
       if (state.fetchService.initiative) return state.fetchService.initiative;
+      return null;
+    },
+    userProfile: (state) => {
+      if (state.fetchService.userProfile) return state.fetchService.userProfile;
+      return null;
+    },
+    video: (state) => {
+      if (state.fetchService.video) return state.fetchService.video;
       return null;
     },
     isAdmin: (state) => {

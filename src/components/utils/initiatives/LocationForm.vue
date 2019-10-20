@@ -158,6 +158,7 @@ export default {
         });
     },
     selectRegion(selectedRegion) {
+      if(selectedRegion === null) return
       this.fetchingCountries = true;
       this.selectedRegion = selectedRegion;
       this.queryCountry = "";
