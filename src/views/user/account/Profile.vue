@@ -225,7 +225,6 @@ export default {
       this.$http
         .get(`/v1/users/${this.user.id}`)
         .then(res => {
-          console.log(res)
           this.sync(res.data.data)
         })
         .catch(err => {
