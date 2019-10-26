@@ -2,6 +2,9 @@
   <section>
     <section>
       <div id="hero" class="hero is-fullheight is-dark">
+        <router-link :to="{name: 'home'}" class="cn-back-home">
+          <img src="/iso-cn.svg" class="image" alt />
+        </router-link>
         <div class="hero-body">
           <div class="container">
             <div class="columns">
@@ -14,7 +17,7 @@
               <div class="column">
                 <h1 class="title is-1 is-size-3-touch">{{userProfile.display_name}}</h1>
                 <div class="content">
-                  <p class="add-br is-italic">{{userProfile.bio}}</p>
+                  <p class="add-br is-italic" >{{userProfile.bio || 'I haven\'t completed my bio yet!' }}</p>
                 </div>
                 <div class="columns is-mobile">
                   <div class="column is-narrow">
@@ -22,7 +25,7 @@
                       :href="`https://${userProfile.data.website}`"
                       target="_blank"
                       class="has-text-white"
-                      v-if="userProfile.data.website"
+                      v-if="userProfile.data && userProfile.data.website"
                     >
                       <i class="fas fa-globe fa-lg fa-fw"></i>
                     </a>
@@ -32,7 +35,7 @@
                       :href="`https://facebook.com/${userProfile.data.facebook}`"
                       target="_blank"
                       class="has-text-white"
-                      v-if="userProfile.data.facebook"
+                      v-if="userProfile.data && userProfile.data.facebook"
                     >
                       <i class="fab fa-facebook-f fa-lg fa-fw"></i>
                     </a>
@@ -42,7 +45,7 @@
                       :href="`https://twitter.com/${userProfile.data.twitter}`"
                       target="_blank"
                       class="has-text-white"
-                      v-if="userProfile.data.twitter"
+                      v-if="userProfile.data && userProfile.data.twitter"
                     >
                       <i class="fab fa-twitter fa-lg fa-fw"></i>
                     </a>
@@ -52,7 +55,7 @@
                       :href="`https://${userProfile.data.other_network}`"
                       target="_blank"
                       class="has-text-white"
-                      v-if="userProfile.data.other_network"
+                      v-if="userProfile.data && userProfile.data.other_network"
                     >
                       <i class="fas fa-external-link-alt fa-lg fa-fw"></i>
                     </a>
@@ -60,7 +63,7 @@
                 </div>
                 <h1 class="subtitle is-5 has-text-white"><i class="fas fa-tag"></i>&nbsp;Areas of interest</h1>
         <div class="content" v-if="userProfile.person.terms.length == 0">
-          <p><i>I haven't done this, yet!</i></p>
+          <p><i>I haven't completed my areas of interest yet!</i></p>
         </div>
         <div class="tags">
           <span class="tag is-rounded is-medium is-primary" v-for="area in userProfile.person.terms" :key="area.id">{{area.name}}</span>
