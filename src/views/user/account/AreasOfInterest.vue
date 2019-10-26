@@ -1,10 +1,11 @@
 <template>
   <section>
-     <h1 class="title is-3">{{$t('user.userPanel.areasOfInterest.title')}}</h1>
+    <h1 class="title is-3">{{$t('user.userPanel.areasOfInterest.title')}}</h1>
     <p v-html="$t('user.userPanel.areasOfInterest.subtitle')"></p>
     <br>
      <div class="card">
       <div class="card-content">
+      <h1 class="title has-text-dark is-3">{{$t('user.userPanel.areasOfInterest.currentAreas')}}</h1>
       <b-taglist v-if="currentAreas && currentAreas.length > 0">
         <b-tag v-for="area in currentAreas" type="is-primary" size="is-medium" closable :key="area.id" @close="remove(area.id)">{{area.name}}</b-tag>
       </b-taglist>
@@ -65,10 +66,30 @@ export default {
     };
   },
   mounted: function() {
-    this.currentAreas = [] //TODO
+    this.fetchUser() 
     this.fetchAvailableAreasOfInterest()
   },
   methods: {
+    sync: function(data){
+      if(!data.person.terms) currentAreas = []
+      this.currentAreas = data.person.terms
+    },
+    fetchUser: function() {
+      this.startLoading();
+      this.$http
+        .get(`/v1/users/${this.user.id}`)
+        .then(res => {
+          this.sync(res.data.data)
+        })
+        .catch(err => {
+          console.error(err);
+          if (err.response && err.response.data)
+            this.$toast.open(err.response.data.message);
+        })
+        .finally(() => {
+          this.stopLoading();
+        });
+    },
     fetchAvailableAreasOfInterest: function(){
       this.startLoading();
       this.$http
