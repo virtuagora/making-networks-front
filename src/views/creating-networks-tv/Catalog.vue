@@ -139,13 +139,6 @@ export default {
   width: 100%;
   height: 100%;
 }
-.cn-back-home {
-  position: fixed;
-  left: 12px;
-  top: 12px;
-  width: 27px;
-  z-index: 20;
-}
 .logo-cntv {
   height: 70px;
   margin: 0 auto 20px;
