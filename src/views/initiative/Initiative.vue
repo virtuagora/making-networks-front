@@ -2,6 +2,9 @@
   <section>
     <section>
       <div id="hero" class="hero is-medium is-dark">
+        <router-link :to="{name: 'home'}" class="cn-back-home">
+          <img src="/iso-cn.svg" class="image" alt />
+        </router-link>
         <div class="hero-body">
           <div class="container">
             <br class="is-hidden-desktop">
@@ -37,7 +40,7 @@
                 <li :class="{'is-active': $route.name === 'initiativeDetails'}">
                   <router-link :to="{ name: 'initiativeDetails', params: { id: initiative.id } }">Details</router-link>
                 </li>
-                <li :class="{'is-active': $route.name === 'initiativeMembers'}" v-if="initiative.city">
+                <li :class="{'is-active': $route.name === 'initiativeLocation'}" v-if="initiative.city">
                   <router-link :to="{ name: 'initiativeLocation', params: { id: initiative.id } }">Location</router-link>
                 </li>
                 <li :class="{'is-active': $route.name === 'initiativeMembers'}">

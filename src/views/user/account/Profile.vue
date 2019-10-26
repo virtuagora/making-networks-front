@@ -13,7 +13,8 @@
             <div class="media-content">
               <img class="myAvatar image is-hidden-desktop is-centered" :src="userAvatarUrl" />
               <br />
-              <h1 class="title is-1 has-text-black has-text-centered-touch">Guillermo Croppi</h1>
+              <h1 class="title is-1 has-text-black has-text-centered-touch">{{user.display_name}}</h1>
+              <h1 class="subtitle is-6 has-text-centered-touch"><router-link :to="{name: 'profile', params:{ id: user.id}}">Go to profile&nbsp;<i class="fas fa-arrow-circle-right"></i></router-link></h1>
               <p
                 v-for="(p,index) in $t('user.userPanel.profile.avatar')"
                 class="is-size-7 has-text-centered-touch is-italic"
@@ -224,7 +225,7 @@ export default {
       this.$http
         .get(`/v1/users/${this.user.id}`)
         .then(res => {
-          this.sync(res.data)
+          this.sync(res.data.data)
         })
         .catch(err => {
           console.error(err);
