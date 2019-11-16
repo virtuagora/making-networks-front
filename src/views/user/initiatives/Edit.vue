@@ -6,13 +6,15 @@
     <b-tabs type="is-toggle" v-model="activeTab" expanded class="is-marginless">
       <b-tab-item label="Information" icon="scroll" icon-pack="fas"></b-tab-item>
       <b-tab-item label="Location" icon="map-marker-alt" icon-pack="fas"></b-tab-item>
+      <b-tab-item label="Members" icon="users" icon-pack="fas"></b-tab-item>
       <b-tab-item label="Areas of interest" icon="tag" icon-pack="fas"></b-tab-item>
     </b-tabs>
     <div class="card">
       <div class="card-content">
         <DataForm ref="data" v-if="activeTab == 0" @update="submitData" edit :model.sync="model" />
         <LocationForm ref="location" v-if="activeTab ==  1" @update="submitLocation" edit :model.sync="model" />
-        <AreasOfInterestForm ref="location" v-if="activeTab ==  2" @update="submitLocation" edit :id="id" :model.sync="model" />
+        <MemberForm ref="member" v-if="activeTab ==  2" :model.sync="model" :id="id" />
+        <AreasOfInterestForm ref="location" v-if="activeTab ==  3" @update="submitLocation" edit :id="id" :model.sync="model" />
       </div>
     </div>
   </section>
