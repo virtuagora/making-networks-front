@@ -63,7 +63,7 @@ export default {
     getPayload() {
       const data = {};
       data.email = this.email;
-      data.locale = this.currentLanguage
+      data.locale = this.currentLanguage;
       const { recaptcha } = this;
       return { data, recaptcha };
     },

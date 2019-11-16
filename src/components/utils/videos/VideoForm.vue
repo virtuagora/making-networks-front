@@ -102,40 +102,40 @@ export default {
   props: {
     model: {
       type: Object,
-      required: true
+      required: true,
     },
     edit: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data() {
     return {
       showYoutubePanel: false,
       urlInput: null,
-      noVideoId: false
+      noVideoId: false,
     };
   },
-  mounted: function(){
-    if(this.edit){
-      this.urlInput = `https://youtube.com/watch?v=${this.model.public_data.youtube}`
+  mounted() {
+    if (this.edit) {
+      this.urlInput = `https://youtube.com/watch?v=${this.model.public_data.youtube}`;
       this.showYoutubePanel = true;
     }
   },
   methods: {
-    extractVideoId: function() {
+    extractVideoId() {
       this.noVideoId = false;
-      let regex = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
-      let r = this.urlInput.match(regex);
-      this.model.public_data.youtube = r[1]
-      if(r[1]) this.showYoutubePanel = true;
+      const regex = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+      const r = this.urlInput.match(regex);
+      this.model.public_data.youtube = r[1];
+      if (r[1]) this.showYoutubePanel = true;
       else {
-        this.showYoutubePanel = false
-        this.noVideoId = true
+        this.showYoutubePanel = false;
+        this.noVideoId = true;
       }
     },
-    validate: function() {
-      let promise = new Promise((resolve, reject) => {
-        this.$validator.validateAll().then(result => {
+    validate() {
+      const promise = new Promise((resolve, reject) => {
+        this.$validator.validateAll().then((result) => {
           if (!result) {
             return resolve(result);
           }
@@ -143,8 +143,8 @@ export default {
         });
       });
       return promise;
-    }
-  }
+    },
+  },
 };
 </script>
 

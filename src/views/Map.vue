@@ -76,21 +76,22 @@
 </template>
 
 <script>
-import InitiativeMap from "@/components/InitiativeMap.vue";
-import InitiativesNotLocated from "@/components/InitiativesNotLocated.vue";
-import Slideout from "vue-slideout";
+import Slideout from 'vue-slideout';
+import InitiativeMap from '@/components/InitiativeMap.vue';
+import InitiativesNotLocated from '@/components/InitiativesNotLocated.vue';
+
 export default {
   components: {
     InitiativeMap,
     Slideout,
-    InitiativesNotLocated
+    InitiativesNotLocated,
   },
   data() {
     return {
       mapLoaded: true,
       fetchingCities: true,
       cities: null,
-      queryCity: "",
+      queryCity: '',
       selectedCity: null,
       mapReady: false,
     };
@@ -100,7 +101,7 @@ export default {
   },
   methods: {
     getCities() {
-      this.$http.get("/v1/cities").then(res => {
+      this.$http.get('/v1/cities').then((res) => {
         this.cities = res.data.data;
         this.fetchingCities = false;
       });
@@ -123,25 +124,25 @@ export default {
       this.selectedCity = randomCity;
       this.$refs.initiativeMap.flyTo(randomCity.space.point.coordinates);
     },
-    openUnlocated: function() {
+    openUnlocated() {
       this.$refs.initiativesNotLocatedSlider.slideout.toggle();
     },
-    handleOpenUnlocated: function() {},
-    handleCloseUnlocated: function() {},
-    openSlider: function() {
+    handleOpenUnlocated() {},
+    handleCloseUnlocated() {},
+    openSlider() {
       this.$refs.initiativesNotLocated.startPanel();
     },
-    closeSlider: function(){
+    closeSlider() {
       this.$refs.initiativesNotLocatedSlider.slideout.close();
-    }
+    },
   },
   computed: {
     placeholderInput() {
       if (!this.fetchingCities) {
-        if (!this.mapReady) return "Preparing your flight.. get ready!";
-        return "Where do you want to flight today? ✈";
+        if (!this.mapReady) return 'Preparing your flight.. get ready!';
+        return 'Where do you want to flight today? ✈';
       }
-      return "Fetching cities, hold on!";
+      return 'Fetching cities, hold on!';
     },
     disableInput() {
       return this.fetchingCities || !this.mapReady;
@@ -149,14 +150,13 @@ export default {
     filteredCities() {
       if (!this.cities) return [];
       return this.cities.filter(
-        option =>
-          option.name
-            .toString()
-            .toLowerCase()
-            .indexOf(this.queryCity.toLowerCase()) >= 0
+        option => option.name
+          .toString()
+          .toLowerCase()
+          .indexOf(this.queryCity.toLowerCase()) >= 0,
       );
-    }
-  }
+    },
+  },
 };
 </script>
 

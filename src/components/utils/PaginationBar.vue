@@ -36,120 +36,120 @@ export default {
   props: {
     resourceUrl: {
       type: String,
-      required: true
+      required: true,
     },
     query: {
       type: Object,
-      required: false
+      required: false,
     },
-    fetching: Boolean
+    fetching: Boolean,
   },
   data() {
     return {
       defaultQuery: {
-        size: 10
+        size: 10,
       },
       pagination: {
         offset: null,
         size: null,
-        total: 0
+        total: 0,
       },
       links: null,
-      isLoading: false
+      isLoading: false,
     };
   },
-  created: function() {
+  created() {
     this.getResource();
   },
   methods: {
-    getResource: function() {
+    getResource() {
       this.isLoading = true;
       this.startLoading();
-      this.$emit("update:fetching", true);
+      this.$emit('update:fetching', true);
       let url = this.resourceUrl;
       if (this.queryString) {
         url = `${url}?${this.queryString}`;
       }
-      console.log(this.query)
-      console.log(url)
+      console.log(this.query);
+      console.log(url);
       this.$http
         .get(url)
-        .then(res => {
+        .then((res) => {
           this.updatePagination(res.data.pagination, res.data.links);
-          this.$emit("update", res.data.data);
+          this.$emit('update', res.data.data);
         })
         .finally(() => {
           this.isLoading = false;
           this.stopLoading();
-          this.$emit("update:fetching", false);
+          this.$emit('update:fetching', false);
         });
     },
-    updatePagination: function(pagination, links) {
+    updatePagination(pagination, links) {
       this.pagination = pagination;
       this.links = links;
     },
-    fetchNext: function(){
-      let url = this.links.next.replace(/^.*\/\/[^\/]+/, '')
+    fetchNext() {
+      const url = this.links.next.replace(/^.*\/\/[^\/]+/, '');
       this.startLoading();
-      this.$emit("update:fetching", true);
+      this.$emit('update:fetching', true);
       this.$http.get(url)
-      .then(res => {
-        this.updatePagination(res.data.pagination, res.data.links)
-        this.$emit('update',res.data.data)
-      })
-      .finally(() => {
+        .then((res) => {
+          this.updatePagination(res.data.pagination, res.data.links);
+          this.$emit('update', res.data.data);
+        })
+        .finally(() => {
           this.stopLoading();
-          this.$emit("update:fetching", false);
+          this.$emit('update:fetching', false);
         });
     },
-    fetchPrevious: function(){
-      let url = this.links.prev.replace(/^.*\/\/[^\/]+/, '')
+    fetchPrevious() {
+      const url = this.links.prev.replace(/^.*\/\/[^\/]+/, '');
       this.startLoading();
-      this.$emit("update:fetching", true);
+      this.$emit('update:fetching', true);
       this.$http.get(url)
-      .then(res => {
-        this.updatePagination(res.data.pagination, res.data.links)
-        this.$emit('update',res.data.data)
-      })
-      .finally(() => {
+        .then((res) => {
+          this.updatePagination(res.data.pagination, res.data.links);
+          this.$emit('update', res.data.data);
+        })
+        .finally(() => {
           this.stopLoading();
-          this.$emit("update:fetching", false);
+          this.$emit('update:fetching', false);
         });
-    }
+    },
   },
   computed: {
-    queryString: function() {
+    queryString() {
       let theQuery = this.defaultQuery;
       if (!this.isEmptyObject(this.query)) {
-        theQuery = Object.assign(theQuery, this.query)
+        theQuery = Object.assign(theQuery, this.query);
       }
       return Object.keys(theQuery)
-        .map(key => key + "=" + theQuery[key])
-        .join("&");
+        .map(key => `${key}=${theQuery[key]}`)
+        .join('&');
     },
-    disableNextPage: function(){
-      if(this.links && this.links.next){
-        return false
+    disableNextPage() {
+      if (this.links && this.links.next) {
+        return false;
       }
       return true;
     },
-    disablePrevious: function(){
-      if(this.links && this.links.prev){
-        return false
+    disablePrevious() {
+      if (this.links && this.links.prev) {
+        return false;
       }
       return true;
     },
-    currentPage: function(){
-      return ((this.pagination.offset / this.pagination.size) + 1)
+    currentPage() {
+      return ((this.pagination.offset / this.pagination.size) + 1);
     },
-    totalPages: function(){
-      if(this.pagination.total % this.pagination.size) {
-        return Math.floor(this.pagination.total / this.pagination.size) + 1
-      } 
-      if(this.pagination.total == 0) return 1
-      return (this.pagination.total / this.pagination.size)
-    }
-  }
+    totalPages() {
+      if (this.pagination.total % this.pagination.size) {
+        return Math.floor(this.pagination.total / this.pagination.size) + 1;
+      }
+      if (this.pagination.total == 0) return 1;
+      return (this.pagination.total / this.pagination.size);
+    },
+  },
 };
 </script>
 

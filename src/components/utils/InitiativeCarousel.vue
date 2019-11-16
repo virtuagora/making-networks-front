@@ -69,81 +69,81 @@
 </template>
 
 <script>
-import { Carousel, Slide } from "vue-carousel";
+import { Carousel, Slide } from 'vue-carousel';
+
 export default {
   data() {
     return {
       initiatives: [],
       isFetching: true,
-      timeout: 7000
+      timeout: 7000,
     };
   },
   components: {
     Carousel,
-    Slide
+    Slide,
   },
-  mounted: function() {
+  mounted() {
     this.fetch();
   },
 
   methods: {
-    fetch: function() {
+    fetch() {
       this.isFetching = true;
-      this.$http.get("/v1/initiatives?size=10&sort=random").then(res => {
+      this.$http.get('/v1/initiatives?size=10&sort=random').then((res) => {
         this.initiatives = this.shuffleArray(res.data.data);
         this.isFetching = false;
       });
     },
-    getShortDescription: function(text, limit) {
+    getShortDescription(text, limit) {
       if (text.length > limit) {
         for (let i = limit; i > 0; i--) {
           if (
-            text.charAt(i) === " " &&
-            (text.charAt(i - 1) != "," ||
-              text.charAt(i - 1) != "." ||
-              text.charAt(i - 1) != ";")
+            text.charAt(i) === ' '
+            && (text.charAt(i - 1) != ','
+              || text.charAt(i - 1) != '.'
+              || text.charAt(i - 1) != ';')
           ) {
-            return text.substring(0, i) + "...";
+            return `${text.substring(0, i)}...`;
           }
         }
       } else {
         return text;
       }
     },
-    shuffleArray: function(arr) {
+    shuffleArray(arr) {
       return arr
         .map(a => [Math.random(), a])
         .sort((a, b) => a[0] - b[0])
         .map(a => a[1]);
-    }
+    },
   },
   computed: {
-    navigationEnabled: function() {
-      return this.initiatives.length - 1 ? true : false;
+    navigationEnabled() {
+      return !!(this.initiatives.length - 1);
     },
-    autoplayEnabled: function() {
-      return this.initiatives.length - 1 ? true : false;
+    autoplayEnabled() {
+      return !!(this.initiatives.length - 1);
     },
-    perPage: function() {
+    perPage() {
       if (this.initiatives.length > 2) {
         return 3;
-      } else {
-        return this.initiatives.length;
       }
+      return this.initiatives.length;
     },
-    loopEnabled: function() {
-      return this.initiatives.length - 1 ? true : false;
+    loopEnabled() {
+      return !!(this.initiatives.length - 1);
     },
-    responsiveLayout: function() {
+    responsiveLayout() {
       if (this.initiatives.length > 2) {
         return [[0, 1], [768, 2], [1024, 3]];
-      } else if (this.initiatives.length == 2) {
+      } if (this.initiatives.length == 2) {
         return [[0, 1], [768, 2]];
-      } else if (this.initiatives.length == 1) {
+      } if (this.initiatives.length == 1) {
         return null;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

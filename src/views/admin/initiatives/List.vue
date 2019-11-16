@@ -30,61 +30,61 @@
 </template>
 
 <script>
-import PaginationBar from "@/components/utils/PaginationBar";
-import EmptyTable from "@/components/utils/EmptyTable";
-import ConfirmDelete from "@/components/utils/modals/ConfirmDelete"
+import PaginationBar from '@/components/utils/PaginationBar';
+import EmptyTable from '@/components/utils/EmptyTable';
+import ConfirmDelete from '@/components/utils/modals/ConfirmDelete';
 
 export default {
   components: {
     PaginationBar,
-    EmptyTable
+    EmptyTable,
   },
   data() {
     return {
       initiatives: [],
-      fetching: null
+      fetching: null,
     };
   },
-  mounted: function() {},
+  mounted() {},
   methods: {
-    getInitiatives: function(data) {
+    getInitiatives(data) {
       this.initiatives = data;
     },
-    openModalDelete: function(resource){
+    openModalDelete(resource) {
       this.$modal.open({
         parent: this,
         component: ConfirmDelete,
         props: {
           resourceType: 'initiative',
-          resource: resource
+          resource,
         },
         hasModalCard: true,
         events: {
           confirm: (resource) => {
-            this.deleteInitiative(resource)
-          }
-        }
+            this.deleteInitiative(resource);
+          },
+        },
       });
     },
-    deleteInitiative: function(resource){
-      this.startLoading()
+    deleteInitiative(resource) {
+      this.startLoading();
       this.$http.delete(`/v1/initiatives/${resource.id}`)
-      .then(res => {
-         this.$toast.open({
-            message: `<i class="fas fa-check"></i>&nbsp;The initiative has been deleted`,
+        .then((res) => {
+          this.$toast.open({
+            message: '<i class="fas fa-check"></i>&nbsp;The initiative has been deleted',
             type: 'is-success',
-          })
-          this.$refs.paginator.getResource()
-      }).catch(err => {
-        console.error(err)
-        this.$toast.open({
-            message: `<i class="fas fa-times"></i>&nbsp;Error while deleting an initiative`,
+          });
+          this.$refs.paginator.getResource();
+        }).catch((err) => {
+          console.error(err);
+          this.$toast.open({
+            message: '<i class="fas fa-times"></i>&nbsp;Error while deleting an initiative',
             type: 'is-danger',
-          })
-        this.stopLoading()
-      })
+          });
+          this.stopLoading();
+        });
     },
-  }
+  },
 };
 </script>
 

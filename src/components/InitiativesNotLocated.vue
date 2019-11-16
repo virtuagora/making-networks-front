@@ -19,7 +19,7 @@
               {{initiative.name}}
             </div>
             <div class="media-right">
-              <i class="fas fa-angle-double-right has-text-primary"></i>  
+              <i class="fas fa-angle-double-right has-text-primary"></i>
             </div>
           </div>
           </li>
@@ -49,12 +49,12 @@
 </template>
 
 <script>
-import InfiniteLoading from "vue-infinite-loading";
-import { setTimeout } from "timers";
+import InfiniteLoading from 'vue-infinite-loading';
+import { setTimeout } from 'timers';
 
 export default {
   components: {
-    InfiniteLoading
+    InfiniteLoading,
   },
   data() {
     return {
@@ -66,21 +66,21 @@ export default {
     };
   },
   methods: {
-    getInitiatives: function() {
+    getInitiatives() {
       this.isFetching = true;
     },
-    goToInitiative: function(id) {
+    goToInitiative(id) {
       this.transitionToInitiative = true;
-      this.$router.push({ name: "initiative", params: { id: id } });
+      this.$router.push({ name: 'initiative', params: { id } });
     },
-    startPanel: function(){
+    startPanel() {
       this.page = 0;
       this.initiatives = [];
       this.showList = true;
     },
-    closePanel: function() {
+    closePanel() {
       this.page = 0;
-      this.$emit("close");
+      this.$emit('close');
       setTimeout(() => {
         this.showList = false;
         this.initiatives = [];
@@ -89,12 +89,12 @@ export default {
     infiniteHandler($state) {
       this.isFetching = true;
       this.$http
-        .get(`/v1/initiatives`, {
+        .get('/v1/initiatives', {
           params: {
             offset: this.page * 20,
             city_id: -1,
-            size: 20
-          }
+            size: 20,
+          },
         })
         .then(({ data }) => {
           if (data.data.length) {
@@ -106,8 +106,8 @@ export default {
             $state.complete();
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -134,4 +134,3 @@ ul .initiative-el {
   }
 }
 </style>
-

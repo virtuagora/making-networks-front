@@ -5,7 +5,7 @@
       <div class="column is-6-mobile is-3-desktop has-text-centered" v-for="member in members" :key="member.id">
         <router-link :to="{name: 'profile',params: {id: member.id}}" class="has-text-white">
         <img :src="makeUserAvatar(member)" class="image is-rounded is-96x96 is-centered member-icon" />
-        <p>{{member.display_name}}</p>  
+        <p>{{member.display_name}}</p>
         </router-link>
       </div>
     </div>
@@ -27,18 +27,19 @@
 </template>
 
 <script>
-import InfiniteLoading from "vue-infinite-loading";
+import InfiniteLoading from 'vue-infinite-loading';
+
 export default {
   props: ['id'],
-  data(){
+  data() {
     return {
       isFetching: false,
       members: [],
       page: 0,
-    }
+    };
   },
   components: {
-    InfiniteLoading
+    InfiniteLoading,
   },
   methods: {
     infiniteHandler($state) {
@@ -47,8 +48,8 @@ export default {
         .get(`/v1/initiatives/${this.id}/members`, {
           params: {
             offset: this.page * 20,
-            size: 20
-          }
+            size: 20,
+          },
         })
         .then(({ data }) => {
           if (data.data.length) {
@@ -60,14 +61,14 @@ export default {
             $state.complete();
           }
         });
-    }
+    },
   },
   computed: {
     initiative() {
       return this.$store.getters.initiative;
     },
   },
-  
+
 };
 </script>
 

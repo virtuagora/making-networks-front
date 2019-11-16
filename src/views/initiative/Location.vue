@@ -13,6 +13,7 @@
 
 <script>
 import Map from '@/components/initiatives/new/Map';
+
 export default {
   components: {
     Map,

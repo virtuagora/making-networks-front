@@ -49,32 +49,32 @@
 </template>
 
 <script>
-import InfiniteLoading from "vue-infinite-loading";
-import VideoBox from "@/components/creating-networks-tv/VideoBox.vue";
-import axios from "axios";
+import InfiniteLoading from 'vue-infinite-loading';
+import axios from 'axios';
+import VideoBox from '@/components/creating-networks-tv/VideoBox.vue';
 
 export default {
   components: {
     InfiniteLoading,
-    VideoBox
+    VideoBox,
   },
   data() {
     return {
       isFetching: false,
       videos: [],
       metadata: {},
-      page: 0
+      page: 0,
     };
   },
   methods: {
     infiniteHandler($state) {
       this.isFetching = true;
       this.$http
-        .get(`/v1/videos`, {
+        .get('/v1/videos', {
           params: {
             offset: this.page * 20,
-            size: 10
-          }
+            size: 10,
+          },
         })
         .then(({ data }) => {
           if (data.data.length) {
@@ -88,26 +88,26 @@ export default {
           }
         });
     },
-    fetchMetadata: function(videosIds) {
-      let axiosInstance = axios.create();
+    fetchMetadata(videosIds) {
+      const axiosInstance = axios.create();
       axiosInstance({
         url: `https://www.googleapis.com/youtube/v3/videos?part=contentDetails,statistics&key=${
           process.env.VUE_APP_YOUTUBE_API_KEY
-        }&id=${videosIds.join(",")}`,
-        method: "get"
+        }&id=${videosIds.join(',')}`,
+        method: 'get',
       })
-        .then(res => {
-          res.data.items.forEach(m => {
+        .then((res) => {
+          res.data.items.forEach((m) => {
             // this.metadata[m.id] = m;
-            this.$set(this.metadata, m.id, m)
+            this.$set(this.metadata, m.id, m);
           });
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
         });
-    }
+    },
   },
-  computed: {}
+  computed: {},
 };
 </script>
 

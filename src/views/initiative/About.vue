@@ -76,13 +76,13 @@ export default {
     },
     hasSocialNetworks() {
       return (
-        this.initiative.public_data.facebook ||
-        this.initiative.public_data.twitter ||
-        this.initiative.public_data.website ||
-        this.initiative.public_data.other_network
+        this.initiative.public_data.facebook
+        || this.initiative.public_data.twitter
+        || this.initiative.public_data.website
+        || this.initiative.public_data.other_network
       );
-    }
-  }
+    },
+  },
 };
 </script>
 

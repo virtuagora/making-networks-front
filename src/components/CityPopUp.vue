@@ -27,25 +27,25 @@
 export default {
   props: {
     city: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   data() {
     return {
       fetchingCityData: true,
-      cityData: null
+      cityData: null,
     };
   },
   methods: {
     getCity() {
       if (this.cityData == null) {
-        this.$http.get(`/v1/cities/${this.city.id}`).then(res => {
+        this.$http.get(`/v1/cities/${this.city.id}`).then((res) => {
           this.cityData = res.data.data;
           this.fetchingCityData = false;
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

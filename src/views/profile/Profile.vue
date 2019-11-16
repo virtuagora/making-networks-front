@@ -79,34 +79,34 @@
 </template>
 
 <script>
-import store from "@/store";
-import http from "@/http";
+import store from '@/store';
+import http from '@/http';
 
 export default {
   computed: {
     userProfile() {
       return this.$store.getters.userProfile;
-    }
+    },
   },
   beforeRouteUpdate: (to, from, next) => {
     if (to.params.id === from.params.id) {
-      console.log("Same user profile, dont load");
+      console.log('Same user profile, dont load');
       next();
     } else {
-      console.log("First time entering, getting user profile...");
+      console.log('First time entering, getting user profile...');
       http
         .get(`/v1/users/${to.params.id}`)
-        .then(response => {
-          store.commit("setUserProfile", response.data.data);
-          console.log("GET OK - Got user profile");
+        .then((response) => {
+          store.commit('setUserProfile', response.data.data);
+          console.log('GET OK - Got user profile');
           next();
         })
-        .catch(error => {
-          console.log("Fetching data failed.", error);
-          next({ name: "home" });
+        .catch((error) => {
+          console.log('Fetching data failed.', error);
+          next({ name: 'home' });
         });
     }
-  }
+  },
 };
 </script>
 

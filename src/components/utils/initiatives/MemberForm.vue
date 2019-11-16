@@ -76,51 +76,51 @@
 </template>
 
 <script>
-import PaginationBar from "@/components/utils/PaginationBar";
-import EmptyTable from "@/components/utils/EmptyTable";
+import PaginationBar from '@/components/utils/PaginationBar';
+import EmptyTable from '@/components/utils/EmptyTable';
 
 export default {
   props: {
     model: {
       type: Object,
-      required: true
+      required: true,
     },
     id: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   components: {
     PaginationBar,
-    EmptyTable
+    EmptyTable,
   },
   data() {
     return {
       emailInput: null,
       subjects: [],
       fetching: null,
-      userFound: null
+      userFound: null,
     };
   },
-  mounted: function() {
+  mounted() {
 
   },
   methods: {
-    getSubjects: function(data) {
+    getSubjects(data) {
       this.subjects = data;
     },
-    findUser: function() {
+    findUser() {
       this.startLoading();
       this.$http
         .get(`/v1/subjects?role=User&username=${this.emailInput}`)
-        .then(res => {
+        .then((res) => {
           if (res.data.data[0]) {
             this.userFound = res.data.data[0];
           }
           if (res.data.data.length === 0) {
             this.$toast.open({
               message: `No result with email <i class="fas fa-envelope fa-fw"></i>&nbsp;${this.emailInput}`,
-              type: "is-warning"
+              type: 'is-warning',
             });
           }
         })
@@ -128,64 +128,64 @@ export default {
           this.stopLoading();
         });
     },
-    getPayload: function() {
-      let data = { relation: "owner" };
+    getPayload() {
+      const data = { relation: 'owner' };
       return { data };
     },
-    submit: function() {
+    submit() {
       this.startLoading();
       this.$http
         .post(
           `/v1/users/${this.userFound.id}/groups/${this.id}`,
-          this.getPayload()
+          this.getPayload(),
         )
-        .then(res => {
+        .then((res) => {
           this.userFound = null;
           this.$toast.open({
-            message: `<i class="fas fa-check"></i>&nbsp;New user added to the initiative`,
-            type: "is-success"
+            message: '<i class="fas fa-check"></i>&nbsp;New user added to the initiative',
+            type: 'is-success',
           });
           this.$refs.paginator.getResource();
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
           this.$toast.open({
-            message: `<i class="fas fa-times"></i>&nbsp;Error while adding user`,
-            type: "is-danger"
+            message: '<i class="fas fa-times"></i>&nbsp;Error while adding user',
+            type: 'is-danger',
           });
           this.stopLoading();
         });
     },
-    remove: function(id) {
+    remove(id) {
       this.startLoading();
       this.$http
         .post(
           `/v1/users/${this.userFound.id}/groups/${this.id}`,
-          this.getPayload()
+          this.getPayload(),
         )
-        .then(res => {
+        .then((res) => {
           this.userFound = null;
           this.$toast.open({
-            message: `<i class="fas fa-check"></i>&nbsp;User has been removed from the initiative`,
-            type: "is-success"
+            message: '<i class="fas fa-check"></i>&nbsp;User has been removed from the initiative',
+            type: 'is-success',
           });
           this.$refs.paginator.getResource();
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
           this.$toast.open({
-            message: `<i class="fas fa-times"></i>&nbsp;Error while removing user from initiative`,
-            type: "is-danger"
+            message: '<i class="fas fa-times"></i>&nbsp;Error while removing user from initiative',
+            type: 'is-danger',
           });
           this.stopLoading();
         });
-    }
+    },
   },
   computed: {
-    query: function() {
+    query() {
       return { };
-    }
-  }
+    },
+  },
 };
 </script>
 

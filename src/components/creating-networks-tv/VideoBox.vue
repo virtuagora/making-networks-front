@@ -40,62 +40,61 @@
 <script>
 
 export default {
-  props: ["video", "metadata"],
+  props: ['video', 'metadata'],
   data() {
     return {
       // fetching: false,
     };
   },
-  mounted: function() {
-    console.log(this.metadata)
+  mounted() {
+    console.log(this.metadata);
   },
   methods: {
-    formatTimeUnit: function(input, unit) {
-      var index = input.indexOf(unit);
-      var output = "00";
+    formatTimeUnit(input, unit) {
+      const index = input.indexOf(unit);
+      const output = '00';
       if (index < 0) {
         return output; // unit isn't in the input
       }
 
       if (isNaN(input.charAt(index - 2))) {
-        return "0" + input.charAt(index - 1);
-      } else {
-        return input.charAt(index - 2) + input.charAt(index - 1);
+        return `0${input.charAt(index - 1)}`;
       }
+      return input.charAt(index - 2) + input.charAt(index - 1);
     },
-    ISO8601toDuration: function(input) {
-      var H = this.formatTimeUnit(input, "H");
-      var M = this.formatTimeUnit(input, "M");
-      var S = this.formatTimeUnit(input, "S");
+    ISO8601toDuration(input) {
+      let H = this.formatTimeUnit(input, 'H');
+      const M = this.formatTimeUnit(input, 'M');
+      const S = this.formatTimeUnit(input, 'S');
 
-      if (H == "00") {
-        H = "";
+      if (H == '00') {
+        H = '';
       } else {
-        H += ":";
+        H += ':';
       }
 
-      return H + M + ":" + S;
+      return `${H + M}:${S}`;
     },
-    nFormatter: function (num, digits) {
-      var si = [
-        { value: 1, symbol: "" },
-        { value: 1E3, symbol: "k" },
-        { value: 1E6, symbol: "M" },
-        { value: 1E9, symbol: "G" },
-        { value: 1E12, symbol: "T" },
-        { value: 1E15, symbol: "P" },
-        { value: 1E18, symbol: "E" }
+    nFormatter(num, digits) {
+      const si = [
+        { value: 1, symbol: '' },
+        { value: 1E3, symbol: 'k' },
+        { value: 1E6, symbol: 'M' },
+        { value: 1E9, symbol: 'G' },
+        { value: 1E12, symbol: 'T' },
+        { value: 1E15, symbol: 'P' },
+        { value: 1E18, symbol: 'E' },
       ];
-      var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
-      var i;
+      const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+      let i;
       for (i = si.length - 1; i > 0; i--) {
         if (num >= si[i].value) {
           break;
         }
       }
-      return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
-    }
-  }
+      return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol;
+    },
+  },
 };
 </script>
 

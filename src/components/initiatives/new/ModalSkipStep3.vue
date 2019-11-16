@@ -24,12 +24,12 @@
 <script>
 export default {
   methods: {
-    nextStep: function(){
-      this.$emit('continue')
-      this.$parent.close()
-    }
-  }
-}
+    nextStep() {
+      this.$emit('continue');
+      this.$parent.close();
+    },
+  },
+};
 </script>
 
 

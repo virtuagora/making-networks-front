@@ -48,11 +48,11 @@
             Map
             <i class="fas fa-arrow-right"></i>
           </router-link>
-          
+
           </p>
         </div>
         <initiative-carousel></initiative-carousel>
-        
+
         <br />
         <div class="buttons is-centered">
 
@@ -93,7 +93,7 @@
             </router-link>
             </div>
             <div class="column is-2 vhs-container">
-              <router-link 
+              <router-link
               :to="{name: 'catalogCreatingNetworksTv'}" >
               <div class="vhs-effect"></div>
               <img src="/cntv.svg" class="image" />
@@ -143,18 +143,19 @@
 </template>
 
 <script>
-import InitiativeCarousel from "@/components/utils/InitiativeCarousel.vue";
+import InitiativeCarousel from '@/components/utils/InitiativeCarousel.vue';
+
 export default {
   components: {
-    InitiativeCarousel
+    InitiativeCarousel,
   },
   methods: {
-    getSubtitle: function() {
-      let ammount = this.$t("home.subtitle").length;
-      return this.$t("home.subtitle")[Math.floor(Math.random() * ammount)];
-    }
+    getSubtitle() {
+      const ammount = this.$t('home.subtitle').length;
+      return this.$t('home.subtitle')[Math.floor(Math.random() * ammount)];
+    },
   },
-  computed: {}
+  computed: {},
 };
 </script>
 
@@ -243,6 +244,6 @@ export default {
 .creating-network-tv{
     border-top: 1px solid rgba(255, 255, 255, 0.397);
     border-bottom: 1px solid rgba(255, 255, 255, 0.397);
-  
+
 }
 </style>

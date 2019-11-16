@@ -101,13 +101,14 @@
 </template>
 
 <script>
-import InfiniteLoading from "vue-infinite-loading";
-import { debounce } from "lodash";
-import LocationFilter from '@/components/initiatives/list/LocationFilter.vue'
+import InfiniteLoading from 'vue-infinite-loading';
+import { debounce } from 'lodash';
+import LocationFilter from '@/components/initiatives/list/LocationFilter.vue';
+
 export default {
   components: {
     InfiniteLoading,
-    LocationFilter
+    LocationFilter,
   },
   data() {
     return {
@@ -127,45 +128,45 @@ export default {
       notLocated: false,
     };
   },
-  mounted: function() {
+  mounted() {
     this.fetchAreas();
     this.fetchInitiatives();
   },
   methods: {
-    fetchAreas: function() {
+    fetchAreas() {
       this.fetchingAreas = true;
       this.$http
-        .get(`/v1/terms?taxonomy=topics&size=100`)
-        .then(res => {
+        .get('/v1/terms?taxonomy=topics&size=100')
+        .then((res) => {
           this.areas = res.data.data;
           this.fetchingAreas = false;
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
           this.$toast.open({
-            message: `<i class="fas fa-times"></i>&nbsp;Error while fetching areas of interest`,
-            type: "is-danger"
+            message: '<i class="fas fa-times"></i>&nbsp;Error while fetching areas of interest',
+            type: 'is-danger',
           });
         });
     },
     infiniteHandler($state) {
       this.fetchingInitiatives = true;
-      let queryString = {
+      const queryString = {
         offset: this.page * 30,
-        size: 30
+        size: 30,
+      };
+      if (this.selectedAreas.length) queryString.terms = this.selectedAreas.join(',');
+      if (this.inputSearchName) queryString.s = this.inputSearchName;
+      if (this.selectedCity) queryString.city_id = this.selectedCity.id;
+      else if (this.selectedCountry) {
+        queryString.country_id = this.selectedCountry.id;
+      } else if (this.selectedRegion) {
+        queryString.region_id = this.selectedRegion.id;
       }
-      if(this.selectedAreas.length) queryString.terms = this.selectedAreas.join(',')
-      if(this.inputSearchName) queryString.s = this.inputSearchName
-      if (this.selectedCity) queryString.city_id = this.selectedCity.id
-      else if(this.selectedCountry) {
-        queryString.country_id = this.selectedCountry.id
-      } else if(this.selectedRegion) {
-        queryString.region_id = this.selectedRegion.id
-      }
-      if(this.notLocated) queryString.city_id = -1
+      if (this.notLocated) queryString.city_id = -1;
       this.$http
-        .get(`/v1/initiatives`, {
-          params: queryString
+        .get('/v1/initiatives', {
+          params: queryString,
         })
         .then(({ data }) => {
           if (data.data.length) {
@@ -175,137 +176,135 @@ export default {
           } else {
             $state.complete();
           }
-        }).finally( () => {
+        }).finally(() => {
           this.fetchingInitiatives = false;
         });
     },
-    fetchInitiatives: debounce(function() {
+    fetchInitiatives: debounce(function () {
       this.fetchingInitiatives = true;
-      this.firstLoadDone = false
-      this.page = 0
-      let queryString = {
-        size: 30
-      }
-      if(this.selectedAreas.length) queryString.terms = this.selectedAreas.join(',')
-      if(this.inputSearchName) queryString.s = this.inputSearchName
-      if(this.selectedRegion) queryString.region_id = this.selectedRegion.id
-      if(this.selectedCountry) queryString.country_id = this.selectedCountry.id
-      if(this.selectedCity) queryString.city_id = this.selectedCity.id
-      if(this.notLocated) queryString.city_id = -1
+      this.firstLoadDone = false;
+      this.page = 0;
+      const queryString = {
+        size: 30,
+      };
+      if (this.selectedAreas.length) queryString.terms = this.selectedAreas.join(',');
+      if (this.inputSearchName) queryString.s = this.inputSearchName;
+      if (this.selectedRegion) queryString.region_id = this.selectedRegion.id;
+      if (this.selectedCountry) queryString.country_id = this.selectedCountry.id;
+      if (this.selectedCity) queryString.city_id = this.selectedCity.id;
+      if (this.notLocated) queryString.city_id = -1;
       this.$http
-        .get(`/v1/initiatives`, {
-          params: queryString
+        .get('/v1/initiatives', {
+          params: queryString,
         })
-        .then(res => {
-          this.page += 1
+        .then((res) => {
+          this.page += 1;
           this.initiatives = res.data.data;
           this.fetchingInitiatives = false;
-          this.firstLoadDone = true
+          this.firstLoadDone = true;
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
           this.$toast.open({
-            message: `<i class="fas fa-times"></i>&nbsp;Error while fetching initiatives`,
-            type: "is-danger"
+            message: '<i class="fas fa-times"></i>&nbsp;Error while fetching initiatives',
+            type: 'is-danger',
           });
         });
     }, 700),
-    toggleArea: function(areaId) {
+    toggleArea(areaId) {
       if (this.selectedAreas.includes(areaId)) {
         this.selectedAreas = this.selectedAreas.filter(id => id != areaId);
       } else {
         this.selectedAreas.push(areaId);
       }
       this.fetchingInitiatives = true;
-      this.initiatives = []
-      this.fetchInitiatives()
-
-
+      this.initiatives = [];
+      this.fetchInitiatives();
     },
-    toggleShowAreasFilter: function(){
-      this.showFilterAreaOfInteres = !this.showFilterAreaOfInteres
-      if(!this.showFilterAreaOfInteres){
-        this.clearAreasQuery()
+    toggleShowAreasFilter() {
+      this.showFilterAreaOfInteres = !this.showFilterAreaOfInteres;
+      if (!this.showFilterAreaOfInteres) {
+        this.clearAreasQuery();
       }
     },
-    toggleShowLocationFilter: function(){
-      this.showFilterLocation = !this.showFilterLocation
-      if(!this.showFilterLocation){
-        this.clearSelectedCity()
+    toggleShowLocationFilter() {
+      this.showFilterLocation = !this.showFilterLocation;
+      if (!this.showFilterLocation) {
+        this.clearSelectedCity();
       }
     },
-    getAreaButtonClass: function(areaId) {
+    getAreaButtonClass(areaId) {
       return this.selectedAreas.includes(areaId)
-        ? "is-white"
-        : "is-white is-outlined";
+        ? 'is-white'
+        : 'is-white is-outlined';
     },
-    saveRegionQuery: function(location){
-      this.selectedCountry = null
-      this.selectedCity = null
-      this.selectedRegion = location
-      this.notLocated = false
+    saveRegionQuery(location) {
+      this.selectedCountry = null;
+      this.selectedCity = null;
+      this.selectedRegion = location;
+      this.notLocated = false;
       this.fetchingInitiatives = true;
-      this.initiatives = []
-      this.fetchInitiatives()
+      this.initiatives = [];
+      this.fetchInitiatives();
     },
-    saveCountryQuery: function(location){
-      this.selectedCity = null
-      this.selectedCountry = location
-      this.notLocated = false
+    saveCountryQuery(location) {
+      this.selectedCity = null;
+      this.selectedCountry = location;
+      this.notLocated = false;
       this.fetchingInitiatives = true;
-      this.initiatives = []
-      this.fetchInitiatives()
+      this.initiatives = [];
+      this.fetchInitiatives();
     },
-    saveCityQuery: function(location){
-      this.selectedCity = location
-      this.notLocated = false
+    saveCityQuery(location) {
+      this.selectedCity = location;
+      this.notLocated = false;
       this.fetchingInitiatives = true;
-      this.initiatives = []
-      this.fetchInitiatives()
+      this.initiatives = [];
+      this.fetchInitiatives();
     },
-    clearAreasQuery: function(){
-      this.selectedAreas = []
+    clearAreasQuery() {
+      this.selectedAreas = [];
       this.fetchingInitiatives = true;
-      this.initiatives = []
-      this.fetchInitiatives()
+      this.initiatives = [];
+      this.fetchInitiatives();
     },
-    clearSelectedCity: function(){
-      this.selectedRegion = null
-      this.selectedCountry = null
-      this.selectedCity = null
-      this.notLocated = false
+    clearSelectedCity() {
+      this.selectedRegion = null;
+      this.selectedCountry = null;
+      this.selectedCity = null;
+      this.notLocated = false;
       this.fetchingInitiatives = true;
-      this.initiatives = []
-      this.$refs.locationFilter.resetState()
-      this.fetchInitiatives()
+      this.initiatives = [];
+      this.$refs.locationFilter.resetState();
+      this.fetchInitiatives();
     },
-    saveNotLocated: function(){
-      this.selectedRegion = null
-      this.selectedCountry = null
-      this.selectedCity = null
-      this.notLocated = true
+    saveNotLocated() {
+      this.selectedRegion = null;
+      this.selectedCountry = null;
+      this.selectedCity = null;
+      this.notLocated = true;
       this.fetchingInitiatives = true;
-      this.initiatives = []
-      this.$refs.locationFilter.resetState()
-      this.fetchInitiatives()
+      this.initiatives = [];
+      this.$refs.locationFilter.resetState();
+      this.fetchInitiatives();
     },
-    deleteNotLocated: function(){
-      this.clearSelectedCity()
-    }
+    deleteNotLocated() {
+      this.clearSelectedCity();
+    },
   },
   computed: {
-    classToggleShowAreasFilter: function(){
-      return this.showFilterAreaOfInteres ? 'fa-minus-square' : 'fa-plus-square'
+    classToggleShowAreasFilter() {
+      return this.showFilterAreaOfInteres ? 'fa-minus-square' : 'fa-plus-square';
     },
-    classToggleShowLocationFilter: function(){
-      return this.showFilterLocation ? 'fa-minus-square' : 'fa-plus-square'
-    }
+    classToggleShowLocationFilter() {
+      return this.showFilterLocation ? 'fa-minus-square' : 'fa-plus-square';
+    },
   },
   watch: {
-    inputSearchName: function(newVal, oldVal) {
+    inputSearchName(newVal, oldVal) {
       this.fetchInitiatives();
-    }
-  }
+    },
+  },
 };
 </script>
 

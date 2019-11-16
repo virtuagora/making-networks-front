@@ -29,26 +29,26 @@
 </template>
 
 <script>
-import PaginationBar from "@/components/utils/PaginationBar";
-import EmptyTable from "@/components/utils/EmptyTable";
+import PaginationBar from '@/components/utils/PaginationBar';
+import EmptyTable from '@/components/utils/EmptyTable';
 
 export default {
   components: {
     PaginationBar,
-    EmptyTable
+    EmptyTable,
   },
   data() {
     return {
       cities: [],
-      fetching: null
+      fetching: null,
     };
   },
-  mounted: function() {},
+  mounted() {},
   methods: {
-    getCities: function(data) {
+    getCities(data) {
       this.cities = data;
-    }
-  }
+    },
+  },
 };
 </script>
 

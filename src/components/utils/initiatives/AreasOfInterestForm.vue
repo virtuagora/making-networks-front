@@ -39,29 +39,29 @@
         </div>
       </div>
     </div>
-    
+
   </section>
 </template>
 
 <script>
-import PaginationBar from "@/components/utils/PaginationBar";
-import EmptyTable from "@/components/utils/EmptyTable";
 import { differenceBy } from 'lodash';
+import PaginationBar from '@/components/utils/PaginationBar';
+import EmptyTable from '@/components/utils/EmptyTable';
 
 export default {
   props: {
     model: {
       type: Object,
-      required: true
+      required: true,
     },
     id: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   components: {
     PaginationBar,
-    EmptyTable
+    EmptyTable,
   },
   data() {
     return {
@@ -70,100 +70,98 @@ export default {
       selectedAreas: [],
     };
   },
-  mounted: function() {
-    this.currentAreas = this.model.terms
-    this.fetchAvailableAreasOfInterest()
+  mounted() {
+    this.currentAreas = this.model.terms;
+    this.fetchAvailableAreasOfInterest();
   },
   methods: {
-    fetchAvailableAreasOfInterest: function(){
+    fetchAvailableAreasOfInterest() {
       this.startLoading();
       this.$http
-        .get(`/v1/terms?taxonomy=topics&size=100`)
-        .then(res => {
-          this.areas = res.data.data
+        .get('/v1/terms?taxonomy=topics&size=100')
+        .then((res) => {
+          this.areas = res.data.data;
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
           this.$toast.open({
-            message: `<i class="fas fa-times"></i>&nbsp;Error while fetching areas of interest`,
-            type: "is-danger"
+            message: '<i class="fas fa-times"></i>&nbsp;Error while fetching areas of interest',
+            type: 'is-danger',
           });
         })
-        .finally( () => {
+        .finally(() => {
           this.stopLoading();
-        })
+        });
     },
-    
-   
-    getPayload: function() {
-      let data = { };
-      data.terms = this.selectedAreas.map( a => a.id )
+
+
+    getPayload() {
+      const data = { };
+      data.terms = this.selectedAreas.map(a => a.id);
       return { data };
     },
-    submit: function() {
+    submit() {
       this.startLoading();
       this.$http
         .post(
           `/v1/initiatives/${this.id}/terms`,
-          this.getPayload()
+          this.getPayload(),
         )
-        .then(res => {
-          this.selectedAreas.forEach(area => {
-            this.currentAreas.push(area)
-          })
-          this.selectedAreas = []
-          this.$emit('updateModel')
+        .then((res) => {
+          this.selectedAreas.forEach((area) => {
+            this.currentAreas.push(area);
+          });
+          this.selectedAreas = [];
+          this.$emit('updateModel');
           this.$toast.open({
-            message: `<i class="fas fa-check"></i>&nbsp;Areas of interests added to the initiative`,
-            type: "is-success"
+            message: '<i class="fas fa-check"></i>&nbsp;Areas of interests added to the initiative',
+            type: 'is-success',
           });
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
           this.$toast.open({
-            message: `<i class="fas fa-times"></i>&nbsp;Error while adding the area of interest`,
-            type: "is-danger"
+            message: '<i class="fas fa-times"></i>&nbsp;Error while adding the area of interest',
+            type: 'is-danger',
           });
         })
-        .finally( () => {
+        .finally(() => {
           this.stopLoading();
         });
     },
-    remove: function(id) {
+    remove(id) {
       this.startLoading();
       this.$http
         .delete(
-          `/v1/initiatives/${this.id}/terms/${id}`
+          `/v1/initiatives/${this.id}/terms/${id}`,
         )
-        .then(res => {
+        .then((res) => {
           // this.$emit('updateModel')
-          this.currentAreas = this.currentAreas.filter( area => {
-            return area.id != id 
-          })
+          this.currentAreas = this.currentAreas.filter(area => area.id != id);
           this.$toast.open({
-            message: `<i class="fas fa-check"></i>&nbsp;Area of interest has been removed from the initiative`,
-            type: "is-success"
+            message: '<i class="fas fa-check"></i>&nbsp;Area of interest has been removed from the initiative',
+            type: 'is-success',
           });
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
           this.$toast.open({
-            message: `<i class="fas fa-times"></i>&nbsp;Error while removing Area of interest from initiative`,
-            type: "is-danger"
+            message: '<i class="fas fa-times"></i>&nbsp;Error while removing Area of interest from initiative',
+            type: 'is-danger',
           });
         })
-        .finally( () => {
+        .finally(() => {
           this.stopLoading();
         });
-    }
+    },
   },
   computed: {
-    availableAreas: function(){
-      if(!this.areas) return []
-      let auxAreas = differenceBy(this.areas, this.currentAreas, 'id')
-      return differenceBy(auxAreas, this.selectedAreas, 'id')
-    }
-  }
+    availableAreas() {
+      if (!this.areas) return [];
+      const auxAreas = differenceBy(this.areas, this.currentAreas, 'id');
+      return differenceBy(auxAreas, this.selectedAreas, 'id');
+    },
+  },
 };
 </script>
 

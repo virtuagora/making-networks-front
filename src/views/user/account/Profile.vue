@@ -201,56 +201,55 @@ export default {
           website: null,
           twitter: null,
           facebook: null,
-          other_network: null
-        }
+          other_network: null,
+        },
       },
       response: {
-        ok: false
-      }
+        ok: false,
+      },
     };
   },
   mounted() {
     this.fetchUser();
   },
   methods: {
-    sync: function(data){
+    sync(data) {
       this.model.bio = data.bio;
-      console.log(data.bio)
-      Object.keys(data.data).forEach(k => {
-        this.model.data[k] = data.data[k]
-      })
+      console.log(data.bio);
+      Object.keys(data.data).forEach((k) => {
+        this.model.data[k] = data.data[k];
+      });
     },
-    fetchUser: function() {
+    fetchUser() {
       this.startLoading();
       this.$http
         .get(`/v1/users/${this.user.id}`)
-        .then(res => {
-          this.sync(res.data.data)
+        .then((res) => {
+          this.sync(res.data.data);
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
-          if (err.response && err.response.data)
-            this.$toast.open(err.response.data.message);
+          if (err.response && err.response.data) this.$toast.open(err.response.data.message);
         })
         .finally(() => {
           this.stopLoading();
         });
     },
-    getPayload: function() {
-      let data = {};
-      let options = {};
+    getPayload() {
+      const data = {};
+      const options = {};
       data.bio = this.model.bio;
       data.data = this.model.data;
       return { data, options };
     },
     // Submit new pending user
     submit() {
-      this.$validator.validateAll().then(valid => {
+      this.$validator.validateAll().then((valid) => {
         if (!valid) {
           // Not valid
           this.$toast.open({
-            message: this.$t("globals.errors.formNotValid"),
-            type: "is-danger"
+            message: this.$t('globals.errors.formNotValid'),
+            type: 'is-danger',
           });
           return false;
         }
@@ -258,23 +257,24 @@ export default {
         this.startLoading();
         this.$http
           .patch(`/v1/users/${this.user.id}`, this.getPayload())
-          .then(res => {
+          .then((res) => {
             this.response.ok = true;
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err);
-            if (err.response && err.response.data)
+            if (err.response && err.response.data) {
               this.$toast.open({
                 message: this.$t(err.response.data.message),
-                type: "is-danger"
+                type: 'is-danger',
               });
+            }
           })
           .finally(() => {
             this.stopLoading();
           });
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

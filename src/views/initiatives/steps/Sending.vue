@@ -62,7 +62,7 @@ export default {
         options.registered_city_id = null;
       }
       // If user is admin, tell the api to not set the current user (admin) as the owner
-      options.set_owner = this.$store.getters.isAdmin ? false : true;
+      options.set_owner = !this.$store.getters.isAdmin;
       return {
         data,
         options,

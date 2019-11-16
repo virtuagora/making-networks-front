@@ -70,13 +70,13 @@
 </template>
 
 <script>
-import PaginationBar from "@/components/utils/PaginationBar";
-import EmptyTable from "@/components/utils/EmptyTable";
+import PaginationBar from '@/components/utils/PaginationBar';
+import EmptyTable from '@/components/utils/EmptyTable';
 
 export default {
   components: {
     PaginationBar,
-    EmptyTable
+    EmptyTable,
   },
   data() {
     return {
@@ -86,54 +86,54 @@ export default {
       userFound: null,
     };
   },
-  mounted: function() {},
+  mounted() {},
   methods: {
-    getAdmins: function(data) {
+    getAdmins(data) {
       this.admins = data;
     },
-    findUser: function(){
+    findUser() {
       this.$http.get(`/v1/subjects?role=User&username=${this.emailInput}`)
-      .then(res => {
-        if(res.data.data[0]){
-          this.userFound = res.data.data[0]
-        }
-        if(res.data.data.length === 0){
-          this.$toast.open({
-            message: `No result with email <i class="fas fa-envelope fa-fw"></i>&nbsp;${this.emailInput}`,
-            type: 'is-warning',
-          })
-        }
-      })
+        .then((res) => {
+          if (res.data.data[0]) {
+            this.userFound = res.data.data[0];
+          }
+          if (res.data.data.length === 0) {
+            this.$toast.open({
+              message: `No result with email <i class="fas fa-envelope fa-fw"></i>&nbsp;${this.emailInput}`,
+              type: 'is-warning',
+            });
+          }
+        });
     },
-    getPayload: function(){
-      let data = {}
-      return {data}
+    getPayload() {
+      const data = {};
+      return { data };
     },
-    submit: function(){
-      this.startLoading()
+    submit() {
+      this.startLoading();
       this.$http.post(`/v1/subjects/${this.userFound.id}/roles/Admin`, this.getPayload())
-      .then(res => {
-        this.userFound = null
-         this.$toast.open({
-            message: `<i class="fas fa-check"></i>&nbsp;New administrator added`,
+        .then((res) => {
+          this.userFound = null;
+          this.$toast.open({
+            message: '<i class="fas fa-check"></i>&nbsp;New administrator added',
             type: 'is-success',
-          })
-          this.$refs.paginator.getResource()
-      }).catch(err => {
-        console.error(err)
-        this.$toast.open({
-            message: `<i class="fas fa-times"></i>&nbsp;Error while adding administrator`,
+          });
+          this.$refs.paginator.getResource();
+        }).catch((err) => {
+          console.error(err);
+          this.$toast.open({
+            message: '<i class="fas fa-times"></i>&nbsp;Error while adding administrator',
             type: 'is-danger',
-          })
-        this.stopLoading()
-      })
-    }
+          });
+          this.stopLoading();
+        });
+    },
   },
   computed: {
-    query: function(){
-      return { role: 'Admin' }
-    }
-  }
+    query() {
+      return { role: 'Admin' };
+    },
+  },
 };
 </script>
 
