@@ -1,11 +1,10 @@
 const home = {
   subtitle: [
-    'Where do you want to go today?',
+    'Lot\'s of initiatives to check!',
     'Let\'s explore!',
-    'Where should we go?',
-    'Let\'s check the map!',
-    'Our next destiny awaits!',
-    'Look all the friends you can connect!',
+    'Where will you go today?',
+    'Check the map!',
+    'Your next destiny awaits!',
   ],
   buttons: {
     seeMap: 'Check the map',
