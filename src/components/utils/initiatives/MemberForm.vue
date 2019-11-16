@@ -1,24 +1,42 @@
 <template>
   <section>
     <h1 class="title is-3 has-text-dark">Members of the initiative</h1>
-    <p>Here you can see and add new member of the initiative</p>
+    <p>Here you can see and add new members to the initiative</p>
     <br />
     <b-table :data="subjects" :loading="fetching" striped>
       <template slot-scope="props">
-        <b-table-column field="id" label="ID" width="40" numeric>{{ props.row.id }}</b-table-column>
-        <b-table-column label="Avatar" width="100" centered>
-          <img :src="makeUserAvatar(props.row)" class="image is-rounded is-48x48 is-centered" alt />
+        <b-table-column label="Avatar" width="60" centered>
+          <img :src="makeUserAvatar(props.row)" class="image is-rounded is-32x32 is-centered" alt />
         </b-table-column>
         <b-table-column
           field="display_name"
           label="Name and surname"
           sortable
-        >{{ props.row.display_name }}</b-table-column>
-        <b-table-column label="Actions" width="100" centered>
-          <div class="buttons is-marginless is-centered">
-            <a @click="remove(props.row.id)" class="button is-small" disabled>
-              <i class="fas fa-times"></i>
-            </a>
+        >
+        <p class="is-size-5">{{ props.row.display_name }}</p>
+        <p class="tags">
+        <span class="tag is-dark is-rounded" v-if="props.row.pivot.relation == 'owner'"><i class="fas fa-shield-alt"></i>&nbsp;Owner</span>
+        <span class="tag is-dark is-rounded" v-if="props.row.pivot.relation == 'member'"><i class="fas fa-user"></i>&nbsp;Member</span>
+        </p>
+          </b-table-column>
+        <b-table-column label="Actions" width="200">
+          <div class="action-listss">
+
+            <p>
+              <a @click="changeRelation('member')" class="has-text-link" v-if="props.row.pivot.relation == 'member'">
+                <i class="fas fa-shield-alt"></i> Promote as owner
+              </a>
+            </p>
+            <p>
+              <a @click="changeRelation('member')" class="has-text-link" v-if="props.row.pivot.relation == 'owner'">
+                <i class="fas fa-angle-down"></i> Demote as member
+              </a>
+            </p>
+            <p>
+              <a @click="remove(props.row.id)" class="has-text-danger">
+                <i class="fas fa-times"></i> Remove
+              </a>
+            </p>
           </div>
         </b-table-column>
       </template>
@@ -34,10 +52,10 @@
       :fetching.sync="fetching"
       :query="query"
     ></pagination-bar>
-    <hr>
+    <hr />
     <div class="field">
       <label for class="label">Add a new member</label>
-      <div class="control">
+      <div class="control" v-if="!userFound">
         <input
           v-model="emailInput"
           type="text"
@@ -52,47 +70,60 @@
       </div>
     </div>
     <div class="buttons is-right">
-      <button @click="findUser" class="button is-primary">
+      <button @click="findUser" v-if="!userFound" class="button is-primary">
         <i class="fas fa-search"></i>&nbsp;Check user
       </button>
     </div>
     <div v-if="userFound">
-    <b-notification type="is-dark" aria-close-label="Close notification" @close="userFound = null">
-      <div class="content">
-        <p>
-          Found user
-          <b>{{userFound.display_name}}</b>
-          <br />Do you want to add the user as one member of the initiative?
-        </p>
-        <div class="buttons">
-          <button @click="submit" class="button is-primary is-small">
-            <i class="fas fa-check"></i>&nbsp;Yes
-          </button>
+      <b-notification
+        type="is-light"
+        aria-close-label="Close notification"
+        @close="userFound = null"
+      >
+        <div class="media">
+          <div class="media-left">
+            <img :src="makeUserAvatar(userFound)" class="image is-rounded is-48x48 is-centered" alt />
+          </div>
+          <div class="media-content">
+            <h1 class="subtitle is-7 is-marginless">
+              Found user with email
+              <i>{{emailInput}}</i>
+            </h1>
+            <h1 class="subtitle is-4 is-marginless">{{userFound.display_name}}</h1>
+            <br />
+            <div class="buttons">
+              <button @click="submit('owner')" class="button is-link is-outlined">
+                <i class="fas fa-user-shield"></i>&nbsp;Add as Owner
+              </button>
+              <button @click="submit('member')" class="button is-link is-outlined">
+                <i class="fas fa-user-plus"></i>&nbsp;Add as Member
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </b-notification>
+      </b-notification>
     </div>
   </section>
 </template>
 
 <script>
-import PaginationBar from '@/components/utils/PaginationBar';
-import EmptyTable from '@/components/utils/EmptyTable';
+import PaginationBar from "@/components/utils/PaginationBar";
+import EmptyTable from "@/components/utils/EmptyTable";
 
 export default {
   props: {
     model: {
       type: Object,
-      required: true,
+      required: true
     },
     id: {
       type: Number,
-      required: true,
-    },
+      required: true
+    }
   },
   components: {
     PaginationBar,
-    EmptyTable,
+    EmptyTable
   },
   data() {
     return {
@@ -100,11 +131,10 @@ export default {
       subjects: [],
       fetching: null,
       userFound: null,
+      memberType: null
     };
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
     getSubjects(data) {
       this.subjects = data;
@@ -113,14 +143,14 @@ export default {
       this.startLoading();
       this.$http
         .get(`/v1/subjects?role=User&username=${this.emailInput}`)
-        .then((res) => {
+        .then(res => {
           if (res.data.data[0]) {
             this.userFound = res.data.data[0];
           }
           if (res.data.data.length === 0) {
             this.$toast.open({
               message: `No result with email <i class="fas fa-envelope fa-fw"></i>&nbsp;${this.emailInput}`,
-              type: 'is-warning',
+              type: "is-warning"
             });
           }
         })
@@ -129,63 +159,73 @@ export default {
         });
     },
     getPayload() {
-      const data = { relation: 'owner' };
+      const data = { relation: this.memberType };
       return { data };
     },
-    submit() {
+    submit(type) {
+      this.memberType = type;
       this.startLoading();
       this.$http
         .post(
           `/v1/users/${this.userFound.id}/groups/${this.id}`,
-          this.getPayload(),
+          this.getPayload()
         )
-        .then((res) => {
-          this.userFound = null;
+        .then(res => {
+          this.resetState()
           this.$toast.open({
-            message: '<i class="fas fa-check"></i>&nbsp;New user added to the initiative',
-            type: 'is-success',
+            message:
+              '<i class="fas fa-check"></i>&nbsp;New user added to the initiative',
+            type: "is-success"
           });
           this.$refs.paginator.getResource();
         })
-        .catch((err) => {
+        .catch(err => {
           console.error(err);
           this.$toast.open({
-            message: '<i class="fas fa-times"></i>&nbsp;Error while adding user',
-            type: 'is-danger',
+            message:
+              '<i class="fas fa-times"></i>&nbsp;Error while adding user',
+            type: "is-danger"
           });
           this.stopLoading();
         });
+    },
+    resetState() {
+      this.userFound = null;
+      this.memberType = null;
+      this.emailInput = null;
     },
     remove(id) {
       this.startLoading();
       this.$http
         .post(
           `/v1/users/${this.userFound.id}/groups/${this.id}`,
-          this.getPayload(),
+          this.getPayload()
         )
-        .then((res) => {
+        .then(res => {
           this.userFound = null;
           this.$toast.open({
-            message: '<i class="fas fa-check"></i>&nbsp;User has been removed from the initiative',
-            type: 'is-success',
+            message:
+              '<i class="fas fa-check"></i>&nbsp;User has been removed from the initiative',
+            type: "is-success"
           });
           this.$refs.paginator.getResource();
         })
-        .catch((err) => {
+        .catch(err => {
           console.error(err);
           this.$toast.open({
-            message: '<i class="fas fa-times"></i>&nbsp;Error while removing user from initiative',
-            type: 'is-danger',
+            message:
+              '<i class="fas fa-times"></i>&nbsp;Error while removing user from initiative',
+            type: "is-danger"
           });
           this.stopLoading();
         });
-    },
+    }
   },
   computed: {
     query() {
-      return { };
-    },
-  },
+      return {};
+    }
+  }
 };
 </script>
 

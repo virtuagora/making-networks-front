@@ -24,7 +24,7 @@
       <div class="control">
         <label class="label">Remove initiative from the map</label>
         <div class="is-clearfix">
-          <button @click="removeCity" class="button is-small is-danger is-pulled-right"><i class="fas fa-times"></i>&nbsp;Remove location</button>
+          <button @click="removeCity" class="button is-danger is-outlined is-pulled-right"><i class="fas fa-times"></i>&nbsp;Remove location</button>
           <p class="is-pulled-left">¿Do you really want to remove the initiative from the map?</p>
         </div>
       </div>
