@@ -15,7 +15,6 @@
           <router-link :to="{name: 'admin'}">Dashboard</router-link>
         </li>
       </ul>
-      <b-collapse>
       <p class="menu-label">Initiative management</p>
       <ul class="menu-list">
         <li>
@@ -30,7 +29,6 @@
           <router-link :to="{name: 'adminInitiativesListCities'}">List cities with initiative</router-link>
         </li>
       </ul>
-      </b-collapse>
       <p class="menu-label">Map management</p>
       <ul class="menu-list">
         <li>

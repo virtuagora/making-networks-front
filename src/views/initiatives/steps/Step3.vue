@@ -11,7 +11,7 @@
       <span class="is-500 has-text-primary">3.</span>
       &nbsp;{{$t('forms.user.addInitiative.step3.fields[0].question')}}
     </h1>
-    <div class="columns is-centered">
+    <div class="columns is-centered" id="selectLocationNewInitiative">
       <div class="column is-8">
         <div class="field">
           <div class="control">
@@ -275,7 +275,7 @@ export default {
 </script>
 
 <style lang="scss">
-.autocomplete.control .dropdown-menu {
+#selectLocationNewInitiative .autocomplete.control .dropdown-menu {
   position: relative;
 }
 .map-container {

@@ -111,6 +111,18 @@ const addInitiative = {
   },
   step6: {
     conversation: [
+      'We would like to know if your initiative has impact or presence in other countries.',
+      'Can you list the countries where your initiative has impact? This step is totally optional',
+    ],
+  },
+  step7: {
+    conversation: [
+      'Also, we would like to know the areas of interest of your initiative.',
+      'Can you select what areas of interest is your initiative involved with?',
+    ],
+  },
+  step8: {
+    conversation: [
       'Thank you for sharing!',
       'To finish, we will ask you for some private data',
     ],
@@ -127,7 +139,7 @@ const addInitiative = {
       },
     ],
   },
-  step7: {
+  step9: {
     conversation: [
       'We are almost done! Now it\'s time to check the information you gave us',
       'If you need to change something, please, click the pencil icon',
@@ -144,6 +156,8 @@ const addInitiative = {
       networks: 'Networks',
       contact: 'Contact',
       private: 'Private data',
+      countries: 'Countries',
+      areasOfInterest: 'Areas of interest',
     },
   },
   sending: {

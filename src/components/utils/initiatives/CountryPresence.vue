@@ -1,17 +1,24 @@
 <template>
-  <div>
-    <div class="content">
-      <p
-        class="has-text-centered is-italic"
-        v-for="(p,index) in $t('forms.user.addInitiative.step6.conversation')"
-        :key="index"
-      >{{p}}</p>
-    </div>
-    <h1 class="subtitle is-5 has-text-centered">
-      <span class="is-500 has-text-primary">6.</span>&nbsp;Search countries by region and add it to the list
-    </h1>
-   <div class="columns">
-      <div class="column ">
+  <section>
+    <h1 class="title is-3 has-text-dark">Presence in countries</h1>
+    <p>Countries there the initiative is working or doing presence</p>
+    <br />
+    <b-taglist v-if="model.countries && model.countries.length > 0">
+      <b-tag
+        v-for="country in model.countries"
+        type="is-primary"
+        size="is-medium"
+        closable
+        :key="country.id"
+        @close="remove(country.id)"
+      >{{ getSpaceLocalization(country) }}</b-tag>
+    </b-taglist>
+    <hr />
+    <h1 class="subtitle has-text-dark is-4 is-marginless">Add a new country</h1>
+    <p>Here you can add a new country where your initiative has presence:</p>
+    <br />
+    <div class="columns">
+      <div class="column">
         <div class="field">
           <div class="control">
             <b-autocomplete
@@ -23,7 +30,6 @@
               :loading="fetchingRegions"
               field="name"
               @select="option => selectRegion(option)"
-              size="is-medium"
             >
               <template slot="empty">{{$t('admin.initiatives.create.fields.location.noResults')}}</template>
               <template slot-scope="props">{{ props.option.name }}</template>
@@ -45,7 +51,6 @@
               :readonly="!selectedRegion"
               :disabled="!selectedRegion"
               @select="option => selectCountry(option)"
-              size="is-medium"
             >
               <template slot="empty">{{$t('admin.initiatives.create.fields.location.noResults')}}</template>
               <template slot-scope="props">{{ props.option.name }}</template>
@@ -54,39 +59,25 @@
         </div>
       </div>
       <div class="column is-narrow">
-        <button class="button is-primary is-medium" @click="add" :disabled="!selectedCountry">
-          <i class="fas fa-plus"></i>&nbsp;Add
+        <button class="button is-primary" @click="checkSubmit" :disabled="!selectedCountry">
+          <i class="fas fa-plus"></i>&nbsp;Add country
         </button>
       </div>
     </div>
-   <h1 class="subtitle is-5 has-text-centered">
-      <span class="is-500 has-text-primary"></span>&nbsp;List of countries where the initiative has presence
-    </h1>
-    <b-taglist v-if="model.countries && model.countries.length > 0" class="is-centered">
-        <b-tag v-for="country in model.countries" type="is-primary" size="is-medium" closable :key="country.id" @close="remove(country.id)">{{ getSpaceLocalization(country) }}</b-tag>
-      </b-taglist>
-    <p class="is-italic has-text-centered" v-else>No countries listed</p>
-    <br />
-    <div class="buttons is-centered">
-      <button @click="$emit('backward')" class="button is-rounded is-white is-outlined is-medium">
-        <i class="fas fa-arrow-left"></i>
-      </button>
-      <button @click="goForward" class="button is-rounded is-primary is-outlined is-medium">
-        <i class="fas fa-arrow-right"></i>
-      </button>
-    </div>
-  </div>
+  </section>
 </template>
 
 <script>
+import PaginationBar from "@/components/utils/PaginationBar";
+import EmptyTable from "@/components/utils/EmptyTable";
+
 export default {
-  props: {
-    model: {
-      type: Object,
-      required: true
-    }
+  props: ["model", "id"],
+  components: {
+    PaginationBar,
+    EmptyTable
   },
-  data(){
+  data() {
     return {
       queryRegion: "",
       queryCountry: "",
@@ -96,15 +87,12 @@ export default {
       dataCountries: [],
       selectedRegion: null,
       selectedCountry: null
-    }
+    };
   },
   mounted() {
     this.fetchRegions();
   },
   methods: {
-    goForward() {
-      this.$emit('forward');
-    },
     fetchRegions() {
       this.$http
         .get("/v1/regions?size=100")
@@ -149,23 +137,74 @@ export default {
       this.selectedCountry = null;
       this.fetchRegions();
     },
-    add() {
-      let found = this.model.countries.find( c => c.id == this.selectedCountry.id)
-      if(!found) this.model.countries.push(this.selectedCountry)
+    checkSubmit() {
+      let found = this.model.countries.find(
+        c => c.id == this.selectedCountry.id
+      );
+      if (!found) this.submit();
       else {
-         this.$toast.open({
+        this.$toast.open({
           message:
-            '<i class="fas fa-exclamation-triangle"></i>&nbsp;The country is already listed',
+            '<i class="fas fa-check"></i>&nbsp;The country is already listed',
           type: "is-warning"
         });
+        this.queryRegion = "";
+        this.queryCountry = "";
+        this.selectedRegion = null;
+        this.selectedCountry = null;
       }
-      this.queryRegion = "";
-      this.queryCountry = "";
-      this.selectedRegion = null;
-      this.selectedCountry = null;
+    },
+    submit() {
+      this.startLoading();
+      this.$http
+        .post(`/v1/initiatives/${this.id}/countries`, this.getPayload())
+        .then(res => {
+          this.$emit("updateModel");
+          this.queryRegion = "";
+          this.queryCountry = "";
+          this.selectedRegion = null;
+          this.selectedCountry = null;
+          this.$toast.open({
+            message:
+              '<i class="fas fa-check"></i>&nbsp;New country associated to the initiative',
+            type: "is-success"
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          this.$toast.open({
+            message:
+              '<i class="fas fa-times"></i>&nbsp;Error while adding country to initiative',
+            type: "is-danger"
+          });
+        })
+        .finally(() => {
+          this.stopLoading();
+        });
     },
     remove(id) {
-      this.model.countries = this.model.countries.filter( c => c.id != id)           
+      this.startLoading();
+      this.$http
+        .delete(`/v1/initiatives/${this.id}/countries/${id}`)
+        .then(res => {
+          this.$emit("updateModel");
+          this.$toast.open({
+            message:
+              '<i class="fas fa-check"></i>&nbsp;The country has been removed from the initiative',
+            type: "is-success"
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          this.$toast.open({
+            message:
+              '<i class="fas fa-times"></i>&nbsp;Error while removing country from initiative',
+            type: "is-danger"
+          });
+        })
+        .finally(() => {
+          this.stopLoading();
+        });
     }
   },
   computed: {
@@ -205,3 +244,6 @@ export default {
   }
 };
 </script>
+
+<style>
+</style>

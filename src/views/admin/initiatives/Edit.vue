@@ -7,6 +7,7 @@
       <b-tab-item label="Information" icon="scroll" icon-pack="fas"></b-tab-item>
       <b-tab-item label="Location" icon="map-marker-alt" icon-pack="fas"></b-tab-item>
       <b-tab-item label="Owner" icon="user" icon-pack="fas"></b-tab-item>
+      <b-tab-item label="Countries" icon="map-signs" icon-pack="fas"></b-tab-item>
       <b-tab-item label="Areas of Interest" icon="tag" icon-pack="fas"></b-tab-item>
     </b-tabs>
     <div class="card">
@@ -14,7 +15,8 @@
         <DataForm ref="data" v-if="activeTab == 0" @update="submitData" edit :model.sync="model" />
         <LocationForm ref="location" v-if="activeTab ==  1" @update="submitLocation" edit :model.sync="model" />
         <MemberForm ref="member" v-if="activeTab ==  2" :model.sync="model" :id="id" />
-        <AreasOfInterestForm ref="areasOfInterest" v-if="activeTab ==  3" :model.sync="model" :id="id" @updateModel="silentFetch" />
+        <CountryPresence ref="countries" v-if="activeTab ==  3" :model.sync="model" :id="id"  @updateModel="updateModel" />
+        <AreasOfInterestForm ref="areasOfInterest" v-if="activeTab ==  4" :model.sync="model" :id="id" @updateModel="updateModel" />
       </div>
     </div>
   </section>
@@ -26,6 +28,7 @@ import omit from 'lodash/omit';
 import DataForm from '@/components/utils/initiatives/DataForm.vue';
 import LocationForm from '@/components/utils/initiatives/LocationForm.vue';
 import MemberForm from '@/components/utils/initiatives/MemberForm.vue';
+import CountryPresence from '@/components/utils/initiatives/CountryPresence.vue';
 import AreasOfInterestForm from '@/components/utils/initiatives/AreasOfInterestForm.vue';
 
 export default {
@@ -34,6 +37,7 @@ export default {
     DataForm,
     LocationForm,
     MemberForm,
+    CountryPresence,
     AreasOfInterestForm,
   },
   data() {
@@ -58,6 +62,7 @@ export default {
         selectedRegion: null,
         selectedCountry: null,
         selectedCity: null,
+        countries: null,
         city: null,
       },
       originalDataPayload: null,
@@ -79,10 +84,10 @@ export default {
       });
   },
   methods: {
-    silentFetch() {
+    updateModel() {
       this.$http.get(`/v1/initiatives/${this.id}`)
         .then((res) => {
-          this.model = merge(this.model, res.data.data);
+          this.model = merge(this.emptyModel(), res.data.data)
           this.originalDataPayload = this.createPayloadDataForm();
           this.originalLocationPayload = this.createPayloadLocationForm();
         }).catch((err) => {
@@ -122,6 +127,30 @@ export default {
     },
     makePayload(data) {
       return { data };
+    },
+    emptyModel(){
+      return {
+        name: null,
+        description: null,
+        public_data: {
+          goals: null,
+          founding_year: null,
+          website: null,
+          facebook: null,
+          twitter: null,
+          other_network: null,
+          role_of_youth: null,
+        },
+        private_data: {
+          contact_email: null,
+          contact_phone: null,
+        },
+        selectedRegion: null,
+        selectedCountry: null,
+        selectedCity: null,
+        countries: null,
+        city: null,
+      }
     },
     submitData() {
       Promise.all([this.$refs.data.validate()]).then((values) => {

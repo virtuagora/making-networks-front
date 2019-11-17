@@ -13,9 +13,9 @@
                   </h1>
                 </div>
                 <transition name="component-fade" mode="out-in">
-                  <component v-bind:is="`Step${step}`" v-if="step >= 0 && step <= 7 " @forward="forward" @backward="backward" @goTo="goTo" :model.sync="model"></component>
-                  <Sending v-else-if="step == 8" @forward="forward" @backward="backward" @goTo="goTo" :model.sync="model"></Sending>
-                  <Confirmation v-else-if="step == 9" @forward="forward" @backward="backward" @goTo="goTo" :model.sync="model"></Confirmation>
+                  <component v-bind:is="`Step${step}`" v-if="step >= 0 && step <= 9 " @forward="forward" @backward="backward" @goTo="goTo" :model.sync="model"></component>
+                  <Sending v-else-if="step == 10" @forward="forward" @backward="backward" @goTo="goTo" :model.sync="model"></Sending>
+                  <Confirmation v-else-if="step == 11" @forward="forward" @backward="backward" @goTo="goTo" :model.sync="model"></Confirmation>
                   <Fail v-else-if="step == -1" @goTo="goTo"></Fail>
                 </transition>
               </div>
@@ -38,6 +38,8 @@ import Step4 from './steps/Step4.vue';
 import Step5 from './steps/Step5.vue';
 import Step6 from './steps/Step6.vue';
 import Step7 from './steps/Step7.vue';
+import Step8 from './steps/Step8.vue';
+import Step9 from './steps/Step9.vue';
 import Sending from './steps/Sending.vue';
 import Confirmation from './steps/Confirmation.vue';
 import Fail from './steps/Fail.vue';
@@ -65,6 +67,8 @@ export default {
         selectedRegion: null,
         selectedCountry: null,
         selectedCity: null,
+        countries: [],
+        areasOfInterest: []
       },
     };
   },
@@ -77,6 +81,8 @@ export default {
     Step5,
     Step6,
     Step7,
+    Step8,
+    Step9,
     Sending,
     Confirmation,
     Fail,
@@ -90,8 +96,8 @@ export default {
       this.step -= 1;
     },
     forward() {
-      if (this.step >= 9) {
-        this.step = 9;
+      if (this.step >= 11) {
+        this.step = 11;
         return;
       }
       this.step += 1;

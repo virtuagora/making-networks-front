@@ -3,14 +3,14 @@
     <h1 class="title is-3 has-text-dark">Areas of interest of the initiative</h1>
     <p>Here you can see the areas of interests of the initiative. Click <i class="fas fa-times-circle"></i>&nbsp;to delete an area</p>
     <br>
-      <b-taglist v-if="currentAreas && currentAreas.length > 0">
-        <b-tag v-for="area in currentAreas" type="is-primary" size="is-medium" closable :key="area.id" @close="remove(area.id)">{{area.name}}</b-tag>
+      <b-taglist v-if="model.terms && model.terms.length > 0">
+        <b-tag v-for="area in model.terms" type="is-primary" size="is-medium" closable :key="area.id" @close="remove(area.id)">{{area.name}}</b-tag>
       </b-taglist>
       <div class="notification is-warning" v-else>
         <i class="fas fa-exclamation-circle"></i>&nbsp;There are no areas of interest associated to the initiative
       </div>
     <hr>
-    <h1 class="title has-text-dark is-3">Manage areas of interest</h1>
+    <h1 class="subtitle has-text-dark is-4 is-marginless">Manage areas of interest</h1>
     <p>Here you can add multiples areas of interest to the initiative</p>
     <br>
     <div class="columns">
@@ -49,29 +49,18 @@ import PaginationBar from '@/components/utils/PaginationBar';
 import EmptyTable from '@/components/utils/EmptyTable';
 
 export default {
-  props: {
-    model: {
-      type: Object,
-      required: true,
-    },
-    id: {
-      type: Number,
-      required: true,
-    },
-  },
+  props: ['model','id'],
   components: {
     PaginationBar,
     EmptyTable,
   },
   data() {
     return {
-      currentAreas: [],
       areas: [],
       selectedAreas: [],
     };
   },
   mounted() {
-    this.currentAreas = this.model.terms;
     this.fetchAvailableAreasOfInterest();
   },
   methods: {
@@ -108,9 +97,6 @@ export default {
           this.getPayload(),
         )
         .then((res) => {
-          this.selectedAreas.forEach((area) => {
-            this.currentAreas.push(area);
-          });
           this.selectedAreas = [];
           this.$emit('updateModel');
           this.$toast.open({
@@ -136,8 +122,7 @@ export default {
           `/v1/initiatives/${this.id}/terms/${id}`,
         )
         .then((res) => {
-          // this.$emit('updateModel')
-          this.currentAreas = this.currentAreas.filter(area => area.id != id);
+          this.$emit('updateModel')
           this.$toast.open({
             message: '<i class="fas fa-check"></i>&nbsp;Area of interest has been removed from the initiative',
             type: 'is-success',
@@ -158,7 +143,7 @@ export default {
   computed: {
     availableAreas() {
       if (!this.areas) return [];
-      const auxAreas = differenceBy(this.areas, this.currentAreas, 'id');
+      const auxAreas = differenceBy(this.areas, this.model.terms, 'id');
       return differenceBy(auxAreas, this.selectedAreas, 'id');
     },
   },
