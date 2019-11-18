@@ -40,6 +40,12 @@
                   @click="randomDesination"
                 >Don't know? Try a random destination!</a>
               </p>
+              <p class="help" v-if="mapReady">
+                <a
+                  class="has-text-primary"
+                  @click="fetchCountries"
+                >Magic</a>
+              </p>
             </div>
           </div>
         </div>
@@ -68,6 +74,7 @@
             @mapReady="mapReady = true"
             v-if="!fetchingCities"
             :cities="cities"
+            :countries="countriesGeoJson"
           ></InitiativeMap>
         </div>
       </section>
@@ -94,6 +101,7 @@ export default {
       queryCity: '',
       selectedCity: null,
       mapReady: false,
+      countriesGeoJson: []
     };
   },
   created() {
@@ -110,6 +118,44 @@ export default {
       if (city == null) return;
       this.selectedCity = city;
       this.$refs.initiativeMap.flyTo(city.space.point.coordinates);
+    },
+    fetchCountries(){
+      this.countriesGeoJson = []
+      this.$http.get('/v1/countries?havingInitiatives').then(res => {
+        this.prepareCountryGeoJson(res.data.data)
+      })
+    },
+    prepareCountryGeoJson(data){
+      data.forEach( country => {
+        let geojson = {id: country.code_3, source: {}, layer: null}
+        geojson.source[country.code_3] = {
+          type: "geojson",
+          data: {
+            type: 'Feature',
+            geometry: {}
+          }
+        }
+        geojson.layer = {
+          id: `layer-${country.code_3}`,
+          type: "fill",
+          source: country.code_3,
+          paint: {
+            "fill-color": "#da8313",
+            "fill-opacity": 0.4
+          }
+        }
+        switch(country.space.type){
+          case 'Polygon':
+            geojson.source[country.code_3].data.geometry = country.space.polygon
+            // geojson.layer.filter = ["==", "$type", "Polygon"]
+            break;
+          case 'MultiPolygon':
+            geojson.source[country.code_3].data.geometry = country.space.multi_polygon
+            // geojson.layer.filter = ["==", "$type", "MultiPolygon"]
+            break;
+        }
+        this.countriesGeoJson.push(geojson)
+      })
     },
     randomDesination() {
       let randomCity = null;
