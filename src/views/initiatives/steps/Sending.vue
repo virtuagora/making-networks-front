@@ -52,8 +52,8 @@ export default {
         twitter: this.isOptional(this.model.public_data.twitter),
         other_network: this.isOptional(this.model.public_data.other_network),
       }),
-      data.countries = this.model.countries.map(c => c.id);
-      data.terms = this.model.areasOfInterest.map(a => a.id);
+      options.countries = this.model.countries.map(c => c.id);
+      options.terms = this.model.areasOfInterest.map(a => a.id);
 
       (data.private_data = {
         contact_email: this.model.private_data.contact_email,
