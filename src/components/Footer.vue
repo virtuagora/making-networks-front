@@ -23,7 +23,8 @@ export default {};
 
 <style lang="scss">
 #app-footer {
-  background-color: #000000;
+  border-top:1px solid #727A7E;
+  background-color: transparent;
   b {
     color: #fff;
   }
