@@ -91,11 +91,12 @@ export default {
         this.$router.push({name: 'login'})
         return false
       }
-      this.$http.post(`/v1/initiatives/${this.initiative.id}/followers/${this.user.id}`)
+      this.startLoading()
+      this.$http.post(`/v1/initiatives/${this.initiative.id}/members/${this.user.id}`)
       .then( res => {
         this.$toast.open({
             message:
-              '<i class="fas fa-check"></i>&nbsp;Ok',
+              '<i class="fas fa-check"></i>&nbsp;You are now following this initiative!',
             type: "is-success"
           });
       })
@@ -103,9 +104,12 @@ export default {
         console.error(err)
         this.$toast.open({
             message:
-              '<i class="fas fa-times"></i>&nbsp;WTF',
+              '<i class="fas fa-times"></i>&nbsp;There was an error',
             type: "is-danger"
           });
+      })
+      .finally( () => {
+        this.stopLoading()
       }) 
     },
     unfollowInitiative: function(){
@@ -113,11 +117,12 @@ export default {
         this.$router.push({name: 'login'})
         return false
       }
-      this.$http.delete(`/v1/initiatives/${this.initiative.id}/followers/${this.user.id}`)
+      this.startLoading()
+      this.$http.delete(`/v1/initiatives/${this.initiative.id}/members/${this.user.id}`)
       .then( res => {
         this.$toast.open({
             message:
-              '<i class="fas fa-check"></i>&nbsp;Ok',
+              '<i class="fas fa-check"></i>&nbsp;You don\'t follow the initiative anymore',
             type: "is-success"
           });
       })
@@ -125,9 +130,12 @@ export default {
         console.error(err)
         this.$toast.open({
             message:
-              '<i class="fas fa-times"></i>&nbsp;WTF',
+              '<i class="fas fa-times"></i>&nbsp;There was an error',
             type: "is-danger"
           });
+      })
+      .finally( () => {
+        this.stopLoading()
       }) 
     }
   },

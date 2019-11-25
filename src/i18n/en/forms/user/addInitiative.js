@@ -176,7 +176,7 @@ const addInitiative = {
       'Add a picture and/or the logo of your initiative',
       'Edit any information of your initiative',
       'Add other users as members or owners',
-    ]
+    ],
   },
 };
 
