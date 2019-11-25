@@ -16,6 +16,11 @@
               </div>
               <div class="column">
                 <h1 class="title is-1 is-size-3-touch">{{userProfile.display_name}}</h1>
+                <div class="buttons" v-if="user && user.id == userProfile.id" >
+                  <router-link :to="{name: 'userProfile', params: {id: user.id}}" class="button is-outlined is-white is-small is-800" v-if="isAdmin">
+                    <i class="fas fa-pencil-alt fa-lg fa-fw"></i>&nbsp; E D I T
+                  </router-link>
+                </div>
                 <div class="content">
                   <p class="add-br is-italic" >{{userProfile.bio || 'I haven\'t completed my bio yet!' }}</p>
                 </div>
