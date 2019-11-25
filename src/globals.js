@@ -52,11 +52,16 @@ const globals = {
         switch (sub.img_type) {
           case 1:
             return `https://www.gravatar.com/avatar/${sub.img_hash}?d=mm&s=256`;
+          case 2:
+            return `${this.apiUrl}/${sub.img_hash}`;
           default:
             return `https://www.gravatar.com/avatar/${sub.img_hash}?d=mm&s=256`;
         }
       }
       return 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp';
+    },
+    getTimestamp() {
+      return Math.round((new Date()).getTime() / 1000);
     },
     /**
      * Deep diff between two object, using lodash
