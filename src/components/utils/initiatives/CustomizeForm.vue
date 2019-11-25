@@ -7,7 +7,6 @@
       <div class="column">
         <div class="box has-text-black has-text-centered">
           <div v-if="model.subject.img_type == 2" >
-
           <img :src="`${makeUserAvatar(model.subject)}?${timestamp}`" class="image showPicture is-centered" alt="">
           <button @click="removePicture('avatar')" class="button is-small is-danger is-outlined">
             <i class="fas fa-times"></i>&nbsp;Remove
@@ -159,7 +158,7 @@ export default {
         console.error(err)
         this.$toast.open({
             message:
-              '<i class="fas fa-check"></i>&nbsp;hmm',
+              '<i class="fas fa-times"></i>&nbsp;There was an error while uploading your picture',
             type: "is-danger"
           });
       }).finally(() => {

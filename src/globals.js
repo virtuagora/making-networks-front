@@ -115,6 +115,8 @@ const globals = {
         switch (this.user.img_type) {
           case 1:
             return `https://www.gravatar.com/avatar/${this.user.img_hash}?d=mm&s=256`;
+          case 2:
+            return `${this.apiUrl}/${this.user.img_hash}?${this.$store.state.lastTimeUpdated}`;
           default:
             return `https://www.gravatar.com/avatar/${this.user.img_hash}?d=mm&s=256`;
         }

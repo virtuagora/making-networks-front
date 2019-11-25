@@ -37,6 +37,12 @@ export default new Vuex.Store({
       // eslint-disable-next-line
       state.userToken = userToken
     },
+    updateSubjectUserAvatar(state, payload) {
+      // eslint-disable-next-line
+      Vue.set(state.userToken.subject, 'img_type', payload.imgType);
+      Vue.set(state.userToken.subject, 'img_hash', payload.imgHash);
+      state.lastTimeUpdated = Date.now();
+    },
     setInitiative(state, initiative) {
       // eslint-disable-next-line
       state.fetchService.initiative = initiative
