@@ -1,8 +1,15 @@
 <template>
   <section>
     <h1 class="title is-3 has-text-dark">Members of the initiative</h1>
-    <p>Here you can see and add new members to the initiative</p>
+    <p>Here you can see and add new members to the initiative.<br>You can add members to your initiative <b>AFTER</b> they are followers of your initiative</p>
     <br />
+    <div class="notification is-dark">
+      <p>
+        <i class="fas fa-exclamation-triangle"></i>&nbsp;<b>BE CAREFUL</b>
+      </p>
+      <p class="is-size-7">* Try not to lock yourself out of the initiative without any responsables. If that happens, contact an admin.</p>
+      <p class="is-size-7">* Remember, only users with role "owner" can edit an initiative</p>
+    </div>
     <b-table :data="subjects" :loading="fetching" striped>
       <template slot-scope="props">
         <b-table-column label="Avatar" width="60" centered>
@@ -11,32 +18,44 @@
         <b-table-column
           field="display_name"
           label="Name and surname"
-          sortable
         >
         <p class="is-size-5">{{ props.row.display_name }}</p>
-        <p class="tags">
+          </b-table-column>
+        <b-table-column
+          field="pivot.relation"
+          label="Role"
+          centered
+        >
         <span class="tag is-dark is-rounded" v-if="props.row.pivot.relation == 'owner'"><i class="fas fa-shield-alt"></i>&nbsp;Owner</span>
         <span class="tag is-dark is-rounded" v-if="props.row.pivot.relation == 'member'"><i class="fas fa-user"></i>&nbsp;Member</span>
-        </p>
           </b-table-column>
         <b-table-column label="Actions" width="200">
-          <div class="action-listss">
-
+          <div class="action-list">
             <p>
-              <a @click="changeRelation('member')" class="has-text-link" v-if="props.row.pivot.relation == 'member'">
-                <i class="fas fa-shield-alt"></i> Promote as owner
+              <a @click="changeRelation('owner',props.row.id)" class="has-text-link" v-if="props.row.pivot.relation == 'member'">
+                <i class="fas fa-arrow-up"></i> Promote to owner
               </a>
             </p>
             <p>
-              <a @click="changeRelation('member')" class="has-text-link" v-if="props.row.pivot.relation == 'owner'">
-                <i class="fas fa-angle-down"></i> Demote as member
+              <a @click="openModalDemote('member',props.row)" class="has-text-link" v-if="props.row.pivot.relation == 'owner'">
+                <i class="fas fa-arrow-down"></i> Demote to member
               </a>
             </p>
             <p>
+              <a @click="changeRelation('member',props.row.id)" class="has-text-link" v-if="props.row.pivot.relation == 'follower'">
+                <i class="fas fa-arrow-up"></i> Promote to member
+              </a>
+            </p>
+            <p>
+              <a @click="openModalDemote('follower',props.row)" class="has-text-link" v-if="props.row.pivot.relation == 'member'">
+                <i class="fas fa-arrow-down"></i> Demote to follower
+              </a>
+            </p>
+            <!-- <p>
               <a @click="remove(props.row.id)" class="has-text-danger">
                 <i class="fas fa-times"></i> Remove
               </a>
-            </p>
+            </p> -->
           </div>
         </b-table-column>
       </template>
@@ -52,7 +71,7 @@
       :fetching.sync="fetching"
       :query="query"
     ></pagination-bar>
-    <hr />
+    <!-- <hr />
     <div class="field">
       <label for class="label">Add a new member</label>
       <div class="control" v-if="!userFound">
@@ -102,13 +121,14 @@
           </div>
         </div>
       </b-notification>
-    </div>
+    </div> -->
   </section>
 </template>
 
 <script>
 import PaginationBar from "@/components/utils/PaginationBar";
 import EmptyTable from "@/components/utils/EmptyTable";
+import ConfirmDemote from '@/components/utils/modals/ConfirmDemote';
 
 export default {
   props: {
@@ -162,6 +182,22 @@ export default {
       const data = { relation: this.memberType };
       return { data };
     },
+    openModalDemote(resourceType,resource) {
+      this.$modal.open({
+        parent: this,
+        component: ConfirmDemote,
+        props: {
+          resourceType,
+          resource,
+        },
+        hasModalCard: true,
+        events: {
+          confirm: (resource,resourceType) => {
+            this.changeRelation(resourceType,resource.id);
+          },
+        },
+      });
+    },
     submit(type) {
       this.memberType = type;
       this.startLoading();
@@ -197,10 +233,7 @@ export default {
     remove(id) {
       this.startLoading();
       this.$http
-        .post(
-          `/v1/users/${this.userFound.id}/groups/${this.id}`,
-          this.getPayload()
-        )
+        .delete(`/v1/initiatives/${this.id}/members/${id}`)
         .then(res => {
           this.userFound = null;
           this.$toast.open({
@@ -217,6 +250,42 @@ export default {
               '<i class="fas fa-times"></i>&nbsp;Error while removing user from initiative',
             type: "is-danger"
           });
+          this.stopLoading();
+        });
+    },
+    changeRelation(type,id){
+      this.startLoading();
+      this.$http
+        .patch(
+          `/v1/initiatives/${this.id}/members/${id}`,
+          {
+            data: {
+              relation: type
+            }
+          }
+        )
+        .then(res => {
+          this.$toast.open({
+            message:
+              '<i class="fas fa-check"></i>&nbsp;User has been updated',
+            type: "is-success"
+          });
+          if(this.user.id === id && (type == "member" || type == "follower")){
+            this.$store.dispatch('logout');
+            this.$router.push({ name: 'home' });
+          } else {
+            this.$refs.paginator.getResource();
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          this.$toast.open({
+            message:
+              '<i class="fas fa-times"></i>&nbsp;Error while removing user from initiative',
+            type: "is-danger"
+          });
+        })
+        .finally( () => {
           this.stopLoading();
         });
     }
