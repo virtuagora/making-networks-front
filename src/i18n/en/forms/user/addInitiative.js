@@ -169,9 +169,14 @@ const addInitiative = {
   confirmation: {
     congratulations: 'Congratulations!',
     text: [
-      'You\'ve successfully added your organization',
+      'You\'ve successfully added your initiative',
       'Thanks for being part of this project!',
     ],
+    edit: [
+      'Add a picture and/or the logo of your initiative',
+      'Edit any information of your initiative',
+      'Add other users as members or owners',
+    ]
   },
 };
 
