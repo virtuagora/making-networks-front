@@ -19,7 +19,6 @@ import CreatingNetworksTVView from './views/creating-networks-tv/View.vue';
 // Initiative
 import Initiative from './views/initiative/Initiative.vue';
 import InitiativeAbout from './views/initiative/About.vue';
-import InitiativeDetails from './views/initiative/Details.vue';
 import InitiativeMembers from './views/initiative/Members.vue';
 import InitiativeLocation from './views/initiative/Location.vue';
 // User Profile
@@ -122,13 +121,6 @@ const router = new Router({
           path: '',
           name: 'initiative',
           component: InitiativeAbout,
-          props: true,
-          meta: {},
-        },
-        {
-          path: 'details',
-          name: 'initiativeDetails',
-          component: InitiativeDetails,
           props: true,
           meta: {},
         },
