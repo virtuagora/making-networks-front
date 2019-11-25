@@ -5,18 +5,20 @@
     <br />
     <b-tabs type="is-toggle" v-model="activeTab" expanded class="is-marginless">
       <b-tab-item label="Information" icon="scroll" icon-pack="fas"></b-tab-item>
+      <b-tab-item label="Customize" icon="paint-roller" icon-pack="fas"></b-tab-item>
       <b-tab-item label="Location" icon="map-marker-alt" icon-pack="fas"></b-tab-item>
-      <b-tab-item label="Owner" icon="user" icon-pack="fas"></b-tab-item>
+      <b-tab-item label="Members" icon="users" icon-pack="fas"></b-tab-item>
       <b-tab-item label="Countries" icon="map-signs" icon-pack="fas"></b-tab-item>
       <b-tab-item label="Areas of Interest" icon="tag" icon-pack="fas"></b-tab-item>
     </b-tabs>
     <div class="card">
       <div class="card-content">
         <DataForm ref="data" v-if="activeTab == 0" @update="submitData" edit :model.sync="model" />
-        <LocationForm ref="location" v-if="activeTab ==  1" @update="submitLocation" edit :model.sync="model" />
-        <MemberForm ref="member" v-if="activeTab ==  2" :model.sync="model" :id="id" />
-        <CountryPresence ref="countries" v-if="activeTab ==  3" :model.sync="model" :id="id"  @updateModel="updateModel" />
-        <AreasOfInterestForm ref="areasOfInterest" v-if="activeTab ==  4" :model.sync="model" :id="id" @updateModel="updateModel" />
+        <CustomizeForm ref="customize" v-if="activeTab ==  1" edit :model.sync="model" :id="id" @updateModel="updateModel" />
+        <LocationForm ref="location" v-if="activeTab ==  2" @update="submitLocation" edit :model.sync="model" />
+        <MemberForm ref="member" v-if="activeTab ==  3" :model.sync="model" :id="id" />
+        <CountryPresence ref="countries" v-if="activeTab ==  4" :model.sync="model" :id="id"  @updateModel="updateModel" />
+        <AreasOfInterestForm ref="areasOfInterest" v-if="activeTab ==  5" :model.sync="model" :id="id" @updateModel="updateModel" />
       </div>
     </div>
   </section>
@@ -26,6 +28,7 @@
 import merge from 'lodash/merge';
 import omit from 'lodash/omit';
 import DataForm from '@/components/utils/initiatives/DataForm.vue';
+import CustomizeForm from '@/components/utils/initiatives/CustomizeForm.vue';
 import LocationForm from '@/components/utils/initiatives/LocationForm.vue';
 import MemberForm from '@/components/utils/initiatives/MemberForm.vue';
 import CountryPresence from '@/components/utils/initiatives/CountryPresence.vue';
@@ -35,6 +38,7 @@ export default {
   props: ['id'],
   components: {
     DataForm,
+    CustomizeForm,
     LocationForm,
     MemberForm,
     CountryPresence,
@@ -64,6 +68,8 @@ export default {
         selectedCity: null,
         countries: null,
         city: null,
+        subject: null,
+        pictures: null
       },
       originalDataPayload: null,
       originalLocationPayload: null,
