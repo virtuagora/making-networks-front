@@ -17,8 +17,8 @@
       <slide class="item-carousel" v-for="initiative in initiatives" :key="initiative.id">
         <router-link :to="{name: 'initiative', params: { id: initiative.id }}">
 
-        <div class="box-initiative">
-          <div>
+        <div class="box-initiative" :class="{'has-background': initiative.pictures && initiative.pictures.cover}" :style="backgroundImageUrl(initiative)">
+          <div :class="{'has-background-gradient': initiative.pictures && initiative.pictures.cover}">
             <div class="to-bottom">
               <div class="field is-grouped is-grouped-multiline">
                 <div class="control">
@@ -117,6 +117,13 @@ export default {
         .sort((a, b) => a[0] - b[0])
         .map(a => a[1]);
     },
+    backgroundImageUrl(initiative){
+      if(!initiative) return null
+      if (initiative.pictures && initiative.pictures.cover){
+        return `background-image: url(${this.apiUrl}/${initiative.pictures.cover.path})`
+      }
+      return null
+    }
   },
   computed: {
     navigationEnabled() {

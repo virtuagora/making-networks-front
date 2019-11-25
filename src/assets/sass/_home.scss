@@ -41,6 +41,29 @@
           padding: 1rem;
         }
       }
+      &.has-background{
+          background-position: center center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          .has-background-gradient{
+            background: #faaa35; /* Old browsers */
+          background: -moz-linear-gradient(
+            -45deg,
+            #faaa35 5%,
+            #f36d2200 94%
+          ); /* FF3.6-15 */
+          background: -webkit-linear-gradient(
+            -45deg,
+            #faaa35 5%,
+            #f36f2200 94%
+          ); /* Chrome10-25,Safari5.1-6 */
+          background: linear-gradient(
+            135deg,
+            #faaa35 5%,
+            #f36d2200 94%
+          ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+          }
+      }
       .title,
       .subtitle {
         color: #fff;
