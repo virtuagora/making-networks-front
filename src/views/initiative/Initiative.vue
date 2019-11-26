@@ -26,10 +26,10 @@
               </div>
             </div>
             <div class="buttons is-centered" v-if="user" >
-              <button @click="followInitiative" class="button is-outlined is-white is-small is-800">
+              <button @click="followInitiative" v-if="initiativeContext && initiativeContext.connection == null" class="button is-outlined is-white is-small is-800">
                 <i class="fas fa-plus fa-lg fa-fw"></i>&nbsp; F O L L O W
               </button>
-              <button @click="unfollowInitiative" class="button is-outlined is-white is-small is-800">
+              <button @click="unfollowInitiative" v-if="initiativeContext && initiativeContext.connection && initiativeContext.connection.relation=='follower'" class="button is-outlined is-white is-small is-800">
                 <i class="fas fa-minus fa-lg fa-fw"></i>&nbsp; U N F O L L O W
               </button>
               <EditButton :initiative="initiative.id" />
@@ -142,6 +142,9 @@ export default {
   computed: {
     initiative() {
       return this.$store.getters.initiative;
+    },
+    initiativeContext() {
+      return this.$store.getters.initiativeContext;
     },
     backgroundImageUrl(){
       if(!this.initiative) return null

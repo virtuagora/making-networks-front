@@ -20,6 +20,7 @@ export default new Vuex.Store({
     lastTimeUpdated: Date.now(),
     fetchService: {
       initiative: null,
+      initiativeContext: null,
       userProfile: null,
       video: null,
     },
@@ -45,7 +46,8 @@ export default new Vuex.Store({
     },
     setInitiative(state, initiative) {
       // eslint-disable-next-line
-      state.fetchService.initiative = initiative
+      state.fetchService.initiative = initiative.data;
+      state.fetchService.initiativeContext = initiative.context;
     },
     setUserProfile(state, userProfile) {
       // eslint-disable-next-line
@@ -68,6 +70,10 @@ export default new Vuex.Store({
     },
     initiative: (state) => {
       if (state.fetchService.initiative) return state.fetchService.initiative;
+      return null;
+    },
+    initiativeContext: (state) => {
+      if (state.fetchService.initiative) return state.fetchService.initiativeContext;
       return null;
     },
     userProfile: (state) => {

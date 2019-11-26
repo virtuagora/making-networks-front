@@ -144,7 +144,7 @@ const router = new Router({
         http
           .get(`/v1/initiatives/${to.params.id}`)
           .then((response) => {
-            store.commit('setInitiative', response.data.data);
+            store.commit('setInitiative', response.data);
             console.log('GET OK - Got initiative');
             next();
           })
