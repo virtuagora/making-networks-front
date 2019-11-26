@@ -40,10 +40,10 @@
                   @click="randomDesination"
                 >Don't know? Try a random destination!</a>
               </p>
-              <p class="help">
+              <p class="help" v-if="!fetchingCities && mapReady">
                 <b-switch
                 type='is-primary'
-                @input="changeToggleView">Toggle presence of initiatives <span class="tag is-primary">New!</span></b-switch>
+                @input="changeToggleView">Toggle presence in countries <span class="has-text-primary"><i class="fas fa-asterisk"></i>&nbsp;(New!)</span></b-switch>
               </p>
               <!-- <p class="help" v-if="mapReady">
                 <a

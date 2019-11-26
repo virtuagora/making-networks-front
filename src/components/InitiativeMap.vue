@@ -13,7 +13,7 @@
       <MglMarker
         :coordinates="city.space.point.coordinates"
         anchor="bottom"
-        v-for="city in cities"
+        v-for="city in citiesArray"
         :key="city.id"
         :color="colorMarker"
       >
@@ -117,8 +117,9 @@ export default {
       this.className = 'active';
         await this.$refs.theMap.map.setLayoutProperty('countries-layer', 'visibility', 'visible');
       }
+      this.toggleShowCities()
     },
-    showCities: function() {
+    toggleShowCities: function() {
       this.showCities = !this.showCities;
     },
     drawCountryGeoJson: async function(geojson) {
@@ -146,6 +147,7 @@ export default {
       await this.$refs.theMap.map.on('click', 'countries-layer', (e) => {
         this.openCountryModalLayer(e.features[0].properties)
       })
+      this.toggleShowCities()
       // await this.$refs.theMap.map.addLayer({
       //   id: "countries-labels",
       //   type: "symbol",
@@ -166,6 +168,10 @@ export default {
     }
   },
   computed: {
+    citiesArray: function(){
+      if(this.showCities) return this.cities
+      else return [] 
+    }
   }
 };
 </script>
