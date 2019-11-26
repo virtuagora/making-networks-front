@@ -40,12 +40,17 @@
                   @click="randomDesination"
                 >Don't know? Try a random destination!</a>
               </p>
-              <p class="help" v-if="mapReady">
+              <p class="help">
+                <b-switch
+                type='is-primary'
+                @input="changeToggleView">Toggle presence of initiatives <span class="tag is-primary">New!</span></b-switch>
+              </p>
+              <!-- <p class="help" v-if="mapReady">
                 <a
                   class="has-text-primary"
                   @click="fetchCountries"
                 >Magic</a>
-              </p>
+              </p> -->
             </div>
           </div>
         </div>
@@ -53,13 +58,19 @@
           <div v-if="mapReady" class="has-text-centered">
             <router-link
               :to="{name: user ? 'newInitiative' : 'login' }"
-              class="button is-medium is-primary animated bounce is-outlined"
+              class="button is-medium is-primary animated bounce is-outlined is-hidden-touch"
+            >
+              <i class="fas fa-plus"></i>&nbsp;Add your initiative
+            </router-link>
+            <router-link
+              :to="{name: user ? 'newInitiative' : 'login' }"
+              class="button is-primary animated bounce is-outlined is-hidden-desktop"
             >
               <i class="fas fa-plus"></i>&nbsp;Add your initiative
             </router-link>
             <br />
-            <br />
-            <a class="has-text-white toggle-button" @click="openUnlocated">
+            <br class="is-hidden-touch"/>
+            <a class="has-text-white toggle-button is-size-7-touch" @click="openUnlocated">
               <i class="fas fa-question-circle"></i>&nbsp;List initiatives without city
             </a>
           </div>
@@ -74,7 +85,6 @@
             @mapReady="mapReady = true"
             v-if="!fetchingCities"
             :cities="cities"
-            :countries="countriesGeoJson"
           ></InitiativeMap>
         </div>
       </section>
@@ -101,7 +111,7 @@ export default {
       queryCity: '',
       selectedCity: null,
       mapReady: false,
-      countriesGeoJson: []
+      countriesFetched: false,
     };
   },
   created() {
@@ -120,42 +130,45 @@ export default {
       this.$refs.initiativeMap.flyTo(city.space.point.coordinates);
     },
     fetchCountries(){
-      this.countriesGeoJson = []
+      if(this.countriesFetched) return
+      this.startLoading()
       this.$http.get('/v1/countries?havingInitiatives').then(res => {
+        this.countriesFetched = true
         this.prepareCountryGeoJson(res.data.data)
+      }).finally( () => {
+        this.stopLoading()
       })
     },
     prepareCountryGeoJson(data){
-      data.forEach( country => {
-        let geojson = {id: country.code_3, source: {}, layer: null}
-        geojson.source[country.code_3] = {
-          type: "geojson",
-          data: {
-            type: 'Feature',
-            geometry: {}
-          }
+      let geojson = {
+        type: "geojson",
+        data: {
+          type: 'FeatureCollection',
+          features: []
         }
-        geojson.layer = {
-          id: `layer-${country.code_3}`,
-          type: "fill",
-          source: country.code_3,
-          paint: {
-            "fill-color": "#da8313",
-            "fill-opacity": 0.4
-          }
+      }
+      data.forEach( country => {
+        let feature = {
+          type: "Feature",
+          id: `${country.code_3}`,
+          properties:{
+            name: country.name,
+            initiatives: country.initiatives_count
+          },
         }
         switch(country.space.type){
           case 'Polygon':
-            geojson.source[country.code_3].data.geometry = country.space.polygon
+            feature.geometry = country.space.polygon
             // geojson.layer.filter = ["==", "$type", "Polygon"]
             break;
           case 'MultiPolygon':
-            geojson.source[country.code_3].data.geometry = country.space.multi_polygon
+            feature.geometry  = country.space.multi_polygon
             // geojson.layer.filter = ["==", "$type", "MultiPolygon"]
             break;
         }
-        this.countriesGeoJson.push(geojson)
+        geojson.data.features.push(feature)
       })
+      this.$refs.initiativeMap.drawCountryGeoJson(geojson)
     },
     randomDesination() {
       let randomCity = null;
@@ -181,6 +194,16 @@ export default {
     closeSlider() {
       this.$refs.initiativesNotLocatedSlider.slideout.close();
     },
+    changeToggleView: function(newVal){
+      console.log(newVal)
+      if(newVal == true){
+        if(!this.countriesFetched) this.fetchCountries()
+        else this.$refs.initiativeMap.toggleCountriesVisibility();
+      }
+      else {
+        this.$refs.initiativeMap.toggleCountriesVisibility();
+      }
+    }
   },
   computed: {
     placeholderInput() {
