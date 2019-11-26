@@ -132,7 +132,7 @@ export default {
     fetchCountries(){
       if(this.countriesFetched) return
       this.startLoading()
-      this.$http.get('/v1/countries?havingInitiatives').then(res => {
+      this.$http.get('/v1/countries?having=initiatives').then(res => {
         this.countriesFetched = true
         this.prepareCountryGeoJson(res.data.data)
       }).finally( () => {
