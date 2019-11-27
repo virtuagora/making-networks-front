@@ -1,7 +1,7 @@
 <template>
   <section>
     <h1 class="title is-3">Edit initiative</h1>
-    <p>Edit the initiative as an admin.</p>
+    <p>Edit the initiative as an admin. <router-link :to="{ name: 'initiative', params: { id: id } }" class="has-text-primary">Go to the initiative&nbsp;<i class="fas fa-arrow-right"></i></router-link></p>
     <br />
     <b-tabs type="is-toggle" v-model="activeTab" expanded class="is-marginless">
       <b-tab-item label="Information" icon="scroll" icon-pack="fas"></b-tab-item>
