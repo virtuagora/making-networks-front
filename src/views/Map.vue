@@ -152,6 +152,7 @@ export default {
           type: "Feature",
           id: `${country.code_3}`,
           properties:{
+            countryId: country.id,
             name: country.name,
             initiatives: country.initiatives_count
           },
