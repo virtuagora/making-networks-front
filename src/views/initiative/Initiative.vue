@@ -99,6 +99,7 @@ export default {
               '<i class="fas fa-check"></i>&nbsp;You are now following this initiative!',
             type: "is-success"
           });
+        this.updateInitiative()
       })
       .catch(err => {
         console.error(err)
@@ -125,6 +126,7 @@ export default {
               '<i class="fas fa-check"></i>&nbsp;You don\'t follow the initiative anymore',
             type: "is-success"
           });
+        this.updateInitiative()
       })
       .catch(err => {
         console.error(err)
@@ -137,6 +139,17 @@ export default {
       .finally( () => {
         this.stopLoading()
       }) 
+    },
+    updateInitiative: function() {
+      this.$http
+        .get(`/v1/initiatives/${this.initiative.id}`)
+        .then((response) => {
+          this.$store.commit('setInitiative', response.data);
+        })
+        .catch(err => {
+          console.error(err)
+        })
+
     }
   },
   computed: {
@@ -163,7 +176,7 @@ export default {
       http
         .get(`/v1/initiatives/${to.params.id}`)
         .then((response) => {
-          store.commit('setInitiative', response.data.data);
+          store.commit('setInitiative', response.data);
           console.log('GET OK - Got initiative');
           next();
         })
@@ -222,6 +235,7 @@ export default {
 }
 .initiative-logo{
   height: 128px;
+  margin-bottom:10px;
 }
 #particles-js {
   // background-size: cover;
