@@ -51,11 +51,6 @@
                 <i class="fas fa-arrow-down"></i> Demote to follower
               </a>
             </p>
-            <!-- <p>
-              <a @click="remove(props.row.id)" class="has-text-danger">
-                <i class="fas fa-times"></i> Remove
-              </a>
-            </p> -->
           </div>
         </b-table-column>
       </template>
@@ -71,57 +66,6 @@
       :fetching.sync="fetching"
       :query="query"
     ></pagination-bar>
-    <!-- <hr />
-    <div class="field">
-      <label for class="label">Add a new member</label>
-      <div class="control" v-if="!userFound">
-        <input
-          v-model="emailInput"
-          type="text"
-          class="input"
-          name="Email"
-          placeholder="Type the email"
-          v-validate="{email: true}"
-          @keyup.enter="findUser"
-        />
-        <p class="help is-dark">Write the new email of a new member</p>
-        <p class="help is-danger" :v-show="errors.has('Email')">{{errors.first('Email')}}</p>
-      </div>
-    </div>
-    <div class="buttons is-right">
-      <button @click="findUser" v-if="!userFound" class="button is-primary">
-        <i class="fas fa-search"></i>&nbsp;Check user
-      </button>
-    </div>
-    <div v-if="userFound">
-      <b-notification
-        type="is-light"
-        aria-close-label="Close notification"
-        @close="userFound = null"
-      >
-        <div class="media">
-          <div class="media-left">
-            <img :src="makeUserAvatar(userFound)" class="image is-rounded is-48x48 is-centered" alt />
-          </div>
-          <div class="media-content">
-            <h1 class="subtitle is-7 is-marginless">
-              Found user with email
-              <i>{{emailInput}}</i>
-            </h1>
-            <h1 class="subtitle is-4 is-marginless">{{userFound.display_name}}</h1>
-            <br />
-            <div class="buttons">
-              <button @click="submit('owner')" class="button is-link is-outlined">
-                <i class="fas fa-user-shield"></i>&nbsp;Add as Owner
-              </button>
-              <button @click="submit('member')" class="button is-link is-outlined">
-                <i class="fas fa-user-plus"></i>&nbsp;Add as Member
-              </button>
-            </div>
-          </div>
-        </div>
-      </b-notification>
-    </div> -->
   </section>
 </template>
 
@@ -147,11 +91,8 @@ export default {
   },
   data() {
     return {
-      emailInput: null,
       subjects: [],
       fetching: null,
-      userFound: null,
-      memberType: null
     };
   },
   mounted() {},
@@ -159,29 +100,7 @@ export default {
     getSubjects(data) {
       this.subjects = data;
     },
-    findUser() {
-      this.startLoading();
-      this.$http
-        .get(`/v1/subjects?role=User&username=${this.emailInput}`)
-        .then(res => {
-          if (res.data.data[0]) {
-            this.userFound = res.data.data[0];
-          }
-          if (res.data.data.length === 0) {
-            this.$toast.open({
-              message: `No result with email <i class="fas fa-envelope fa-fw"></i>&nbsp;${this.emailInput}`,
-              type: "is-warning"
-            });
-          }
-        })
-        .finally(() => {
-          this.stopLoading();
-        });
-    },
-    getPayload() {
-      const data = { relation: this.memberType };
-      return { data };
-    },
+    
     openModalDemote(resourceType,resource) {
       this.$modal.open({
         parent: this,
@@ -197,38 +116,6 @@ export default {
           },
         },
       });
-    },
-    submit(type) {
-      this.memberType = type;
-      this.startLoading();
-      this.$http
-        .post(
-          `/v1/users/${this.userFound.id}/groups/${this.id}`,
-          this.getPayload()
-        )
-        .then(res => {
-          this.resetState()
-          this.$toast.open({
-            message:
-              '<i class="fas fa-check"></i>&nbsp;New user added to the initiative',
-            type: "is-success"
-          });
-          this.$refs.paginator.getResource();
-        })
-        .catch(err => {
-          console.error(err);
-          this.$toast.open({
-            message:
-              '<i class="fas fa-times"></i>&nbsp;Error while adding user',
-            type: "is-danger"
-          });
-          this.stopLoading();
-        });
-    },
-    resetState() {
-      this.userFound = null;
-      this.memberType = null;
-      this.emailInput = null;
     },
     remove(id) {
       this.startLoading();
@@ -270,12 +157,15 @@ export default {
               '<i class="fas fa-check"></i>&nbsp;User has been updated',
             type: "is-success"
           });
-          if(this.user.id === id && (type == "member" || type == "follower")){
-            this.$store.dispatch('logout');
-            this.$router.push({ name: 'home' });
-          } else {
-            this.$refs.paginator.getResource();
+          if(!this.isAdmin && this.$route.name != 'adminInitiativesEdit'){
+            if(this.user.id === id && (type == "member" || type == "follower")){
+              this.$store.dispatch('logout');
+              this.$router.push({ name: 'home' });
+            } else {
+              this.$refs.paginator.getResource();
+            }
           }
+          this.$refs.paginator.getResource();
         })
         .catch(err => {
           console.error(err);
