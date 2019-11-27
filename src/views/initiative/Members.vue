@@ -1,11 +1,27 @@
 <template>
   <section>
     <h1 class="subtitle is-5 has-text-primary has-text-centered">Members</h1>
-    <div class="columns is-multiline is-mobile is-centered is-vcentered">
-      <div class="column is-6-mobile is-3-desktop has-text-centered" v-for="member in members" :key="member.id">
+    <div class="columns is-multiline is-mobile is-centered">
+      <div class="column is-6-mobile is-3-desktop has-text-centered" v-for="member in ownersAndMembers" :key="member.id">
         <router-link :to="{name: 'profile',params: {id: member.id}}" class="has-text-white">
-        <img :src="makeUserAvatar(member)" class="image is-rounded is-96x96 is-centered member-icon" />
-        <p>{{member.display_name}}</p>
+        <img :src="makeUserAvatar(member)" class="image is-rounded is-128x128 is-centered member-icon" />
+        <p>{{member.display_name}}
+          <br>
+          <span class="is-size-7" v-if="member.pivot.relation == 'owner'"><i class="fas fa-shield-alt"></i>&nbsp;Owner</span>
+          <span class="is-size-7" v-if="member.pivot.relation == 'member'"><i class="fas fa-star"></i>&nbsp;Member</span>
+        </p>
+        </router-link>
+      </div>
+    </div>
+    <h1 class="subtitle is-5 has-text-primary has-text-centered">Followers</h1>
+<div class="columns is-multiline is-mobile is-centered">
+      <div class="column is-6-mobile is-3-desktop has-text-centered" v-for="member in followers" :key="member.id">
+        <router-link :to="{name: 'profile',params: {id: member.id}}" class="has-text-white">
+        <img :src="makeUserAvatar(member)" class="image is-rounded is-64x64 is-centered member-icon" />
+        <p>{{member.display_name}}
+          <br>
+          <span class="is-size-7"><i class="fas fa-thumbs-up"></i>&nbsp;Follower</span>
+        </p>
         </router-link>
       </div>
     </div>
@@ -36,6 +52,7 @@ export default {
       isFetching: false,
       members: [],
       page: 0,
+      sort: ['owner','member']
     };
   },
   components: {
@@ -47,8 +64,8 @@ export default {
       this.$http
         .get(`/v1/initiatives/${this.id}/members`, {
           params: {
-            offset: this.page * 20,
-            size: 20,
+            offset: this.page * 100,
+            size: 100,
           },
         })
         .then(({ data }) => {
@@ -67,6 +84,19 @@ export default {
     initiative() {
       return this.$store.getters.initiative;
     },
+    ownersAndMembers(){
+      return this.members.filter( m => {
+        return (['owner','member']).includes(m.pivot.relation)
+      }).sort((a,b) => {
+        return this.sort.indexOf(a.pivot.relation) - this.sort.indexOf(b.pivot.relation)
+      })
+    },
+    followers(){
+      return this.members.filter( m => {
+        return m.pivot.relation == 'follower'
+      })
+    }
+
   },
 
 };
