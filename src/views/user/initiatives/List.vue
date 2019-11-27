@@ -8,10 +8,10 @@
         <b-table :data="initiatives" :loading="fetching" striped>
           <template slot-scope="props">
             <b-table-column field="id" label="ID" width="40" numeric>{{ props.row.id }}</b-table-column>
-            <b-table-column field="name" label="Name" sortable>
-              <router-link :to="{ name: 'initiative', params: { id: props.row.id } }">{{ props.row.name }}</router-link></b-table-column>
-            <b-table-column field="created_at" label="Created">{{ props.row.created_at }}</b-table-column>
-            <b-table-column width="50"><router-link :to="{name: 'userInitiativesEdit', params: {id: props.row.id}}">Edit</router-link>&nbsp;<a @click="openModalDelete(props.row)" class="has-text-danger">Delete</a></b-table-column>
+            <b-table-column field="name" label="Name">
+              <router-link :to="{ name: 'userInitiativesEdit', params: { id: props.row.id } }">{{ props.row.name }}</router-link></b-table-column>
+            <b-table-column field="created_at" label="Created">{{ props.row.created_at.split(' ')[0] }}</b-table-column>
+            <b-table-column width="80"><router-link :to="{name: 'initiative', params: {id: props.row.id}}">View</router-link>&nbsp;&nbsp;<router-link :to="{name: 'userInitiativesEdit', params: {id: props.row.id}}">Edit</router-link>&nbsp;&nbsp;<a @click="openModalDelete(props.row)" class="has-text-danger">Delete</a></b-table-column>
           </template>
           <template slot="empty">
             <empty-table></empty-table>
