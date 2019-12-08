@@ -43,47 +43,46 @@ export default {
   data() {
     return {
       termInput: null,
-    }
+    };
   },
   methods: {
     getPayload() {
       const data = {};
       const options = {};
-      data.name = this.termInput
-      data.taxonomy_id = 'topics'
+      data.name = this.termInput;
+      data.taxonomy_id = 'topics';
       data.data = null;
       return {
         data,
-        options
+        options,
       };
     },
     submit() {
-      this.$validator.validateAll().then(valid => {
+      this.$validator.validateAll().then((valid) => {
         if (!valid) {
           this.$toast.open({ message: this.$t('globals.formNotValid'), type: 'is-danger' });
           return false;
         }
         this.startLoading();
         this.$http
-          .post("/v1/terms", this.getPayload())
-          .then(res => {
+          .post('/v1/terms', this.getPayload())
+          .then((res) => {
             this.$toast.open({
-              message: `<i class="fas fa-check"></i>&nbsp;New area of interest has been created`,
-              type: "is-success"
+              message: '<i class="fas fa-check"></i>&nbsp;New area of interest has been created',
+              type: 'is-success',
             });
-            this.$router.push({name: "adminAreasOfInterestList"});
+            this.$router.push({ name: 'adminAreasOfInterestList' });
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err);
-            if (err.response && err.response.data)
-              this.$toast.open(err.response.data.message);
+            if (err.response && err.response.data) this.$toast.open(err.response.data.message);
           })
           .finally(() => {
             this.stopLoading();
           });
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

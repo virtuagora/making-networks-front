@@ -11,7 +11,7 @@
       <span class="is-500 has-text-primary">3.</span>
       &nbsp;{{$t('forms.user.addInitiative.step3.fields[0].question')}}
     </h1>
-    <div class="columns is-centered">
+    <div class="columns is-centered" id="selectLocationNewInitiative">
       <div class="column is-8">
         <div class="field">
           <div class="control">
@@ -110,22 +110,22 @@
 </template>
 
 <script>
-import AddCityModal from "@/components/initiatives/new/AddCityModal";
-import ModalSkipStep3 from "@/components/initiatives/new/ModalSkipStep3.vue"
-import debounce from "lodash/debounce";
+import debounce from 'lodash/debounce';
+import AddCityModal from '@/components/initiatives/new/AddCityModal';
+import ModalSkipStep3 from '@/components/initiatives/new/ModalSkipStep3.vue';
 
 export default {
   props: {
     model: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      queryRegion: "",
-      queryCountry: "",
-      queryCity: "",
+      queryRegion: '',
+      queryCountry: '',
+      queryCity: '',
       dataRegions: [],
       dataCountries: [],
       dataCities: [],
@@ -135,7 +135,7 @@ export default {
       selectedRegion: null,
       selectedCountry: null,
       selectedCity: null,
-      notInACity: false
+      notInACity: false,
     };
   },
   created() {
@@ -143,25 +143,25 @@ export default {
   },
   methods: {
     goForward() {
-      this.$validator.validateAll().then(valid => {
+      this.$validator.validateAll().then((valid) => {
         if (!valid) {
           this.$toast.open({
-            message: this.$t("globals.errors.formNotValid"),
-            type: "is-warning",
-            position: "is-bottom"
+            message: this.$t('globals.errors.formNotValid'),
+            type: 'is-warning',
+            position: 'is-bottom',
           });
           return;
         }
         this.model.selectedRegion = this.selectedRegion;
         this.model.selectedCountry = this.selectedCountry;
         this.model.selectedCity = this.selectedCity;
-        this.$emit("forward");
+        this.$emit('forward');
       });
     },
     fetchRegions() {
       this.$http
-        .get("/v1/regions?size=100")
-        .then(res => {
+        .get('/v1/regions?size=100')
+        .then((res) => {
           this.dataRegions = res.data.data;
         })
         .finally(() => {
@@ -171,13 +171,13 @@ export default {
     selectRegion(selectedRegion) {
       this.fetchingCountries = true;
       this.selectedRegion = selectedRegion;
-      this.queryCountry = "";
-      this.queryCity = "";
+      this.queryCountry = '';
+      this.queryCity = '';
       this.selectedCountry = null;
       this.selectedCity = null;
       this.$http
         .get(`/v1/countries?size=100&region_id=${selectedRegion.id}`)
-        .then(res => {
+        .then((res) => {
           this.dataCountries = res.data.data;
         })
         .finally(() => {
@@ -187,10 +187,10 @@ export default {
     selectCountry(selectedCountry) {
       if (selectedCountry == null) return;
       this.selectedCountry = selectedCountry;
-      this.queryCity = "";
+      this.queryCity = '';
       this.selectedCity = null;
     },
-    getCityAsync: debounce(function(name) {
+    getCityAsync: debounce(function (name) {
       if (!name.length) {
         this.dataCities = [];
         return;
@@ -198,25 +198,25 @@ export default {
       this.fetchingCities = true;
       this.$http
         .get(
-          `/v1/registered-cities?size=100&country_id=${this.selectedCountry.id}&s=${name}`
+          `/v1/registered-cities?size=100&country_id=${this.selectedCountry.id}&s=${name}`,
         )
-        .then(res => {
+        .then((res) => {
           this.dataCities = res.data.data;
         })
         .finally(() => {
           this.fetchingCities = false;
         });
     }, 500),
-    skip: function() {
+    skip() {
       this.$modal.open({
         parent: this,
         component: ModalSkipStep3,
         hasModalCard: true,
         events: {
           continue: () => {
-            this.$emit('goTo',5)
-          }
-        }
+            this.$emit('goTo', 5);
+          },
+        },
       });
     },
     selectCity(selectedCity) {
@@ -234,50 +234,48 @@ export default {
       this.$modal.open({
         parent: this,
         component: AddCityModal,
-        hasModalCard: true
+        hasModalCard: true,
       });
-    }
+    },
   },
   computed: {
     placeholderRegions() {
       return this.fetchingRegions
-        ? this.$t("forms.user.addInitiative.step3.fetchingRegions")
-        : this.$t("forms.user.addInitiative.step3.startTypingRegion");
+        ? this.$t('forms.user.addInitiative.step3.fetchingRegions')
+        : this.$t('forms.user.addInitiative.step3.startTypingRegion');
     },
     placeholderCountries() {
       return this.fetchingCountries
-        ? this.$t("forms.user.addInitiative.step3.fetchingCountries")
-        : this.$t("forms.user.addInitiative.step3.startTypingCountry");
+        ? this.$t('forms.user.addInitiative.step3.fetchingCountries')
+        : this.$t('forms.user.addInitiative.step3.startTypingCountry');
     },
     placeholderCities() {
       return this.fetchingCities
-        ? this.$t("forms.user.addInitiative.step3.fetchingCities")
-        : this.$t("forms.user.addInitiative.step3.startTypingCity");
+        ? this.$t('forms.user.addInitiative.step3.fetchingCities')
+        : this.$t('forms.user.addInitiative.step3.startTypingCity');
     },
     filteredRegions() {
       return this.dataRegions.filter(
-        option =>
-          option.name
-            .toString()
-            .toLowerCase()
-            .indexOf(this.queryRegion.toLowerCase()) >= 0
+        option => option.name
+          .toString()
+          .toLowerCase()
+          .indexOf(this.queryRegion.toLowerCase()) >= 0,
       );
     },
     filteredCountries() {
       return this.dataCountries.filter(
-        option =>
-          option.name
-            .toString()
-            .toLowerCase()
-            .indexOf(this.queryCountry.toLowerCase()) >= 0
+        option => option.name
+          .toString()
+          .toLowerCase()
+          .indexOf(this.queryCountry.toLowerCase()) >= 0,
       );
     },
-  }
+  },
 };
 </script>
 
 <style lang="scss">
-.autocomplete.control .dropdown-menu {
+#selectLocationNewInitiative .autocomplete.control .dropdown-menu {
   position: relative;
 }
 .map-container {

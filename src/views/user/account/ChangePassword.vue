@@ -90,7 +90,7 @@ export default {
       confirmPassword: null,
       response: {
         ok: false,
-      }
+      },
     };
   },
   methods: {
@@ -103,12 +103,12 @@ export default {
     },
     // Submit new pending user
     submit() {
-      this.$validator.validateAll().then(valid => {
+      this.$validator.validateAll().then((valid) => {
         if (!valid) {
           // Not valid
           this.$toast.open({
-            message: this.$t("globals.formNotValid"),
-            type: "is-danger"
+            message: this.$t('globals.formNotValid'),
+            type: 'is-danger',
           });
           return false;
         }
@@ -116,20 +116,19 @@ export default {
         this.startLoading();
         this.$http
           .put(`/v1/users/${this.user.id}/password`, this.getPayload())
-          .then(res => {
+          .then((res) => {
             this.response.ok = true;
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err);
-            if (err.response && err.response.data)
-              this.$toast.open(err.response.data.message);
+            if (err.response && err.response.data) this.$toast.open(err.response.data.message);
           })
           .finally(() => {
             this.stopLoading();
           });
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

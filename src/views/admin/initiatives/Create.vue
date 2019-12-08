@@ -26,13 +26,13 @@
 </template>
 
 <script>
-import DataForm from "@/components/utils/initiatives/DataForm.vue";
-import LocationForm from "@/components/utils/initiatives/LocationForm.vue";
+import DataForm from '@/components/utils/initiatives/DataForm.vue';
+import LocationForm from '@/components/utils/initiatives/LocationForm.vue';
 
 export default {
   components: {
     DataForm,
-    LocationForm
+    LocationForm,
   },
   data() {
     return {
@@ -47,16 +47,16 @@ export default {
           facebook: null,
           twitter: null,
           other_network: null,
-          role_of_youth: null
+          role_of_youth: null,
         },
         private_data: {
           contact_email: null,
-          contact_phone: null
+          contact_phone: null,
         },
         selectedRegion: null,
         selectedCountry: null,
-        selectedCity: null
-      }
+        selectedCity: null,
+      },
     };
   },
   methods: {
@@ -72,12 +72,12 @@ export default {
         website: this.isOptional(this.model.public_data.website),
         facebook: this.isOptional(this.model.public_data.facebook),
         twitter: this.isOptional(this.model.public_data.twitter),
-        other_network: this.isOptional(this.model.public_data.other_network)
+        other_network: this.isOptional(this.model.public_data.other_network),
       }),
-        (data.private_data = {
-          contact_email: this.model.private_data.contact_email,
-          contact_phone: this.isOptional(this.model.private_data.contact_phone)
-        });
+      (data.private_data = {
+        contact_email: this.model.private_data.contact_email,
+        contact_phone: this.isOptional(this.model.private_data.contact_phone),
+      });
       if (this.model.selectedCity) {
         options.registered_city_id = this.model.selectedCity.id;
       } else {
@@ -87,46 +87,43 @@ export default {
       options.set_owner = false;
       return {
         data,
-        options
+        options,
       };
     },
     submit() {
-      Promise.all([this.$refs.data.validate()]).then(values => {
+      Promise.all([this.$refs.data.validate()]).then((values) => {
         if (
-          values.some(x => {
-            return x == false;
-          })
+          values.some(x => x == false)
         ) {
           this.$toast.open({
-            message: this.$t("globals.errors.formNotValid"),
-            type: "is-warning",
-            position: "is-bottom"
+            message: this.$t('globals.errors.formNotValid'),
+            type: 'is-warning',
+            position: 'is-bottom',
           });
           return;
         }
         this.startLoading();
         this.$http
-          .post("/v1/initiatives", this.getPayload())
-          .then(res => {
+          .post('/v1/initiatives', this.getPayload())
+          .then((res) => {
             this.$toast.open({
-              message: `<i class="fas fa-check"></i>&nbsp;New initiative has been created`,
-              type: "is-success"
+              message: '<i class="fas fa-check"></i>&nbsp;New initiative has been created',
+              type: 'is-success',
             });
-            this.$router.push({name: "adminInitiativesList"});
+            this.$router.push({ name: 'adminInitiativesList' });
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err);
-            if (err.response && err.response.data)
-              this.$toast.open(err.response.data.message);
+            if (err.response && err.response.data) this.$toast.open(err.response.data.message);
           })
           .finally(() => {
             this.stopLoading();
           });
-      }).catch(err => {
+      }).catch((err) => {
         this.$toast.open(err.response.data.message);
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

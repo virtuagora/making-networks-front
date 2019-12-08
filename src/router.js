@@ -14,12 +14,11 @@ import RecoverPasswordRequest from './views/auth/RecoverPasswordRequest.vue';
 import NewInitiative from './views/initiatives/New.vue';
 import ListInitiatives from './views/initiatives/List.vue';
 // Creating Networks TV
-import CreatingNetworksTVCatalog from './views/creating-networks-tv/Catalog.vue'
-import CreatingNetworksTVView from './views/creating-networks-tv/View.vue'
+import CreatingNetworksTVCatalog from './views/creating-networks-tv/Catalog.vue';
+import CreatingNetworksTVView from './views/creating-networks-tv/View.vue';
 // Initiative
 import Initiative from './views/initiative/Initiative.vue';
 import InitiativeAbout from './views/initiative/About.vue';
-import InitiativeDetails from './views/initiative/Details.vue';
 import InitiativeMembers from './views/initiative/Members.vue';
 import InitiativeLocation from './views/initiative/Location.vue';
 // User Profile
@@ -126,13 +125,6 @@ const router = new Router({
           meta: {},
         },
         {
-          path: 'details',
-          name: 'initiativeDetails',
-          component: InitiativeDetails,
-          props: true,
-          meta: {},
-        },
-        {
           path: 'location',
           name: 'initiativeLocation',
           component: InitiativeLocation,
@@ -152,7 +144,7 @@ const router = new Router({
         http
           .get(`/v1/initiatives/${to.params.id}`)
           .then((response) => {
-            store.commit('setInitiative', response.data.data);
+            store.commit('setInitiative', response.data);
             console.log('GET OK - Got initiative');
             next();
           })

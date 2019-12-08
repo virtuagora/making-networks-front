@@ -36,7 +36,6 @@
     </div>
     <div class="content has-text-centered">
     <p>{{$t('auth.signUp.response.instruction')}}</p>
-    <p><router-link :to="{name: 'home'}" class="has-text-primary"><i class="fas fa-arrow-left"></i>&nbsp;{{$t('auth.signUp.response.goHome')}}</router-link></p>
     </div>
   </section>
 </template>
@@ -63,7 +62,7 @@ export default {
     getPayload() {
       const data = {};
       data.email = this.email;
-      data.locale = this.currentLanguage
+      data.locale = this.currentLanguage;
       const { recaptcha } = this;
       return { data, recaptcha };
     },

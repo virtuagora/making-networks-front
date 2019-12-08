@@ -29,18 +29,18 @@ export default {
   props: {
     resourceType: {
       type: String,
-      required: true
+      required: true,
     },
     resource: {
       type: Object,
-      required: true
+      required: true,
     },
   },
   methods: {
-    confirm: function(){
+    confirm() {
       this.$parent.close();
-      this.$emit('confirm', this.resource)
-    }
-  }
-}
+      this.$emit('confirm', this.resource);
+    },
+  },
+};
 </script>

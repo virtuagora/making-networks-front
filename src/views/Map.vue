@@ -40,6 +40,11 @@
                   @click="randomDesination"
                 >Don't know? Try a random destination!</a>
               </p>
+              <p class="help" v-if="!fetchingCities && mapReady">
+                <b-switch
+                type='is-primary'
+                @input="changeToggleView">Show only presence in countries</b-switch>
+              </p>
             </div>
           </div>
         </div>
@@ -47,14 +52,20 @@
           <div v-if="mapReady" class="has-text-centered">
             <router-link
               :to="{name: user ? 'newInitiative' : 'login' }"
-              class="button is-medium is-primary animated bounce is-outlined"
+              class="button is-medium is-primary animated bounce is-outlined is-hidden-touch"
+            >
+              <i class="fas fa-plus"></i>&nbsp;Add your initiative
+            </router-link>
+            <router-link
+              :to="{name: user ? 'newInitiative' : 'login' }"
+              class="button is-primary animated bounce is-outlined is-hidden-desktop"
             >
               <i class="fas fa-plus"></i>&nbsp;Add your initiative
             </router-link>
             <br />
-            <br />
-            <a class="has-text-white toggle-button" @click="openUnlocated">
-              <i class="fas fa-question-circle"></i>&nbsp;List initiatives without city
+            <br class="is-hidden-touch"/>
+            <a class="has-text-white toggle-button is-size-7-touch" @click="openUnlocated">
+              <i class="fas fa-clipboard-list fa-lg"></i>&nbsp;&nbsp;List initiatives without city
             </a>
           </div>
           <p v-else class="animated infinite bounce is-size-4">
@@ -76,23 +87,25 @@
 </template>
 
 <script>
-import InitiativeMap from "@/components/InitiativeMap.vue";
-import InitiativesNotLocated from "@/components/InitiativesNotLocated.vue";
-import Slideout from "vue-slideout";
+import Slideout from 'vue-slideout';
+import InitiativeMap from '@/components/InitiativeMap.vue';
+import InitiativesNotLocated from '@/components/InitiativesNotLocated.vue';
+
 export default {
   components: {
     InitiativeMap,
     Slideout,
-    InitiativesNotLocated
+    InitiativesNotLocated,
   },
   data() {
     return {
       mapLoaded: true,
       fetchingCities: true,
       cities: null,
-      queryCity: "",
+      queryCity: '',
       selectedCity: null,
       mapReady: false,
+      countriesFetched: false,
     };
   },
   created() {
@@ -100,7 +113,7 @@ export default {
   },
   methods: {
     getCities() {
-      this.$http.get("/v1/cities").then(res => {
+      this.$http.get('/v1/cities').then((res) => {
         this.cities = res.data.data;
         this.fetchingCities = false;
       });
@@ -109,6 +122,48 @@ export default {
       if (city == null) return;
       this.selectedCity = city;
       this.$refs.initiativeMap.flyTo(city.space.point.coordinates);
+    },
+    fetchCountries(){
+      if(this.countriesFetched) return
+      this.startLoading()
+      this.$http.get('/v1/countries?having=initiatives').then(res => {
+        this.countriesFetched = true
+        this.prepareCountryGeoJson(res.data.data)
+      }).finally( () => {
+        this.stopLoading()
+      })
+    },
+    prepareCountryGeoJson(data){
+      let geojson = {
+        type: "geojson",
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      }
+      data.forEach( country => {
+        let feature = {
+          type: "Feature",
+          id: `${country.code_3}`,
+          properties:{
+            countryId: country.id,
+            name: country.name,
+            initiatives: country.initiatives_count
+          },
+        }
+        switch(country.space.type){
+          case 'Polygon':
+            feature.geometry = country.space.polygon
+            // geojson.layer.filter = ["==", "$type", "Polygon"]
+            break;
+          case 'MultiPolygon':
+            feature.geometry  = country.space.multi_polygon
+            // geojson.layer.filter = ["==", "$type", "MultiPolygon"]
+            break;
+        }
+        geojson.data.features.push(feature)
+      })
+      this.$refs.initiativeMap.drawCountryGeoJson(geojson)
     },
     randomDesination() {
       let randomCity = null;
@@ -123,25 +178,35 @@ export default {
       this.selectedCity = randomCity;
       this.$refs.initiativeMap.flyTo(randomCity.space.point.coordinates);
     },
-    openUnlocated: function() {
+    openUnlocated() {
       this.$refs.initiativesNotLocatedSlider.slideout.toggle();
     },
-    handleOpenUnlocated: function() {},
-    handleCloseUnlocated: function() {},
-    openSlider: function() {
+    handleOpenUnlocated() {},
+    handleCloseUnlocated() {},
+    openSlider() {
       this.$refs.initiativesNotLocated.startPanel();
     },
-    closeSlider: function(){
+    closeSlider() {
       this.$refs.initiativesNotLocatedSlider.slideout.close();
+    },
+    changeToggleView: function(newVal){
+      console.log(newVal)
+      if(newVal == true){
+        if(!this.countriesFetched) this.fetchCountries()
+        else this.$refs.initiativeMap.toggleCountriesVisibility();
+      }
+      else {
+        this.$refs.initiativeMap.toggleCountriesVisibility();
+      }
     }
   },
   computed: {
     placeholderInput() {
       if (!this.fetchingCities) {
-        if (!this.mapReady) return "Preparing your flight.. get ready!";
-        return "Where do you want to flight today? ✈";
+        if (!this.mapReady) return 'Preparing your flight.. get ready!';
+        return 'Where do you want to flight today? ✈';
       }
-      return "Fetching cities, hold on!";
+      return 'Fetching cities, hold on!';
     },
     disableInput() {
       return this.fetchingCities || !this.mapReady;
@@ -149,14 +214,13 @@ export default {
     filteredCities() {
       if (!this.cities) return [];
       return this.cities.filter(
-        option =>
-          option.name
-            .toString()
-            .toLowerCase()
-            .indexOf(this.queryCity.toLowerCase()) >= 0
+        option => option.name
+          .toString()
+          .toLowerCase()
+          .indexOf(this.queryCity.toLowerCase()) >= 0,
       );
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -27,65 +27,65 @@
 </template>
 
 <script>
-import ConfirmDelete from "@/components/utils/modals/ConfirmDelete"
-import PaginationBar from "@/components/utils/PaginationBar";
-import EmptyTable from "@/components/utils/EmptyTable";
+import ConfirmDelete from '@/components/utils/modals/ConfirmDelete';
+import PaginationBar from '@/components/utils/PaginationBar';
+import EmptyTable from '@/components/utils/EmptyTable';
 
 export default {
   components: {
     ConfirmDelete,
     PaginationBar,
-    EmptyTable
+    EmptyTable,
   },
   data() {
     return {
       terms: [],
       fetching: null,
       query: {
-        taxonomy: 'topics'
-      }
+        taxonomy: 'topics',
+      },
     };
   },
-  mounted: function() {},
+  mounted() {},
   methods: {
-    getTerms: function(data) {
+    getTerms(data) {
       this.terms = data;
     },
-    openModalDelete: function(resource){
+    openModalDelete(resource) {
       this.$modal.open({
         parent: this,
         component: ConfirmDelete,
         props: {
           resourceType: 'areaOfInterest',
-          resource: resource
+          resource,
         },
         hasModalCard: true,
         events: {
           confirm: (resource) => {
-            this.deleteAreaOfInterest(resource)
-          }
-        }
+            this.deleteAreaOfInterest(resource);
+          },
+        },
       });
     },
-    deleteAreaOfInterest: function(resource){
-      this.startLoading()
+    deleteAreaOfInterest(resource) {
+      this.startLoading();
       this.$http.delete(`/v1/terms/${resource.id}`)
-      .then(res => {
-         this.$toast.open({
-            message: `<i class="fas fa-check"></i>&nbsp;The area of interest has been deleted`,
+        .then((res) => {
+          this.$toast.open({
+            message: '<i class="fas fa-check"></i>&nbsp;The area of interest has been deleted',
             type: 'is-success',
-          })
-          this.$refs.paginator.getResource()
-      }).catch(err => {
-        console.error(err)
-        this.$toast.open({
-            message: `<i class="fas fa-times"></i>&nbsp;Error while deleting the area of interest`,
+          });
+          this.$refs.paginator.getResource();
+        }).catch((err) => {
+          console.error(err);
+          this.$toast.open({
+            message: '<i class="fas fa-times"></i>&nbsp;Error while deleting the area of interest',
             type: 'is-danger',
-          })
-        this.stopLoading()
-      })
+          });
+          this.stopLoading();
+        });
     },
-  }
+  },
 };
 </script>
 

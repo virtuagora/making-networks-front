@@ -297,19 +297,19 @@ export default {
   props: {
     model: {
       type: Object,
-      required: true
+      required: true,
     },
     edit: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data() {
     return {};
   },
   methods: {
-    validate: function() {
-      let promise = new Promise((resolve, reject) => {
-        this.$validator.validateAll().then(result => {
+    validate() {
+      const promise = new Promise((resolve, reject) => {
+        this.$validator.validateAll().then((result) => {
           if (!result) {
             return resolve(result);
           }
@@ -317,8 +317,8 @@ export default {
         });
       });
       return promise;
-    }
-  }
+    },
+  },
 };
 </script>
 

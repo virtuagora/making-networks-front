@@ -5,7 +5,7 @@
       <img class="image" :src="userAvatarUrl">
       </div>
       <b-dropdown-item custom aria-role="menuitem">
-        
+
         <b>{{user.display_name}}</b>
       </b-dropdown-item>
       <b-dropdown-item aria-role="listitem" has-link v-if="user">
@@ -98,7 +98,7 @@ export default {
     height: 36px;
     border-radius:100px;
     background-color: #CACACA;
-    
+
   }
   &.push-more-right{
     top: 110px;

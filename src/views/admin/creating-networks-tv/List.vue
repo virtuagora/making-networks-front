@@ -30,61 +30,61 @@
 </template>
 
 <script>
-import PaginationBar from "@/components/utils/PaginationBar";
-import EmptyTable from "@/components/utils/EmptyTable";
-import ConfirmDelete from "@/components/utils/modals/ConfirmDelete"
+import PaginationBar from '@/components/utils/PaginationBar';
+import EmptyTable from '@/components/utils/EmptyTable';
+import ConfirmDelete from '@/components/utils/modals/ConfirmDelete';
 
 export default {
   components: {
     PaginationBar,
-    EmptyTable
+    EmptyTable,
   },
   data() {
     return {
       videos: [],
-      fetching: null
+      fetching: null,
     };
   },
-  mounted: function() {},
+  mounted() {},
   methods: {
-    getVideos: function(data) {
+    getVideos(data) {
       this.videos = data;
     },
-    openModalDelete: function(resource){
+    openModalDelete(resource) {
       this.$modal.open({
         parent: this,
         component: ConfirmDelete,
         props: {
           resourceType: 'videos',
-          resource: resource
+          resource,
         },
         hasModalCard: true,
         events: {
           confirm: (resource) => {
-            this.deleteVideo(resource)
-          }
-        }
+            this.deleteVideo(resource);
+          },
+        },
       });
     },
-    deleteVideo: function(resource){
-      this.startLoading()
+    deleteVideo(resource) {
+      this.startLoading();
       this.$http.delete(`/v1/videos/${resource.id}`)
-      .then(res => {
-         this.$toast.open({
-            message: `<i class="fas fa-check"></i>&nbsp;The initiative has been deleted`,
+        .then((res) => {
+          this.$toast.open({
+            message: '<i class="fas fa-check"></i>&nbsp;The initiative has been deleted',
             type: 'is-success',
-          })
-          this.$refs.paginator.getResource()
-      }).catch(err => {
-        console.error(err)
-        this.$toast.open({
-            message: `<i class="fas fa-times"></i>&nbsp;Error while deleting an initiative`,
+          });
+          this.$refs.paginator.getResource();
+        }).catch((err) => {
+          console.error(err);
+          this.$toast.open({
+            message: '<i class="fas fa-times"></i>&nbsp;Error while deleting an initiative',
             type: 'is-danger',
-          })
-        this.stopLoading()
-      })
+          });
+          this.stopLoading();
+        });
     },
-  }
+  },
 };
 </script>
 

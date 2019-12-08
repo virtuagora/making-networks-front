@@ -9,6 +9,9 @@
     </div>
     <div class="content has-text-centered">
     <p>{{$t('forms.user.addInitiative.confirmation.text[1]')}}</p>
+    <p><router-link :to="{name: 'userInitiativesList'}" class="has-text-primary"><i class="fas fa-home"></i>&nbsp;{{$t('forms.user.addInitiative.confirmation.edit[0]')}}</router-link></p>
+    <p><router-link :to="{name: 'userInitiativesList'}" class="has-text-primary"><i class="fas fa-home"></i>&nbsp;{{$t('forms.user.addInitiative.confirmation.edit[1]')}}</router-link></p>
+    <p><router-link :to="{name: 'userInitiativesList'}" class="has-text-primary"><i class="fas fa-home"></i>&nbsp;{{$t('forms.user.addInitiative.confirmation.edit[2]')}}</router-link></p>
     <p><router-link :to="{name: 'home'}" class="has-text-primary"><i class="fas fa-home"></i>&nbsp;{{$t('globals.buttonLabels.goHome')}}</router-link></p>
     </div>
     </div>

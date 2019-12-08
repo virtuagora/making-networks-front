@@ -13,11 +13,11 @@
 
 
 <script>
-import VideoForm from "@/components/utils/videos/VideoForm.vue";
+import VideoForm from '@/components/utils/videos/VideoForm.vue';
 
 export default {
   components: {
-    VideoForm
+    VideoForm,
   },
   data() {
     return {
@@ -28,7 +28,7 @@ export default {
         public_data: {
           youtube: null,
         },
-      }
+      },
     };
   },
   methods: {
@@ -39,50 +39,47 @@ export default {
       data.content = this.model.content;
       data.public_data = {
         youtube: this.model.public_data.youtube,
-      }
-      data.private_data = null
+      };
+      data.private_data = null;
       return {
         data,
-        options
+        options,
       };
     },
     submit() {
-      Promise.all([this.$refs.data.validate()]).then(values => {
+      Promise.all([this.$refs.data.validate()]).then((values) => {
         if (
-          values.some(x => {
-            return x == false;
-          })
+          values.some(x => x == false)
         ) {
           this.$toast.open({
-            message: this.$t("globals.errors.formNotValid"),
-            type: "is-warning",
-            position: "is-bottom"
+            message: this.$t('globals.errors.formNotValid'),
+            type: 'is-warning',
+            position: 'is-bottom',
           });
           return;
         }
         this.startLoading();
         this.$http
-          .post("/v1/videos", this.getPayload())
-          .then(res => {
+          .post('/v1/videos', this.getPayload())
+          .then((res) => {
             this.$toast.open({
-              message: `<i class="fas fa-check"></i>&nbsp;New video has been added to Creating Networks TV!`,
-              type: "is-success"
+              message: '<i class="fas fa-check"></i>&nbsp;New video has been added to Creating Networks TV!',
+              type: 'is-success',
             });
-            this.$router.push({name: "adminCreatingNetworksTvList"});
+            this.$router.push({ name: 'adminCreatingNetworksTvList' });
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err);
-            if (err.response && err.response.data)
-              this.$toast.open(err.response.data.message);
+            if (err.response && err.response.data) this.$toast.open(err.response.data.message);
           })
           .finally(() => {
             this.stopLoading();
           });
-      }).catch(err => {
+      }).catch((err) => {
         this.$toast.open(err.response.data.message);
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

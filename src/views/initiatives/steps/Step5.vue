@@ -232,27 +232,27 @@ export default {
   props: {
     model: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     goTo(step) {
-      this.$emit("goTo", step);
+      this.$emit('goTo', step);
     },
     goForward() {
-      this.$validator.validateAll().then(valid => {
+      this.$validator.validateAll().then((valid) => {
         if (!valid) {
           this.$toast.open({
-            message: this.$t("globals.errors.formNotValid"),
-            type: "is-warning",
-            position: "is-bottom"
+            message: this.$t('globals.errors.formNotValid'),
+            type: 'is-warning',
+            position: 'is-bottom',
           });
           return;
         }
-        this.$emit("forward");
+        this.$emit('forward');
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

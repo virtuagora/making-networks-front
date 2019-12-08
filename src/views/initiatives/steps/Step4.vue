@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="this.model.selectedCity">
     <div class="content">
        <p
         class="has-text-centered is-italic"
@@ -18,6 +18,7 @@
           :name="model.name"
           :description="model.description"
           :coordinates="model.selectedCity.point.coordinates"
+          anchor="bottom"
           />
         </div>
       </div>

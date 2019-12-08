@@ -52,6 +52,9 @@ export default {
         twitter: this.isOptional(this.model.public_data.twitter),
         other_network: this.isOptional(this.model.public_data.other_network),
       }),
+      options.countries = this.model.countries.map(c => c.id);
+      options.terms = this.model.areasOfInterest.map(a => a.id);
+
       (data.private_data = {
         contact_email: this.model.private_data.contact_email,
         contact_phone: this.isOptional(this.model.private_data.contact_phone),
@@ -62,7 +65,7 @@ export default {
         options.registered_city_id = null;
       }
       // If user is admin, tell the api to not set the current user (admin) as the owner
-      options.set_owner = this.$store.getters.isAdmin ? false : true;
+      options.set_owner = !this.$store.getters.isAdmin;
       return {
         data,
         options,

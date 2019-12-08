@@ -59,34 +59,34 @@
 </template>
 
 <script>
-import store from "@/store";
-import http from "@/http";
+import store from '@/store';
+import http from '@/http';
 
 export default {
   computed: {
     video() {
       return this.$store.getters.video;
-    }
+    },
   },
   beforeRouteUpdate: (to, from, next) => {
     if (to.params.id === from.params.id) {
-      console.log("Same user video, dont load");
+      console.log('Same user video, dont load');
       next();
     } else {
-      console.log("First time entering, getting video...");
+      console.log('First time entering, getting video...');
       http
         .get(`/v1/videos/${to.params.id}`)
-        .then(response => {
-          store.commit("setVideo", response.data.data);
-          console.log("GET OK - Got video");
+        .then((response) => {
+          store.commit('setVideo', response.data.data);
+          console.log('GET OK - Got video');
           next();
         })
-        .catch(error => {
-          console.log("Fetching data failed.", error);
-          next({ name: "home" });
+        .catch((error) => {
+          console.log('Fetching data failed.', error);
+          next({ name: 'home' });
         });
     }
-  }
+  },
 };
 </script>
 

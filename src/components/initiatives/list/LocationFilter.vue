@@ -62,13 +62,14 @@
 </template>
 
 <script>
-import { debounce } from "lodash";
+import { debounce } from 'lodash';
+
 export default {
   data() {
     return {
-      queryRegion: "",
-      queryCountry: "",
-      queryCity: "",
+      queryRegion: '',
+      queryCountry: '',
+      queryCity: '',
       dataRegions: [],
       dataCountries: [],
       dataCities: [],
@@ -78,7 +79,7 @@ export default {
       selectedRegion: null,
       selectedCountry: null,
       selectedCity: null,
-      notInACity: false
+      notInACity: false,
     };
   },
   created() {
@@ -87,8 +88,8 @@ export default {
   methods: {
     fetchRegions() {
       this.$http
-        .get("/v1/regions?having=cities&size=100")
-        .then(res => {
+        .get('/v1/regions?having=cities&size=100')
+        .then((res) => {
           this.dataRegions = res.data.data;
         })
         .finally(() => {
@@ -96,17 +97,17 @@ export default {
         });
     },
     selectRegion(selectedRegion) {
-      if(selectedRegion === null) return
+      if (selectedRegion === null) return;
       this.fetchingCountries = true;
       this.selectedRegion = selectedRegion;
-      this.queryCountry = "";
-      this.queryCity = "";
+      this.queryCountry = '';
+      this.queryCity = '';
       this.selectedCountry = null;
       this.selectedCity = null;
-      this.$emit("saveRegion", selectedRegion);
+      this.$emit('saveRegion', selectedRegion);
       this.$http
         .get(`/v1/countries?having=cities&size=100&region_id=${selectedRegion.id}`)
-        .then(res => {
+        .then((res) => {
           this.dataCountries = res.data.data;
         })
         .finally(() => {
@@ -116,11 +117,11 @@ export default {
     selectCountry(selectedCountry) {
       if (selectedCountry == null) return;
       this.selectedCountry = selectedCountry;
-      this.queryCity = "";
+      this.queryCity = '';
       this.selectedCity = null;
-      this.$emit("saveCountry", selectedCountry);
+      this.$emit('saveCountry', selectedCountry);
     },
-    getCityAsync: debounce(function(name) {
+    getCityAsync: debounce(function (name) {
       if (!name.length) {
         this.dataCities = [];
         return;
@@ -128,9 +129,9 @@ export default {
       this.fetchingCities = true;
       this.$http
         .get(
-          `/v1/registered-cities?&ize=100&country_id=${this.selectedCountry.id}&s=${name}`
+          `/v1/registered-cities?&ize=100&country_id=${this.selectedCountry.id}&s=${name}`,
         )
-        .then(res => {
+        .then((res) => {
           this.dataCities = res.data.data;
         })
         .finally(() => {
@@ -140,17 +141,17 @@ export default {
     selectCity(selectedCity) {
       if (selectedCity === null) return;
       this.selectedCity = selectedCity;
-      this.$emit("saveCity", selectedCity);
+      this.$emit('saveCity', selectedCity);
     },
-    toggleNotInACity: function() {
+    toggleNotInACity() {
       this.notInACity = !this.notInACity;
-      if(this.notInACity) this.$emit("saveNotLocated")
-      else this.$emit("deleteNotLocated")
+      if (this.notInACity) this.$emit('saveNotLocated');
+      else this.$emit('deleteNotLocated');
     },
-    resetState: function() {
-      this.queryRegion = "";
-      this.queryCountry = "";
-      this.queryCity = "";
+    resetState() {
+      this.queryRegion = '';
+      this.queryCountry = '';
+      this.queryCity = '';
       this.dataRegions = [];
       this.dataCountries = [];
       this.dataCities = [];
@@ -162,45 +163,43 @@ export default {
       this.selectedCity = null;
       // this.notInACity = false;
       this.fetchRegions();
-    }
+    },
   },
   computed: {
     placeholderRegions() {
       return this.fetchingRegions
-        ? this.$t("admin.initiatives.create.fields.location.fetchingRegions")
-        : this.$t("admin.initiatives.create.fields.location.startTypingRegion");
+        ? this.$t('admin.initiatives.create.fields.location.fetchingRegions')
+        : this.$t('admin.initiatives.create.fields.location.startTypingRegion');
     },
     placeholderCountries() {
       return this.fetchingCountries
-        ? this.$t("admin.initiatives.create.fields.location.fetchingCountries")
+        ? this.$t('admin.initiatives.create.fields.location.fetchingCountries')
         : this.$t(
-            "admin.initiatives.create.fields.location.startTypingCountry"
-          );
+          'admin.initiatives.create.fields.location.startTypingCountry',
+        );
     },
     placeholderCities() {
       return this.fetchingCities
-        ? this.$t("admin.initiatives.create.fields.location.fetchingCities")
-        : this.$t("admin.initiatives.create.fields.location.startTypingCity");
+        ? this.$t('admin.initiatives.create.fields.location.fetchingCities')
+        : this.$t('admin.initiatives.create.fields.location.startTypingCity');
     },
     filteredRegions() {
       return this.dataRegions.filter(
-        option =>
-          option.name
-            .toString()
-            .toLowerCase()
-            .indexOf(this.queryRegion.toLowerCase()) >= 0
+        option => option.name
+          .toString()
+          .toLowerCase()
+          .indexOf(this.queryRegion.toLowerCase()) >= 0,
       );
     },
     filteredCountries() {
       return this.dataCountries.filter(
-        option =>
-          option.name
-            .toString()
-            .toLowerCase()
-            .indexOf(this.queryCountry.toLowerCase()) >= 0
+        option => option.name
+          .toString()
+          .toLowerCase()
+          .indexOf(this.queryCountry.toLowerCase()) >= 0,
       );
-    }
-  }
+    },
+  },
 };
 </script>
 

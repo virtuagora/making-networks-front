@@ -17,8 +17,8 @@
       <slide class="item-carousel" v-for="initiative in initiatives" :key="initiative.id">
         <router-link :to="{name: 'initiative', params: { id: initiative.id }}">
 
-        <div class="box-initiative">
-          <div>
+        <div class="box-initiative" :class="{'has-background': initiative.pictures && initiative.pictures.cover}" :style="backgroundImageUrl(initiative)">
+          <div :class="{'has-background-gradient': initiative.pictures && initiative.pictures.cover}">
             <div class="to-bottom">
               <div class="field is-grouped is-grouped-multiline">
                 <div class="control">
@@ -69,81 +69,88 @@
 </template>
 
 <script>
-import { Carousel, Slide } from "vue-carousel";
+import { Carousel, Slide } from 'vue-carousel';
+
 export default {
   data() {
     return {
       initiatives: [],
       isFetching: true,
-      timeout: 7000
+      timeout: 7000,
     };
   },
   components: {
     Carousel,
-    Slide
+    Slide,
   },
-  mounted: function() {
+  mounted() {
     this.fetch();
   },
 
   methods: {
-    fetch: function() {
+    fetch() {
       this.isFetching = true;
-      this.$http.get("/v1/initiatives?size=10&sort=random").then(res => {
+      this.$http.get('/v1/initiatives?size=10&sort=random').then((res) => {
         this.initiatives = this.shuffleArray(res.data.data);
         this.isFetching = false;
       });
     },
-    getShortDescription: function(text, limit) {
+    getShortDescription(text, limit) {
       if (text.length > limit) {
         for (let i = limit; i > 0; i--) {
           if (
-            text.charAt(i) === " " &&
-            (text.charAt(i - 1) != "," ||
-              text.charAt(i - 1) != "." ||
-              text.charAt(i - 1) != ";")
+            text.charAt(i) === ' '
+            && (text.charAt(i - 1) != ','
+              || text.charAt(i - 1) != '.'
+              || text.charAt(i - 1) != ';')
           ) {
-            return text.substring(0, i) + "...";
+            return `${text.substring(0, i)}...`;
           }
         }
       } else {
         return text;
       }
     },
-    shuffleArray: function(arr) {
+    shuffleArray(arr) {
       return arr
         .map(a => [Math.random(), a])
         .sort((a, b) => a[0] - b[0])
         .map(a => a[1]);
+    },
+    backgroundImageUrl(initiative){
+      if(!initiative) return null
+      if (initiative.pictures && initiative.pictures.cover){
+        return `background-image: url(${this.apiUrl}/${initiative.pictures.cover.path})`
+      }
+      return null
     }
   },
   computed: {
-    navigationEnabled: function() {
-      return this.initiatives.length - 1 ? true : false;
+    navigationEnabled() {
+      return !!(this.initiatives.length - 1);
     },
-    autoplayEnabled: function() {
-      return this.initiatives.length - 1 ? true : false;
+    autoplayEnabled() {
+      return !!(this.initiatives.length - 1);
     },
-    perPage: function() {
+    perPage() {
       if (this.initiatives.length > 2) {
         return 3;
-      } else {
-        return this.initiatives.length;
       }
+      return this.initiatives.length;
     },
-    loopEnabled: function() {
-      return this.initiatives.length - 1 ? true : false;
+    loopEnabled() {
+      return !!(this.initiatives.length - 1);
     },
-    responsiveLayout: function() {
+    responsiveLayout() {
       if (this.initiatives.length > 2) {
         return [[0, 1], [768, 2], [1024, 3]];
-      } else if (this.initiatives.length == 2) {
+      } if (this.initiatives.length == 2) {
         return [[0, 1], [768, 2]];
-      } else if (this.initiatives.length == 1) {
+      } if (this.initiatives.length == 1) {
         return null;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -16,6 +16,11 @@
               </div>
               <div class="column">
                 <h1 class="title is-1 is-size-3-touch">{{userProfile.display_name}}</h1>
+                <div class="buttons" v-if="user && user.id == userProfile.id" >
+                  <router-link :to="{name: 'userProfile', params: {id: user.id}}" class="button is-outlined is-white is-small is-800" v-if="isAdmin">
+                    <i class="fas fa-pencil-alt fa-lg fa-fw"></i>&nbsp; E D I T
+                  </router-link>
+                </div>
                 <div class="content">
                   <p class="add-br is-italic" >{{userProfile.bio || 'I haven\'t completed my bio yet!' }}</p>
                 </div>
@@ -79,34 +84,34 @@
 </template>
 
 <script>
-import store from "@/store";
-import http from "@/http";
+import store from '@/store';
+import http from '@/http';
 
 export default {
   computed: {
     userProfile() {
       return this.$store.getters.userProfile;
-    }
+    },
   },
   beforeRouteUpdate: (to, from, next) => {
     if (to.params.id === from.params.id) {
-      console.log("Same user profile, dont load");
+      console.log('Same user profile, dont load');
       next();
     } else {
-      console.log("First time entering, getting user profile...");
+      console.log('First time entering, getting user profile...');
       http
         .get(`/v1/users/${to.params.id}`)
-        .then(response => {
-          store.commit("setUserProfile", response.data.data);
-          console.log("GET OK - Got user profile");
+        .then((response) => {
+          store.commit('setUserProfile', response.data.data);
+          console.log('GET OK - Got user profile');
           next();
         })
-        .catch(error => {
-          console.log("Fetching data failed.", error);
-          next({ name: "home" });
+        .catch((error) => {
+          console.log('Fetching data failed.', error);
+          next({ name: 'home' });
         });
     }
-  }
+  },
 };
 </script>
 

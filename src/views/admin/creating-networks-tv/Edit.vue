@@ -13,14 +13,14 @@
 
 
 <script>
-import VideoForm from "@/components/utils/videos/VideoForm.vue";
-import merge from 'lodash/merge'
-import omit from 'lodash/omit'
+import merge from 'lodash/merge';
+import omit from 'lodash/omit';
+import VideoForm from '@/components/utils/videos/VideoForm.vue';
 
 export default {
   props: ['id'],
   components: {
-    VideoForm
+    VideoForm,
   },
   data() {
     return {
@@ -32,78 +32,75 @@ export default {
           youtube: null,
         },
       },
-      originalDataPayload: null
+      originalDataPayload: null,
     };
   },
-  beforeMount: function(){
-    this.startLoading()
+  beforeMount() {
+    this.startLoading();
     this.$http.get(`/v1/videos/${this.id}`)
-    .then(res => {
-      this.model = merge(this.model, res.data.data)
-    }).catch(err => {
-      console.error(err)
-      this.$toast.open({
-        message: this.$t("globals.errors.error"),
-        type: "is-warning",
-        position: "is-bottom"
+      .then((res) => {
+        this.model = merge(this.model, res.data.data);
+      }).catch((err) => {
+        console.error(err);
+        this.$toast.open({
+          message: this.$t('globals.errors.error'),
+          type: 'is-warning',
+          position: 'is-bottom',
+        });
+      }).finally(() => {
+        this.stopLoading();
       });
-    }).finally( () => {
-      this.stopLoading()
-    })
   },
   methods: {
     getPayload() {
       const data = {};
       const options = {};
       data.title = this.model.title;
-      data.content = this.model.content;  
+      data.content = this.model.content;
       data.public_data = {
         youtube: this.model.public_data.youtube,
-      }
-      data.private_data = null
+      };
+      data.private_data = null;
       return {
         data,
-        options
+        options,
       };
     },
     submit() {
-      Promise.all([this.$refs.data.validate()]).then(values => {
+      Promise.all([this.$refs.data.validate()]).then((values) => {
         if (
-          values.some(x => {
-            return x == false;
-          })
+          values.some(x => x == false)
         ) {
           this.$toast.open({
-            message: this.$t("globals.errors.formNotValid"),
-            type: "is-warning",
-            position: "is-bottom"
+            message: this.$t('globals.errors.formNotValid'),
+            type: 'is-warning',
+            position: 'is-bottom',
           });
           return;
         }
         this.startLoading();
         this.$http
           .patch(`/v1/videos/${this.id}`, this.getPayload())
-          .then(res => {
+          .then((res) => {
             this.$toast.open({
-              message: `<i class="fas fa-check"></i>&nbsp;Your video has been edited`,
-              type: "is-success"
+              message: '<i class="fas fa-check"></i>&nbsp;Your video has been edited',
+              type: 'is-success',
             });
-            this.$router.push({name: "adminCreatingNetworksTvList"});
+            this.$router.push({ name: 'adminCreatingNetworksTvList' });
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err);
-            if (err.response && err.response.data)
-              this.$toast.open(err.response.data.message);
+            if (err.response && err.response.data) this.$toast.open(err.response.data.message);
           })
           .finally(() => {
             this.stopLoading();
           });
-      }).catch(err => {
-        console.error(err)
-        this.$toast.open(this.$t("globals.errors.unexpected"));
+      }).catch((err) => {
+        console.error(err);
+        this.$toast.open(this.$t('globals.errors.unexpected'));
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -1,27 +1,45 @@
 <template>
   <section>
     <h1 class="title is-3">My profile</h1>
-    <p>This is your public profile!</p>
+    <p>This is your public profile! <router-link :to="{name: 'profile', params:{ id: user.id}}" class="has-text-primary">
+                &nbsp;{{$t('user.userPanel.profile.goToProfile')}}&nbsp;<i class="fas fa-arrow-circle-right"></i></router-link></p>
     <br />
     <section>
       <div class="card">
         <div class="card-content">
           <div class="media">
             <div class="media-left is-hidden-touch">
-              <img class="myAvatar image" :src="userAvatarUrl" />
+              <img class="myAvatar image" :src="`${userAvatarUrl}`" />
             </div>
             <div class="media-content">
-              <img class="myAvatar image is-hidden-desktop is-centered" :src="userAvatarUrl" />
+              <img class="myAvatar image is-hidden-desktop is-centered" :src="`${userAvatarUrl}`" />
               <br />
               <h1 class="title is-1 has-text-black has-text-centered-touch">{{user.display_name}}</h1>
-              <h1 class="subtitle is-6 has-text-centered-touch"><router-link :to="{name: 'profile', params:{ id: user.id}}">Go to profile&nbsp;<i class="fas fa-arrow-circle-right"></i></router-link></h1>
-              <p
-                v-for="(p,index) in $t('user.userPanel.profile.avatar')"
-                class="is-size-7 has-text-centered-touch is-italic"
-                :key="index"
-              >{{p}}</p>
-            </div>
+          <p class="is-size-6"><b>Submit a new avatar</b></p>
+          <b-field class="file">
+            <b-upload v-model="fileAvatar">
+                <a class="button is-primary">
+                    <i class="fas fa-upload"></i> &nbsp;
+                    <span>Click to upload</span>
+                </a>
+            </b-upload>
+            <span class="file-name" v-if="fileAvatar">
+                {{ fileAvatar.name }} <a @click="fileAvatar = null">
+                <i class="fas fa-times-circle fa-lg has-text-danger"></i>
+              </a>
+            </span>
+          </b-field>
+          <div class="buttons">
+
+          <button @click="uploadAvatar" class="button is-primary is-small" v-if="fileAvatar">
+              <i class="fas fa-upload"></i> Upload file
+            </button>
+            <button @click="removeAvatar" class="button is-small is-danger is-outlined">
+            <i class="fas fa-times"></i>&nbsp;Remove current avatar
+          </button>
           </div>
+        </div>
+            </div>
 
           <div class="field">
             <label for class="label">{{$t('user.userPanel.profile.bio.label')}}</label>
@@ -201,56 +219,121 @@ export default {
           website: null,
           twitter: null,
           facebook: null,
-          other_network: null
-        }
+          other_network: null,
+        },
+        subject: null
       },
+      fileAvatar: null,
       response: {
-        ok: false
-      }
+        ok: false,
+      },
     };
   },
   mounted() {
     this.fetchUser();
   },
   methods: {
-    sync: function(data){
+    sync(data) {
       this.model.bio = data.bio;
-      console.log(data.bio)
-      Object.keys(data.data).forEach(k => {
-        this.model.data[k] = data.data[k]
-      })
+      console.log(data.bio);
+      Object.keys(data.data).forEach((k) => {
+        this.model.data[k] = data.data[k];
+      });
     },
-    fetchUser: function() {
+    fetchUser() {
       this.startLoading();
       this.$http
         .get(`/v1/users/${this.user.id}`)
-        .then(res => {
-          this.sync(res.data.data)
+        .then((res) => {
+          this.sync(res.data.data);
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
-          if (err.response && err.response.data)
-            this.$toast.open(err.response.data.message);
+          if (err.response && err.response.data) this.$toast.open(err.response.data.message);
         })
         .finally(() => {
           this.stopLoading();
         });
     },
-    getPayload: function() {
-      let data = {};
-      let options = {};
+    updateUserToken() {
+      this.$http
+        .get(`/v1/users/${this.user.id}`)
+        .then((res) => {
+          this.$store.commit('updateSubjectUserAvatar',{imgType: res.data.data.img_type, imgHash: res.data.data.img_hash})
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+        .finally(() => {
+          this.stopLoading();
+        });
+    },
+    uploadAvatar(){
+      this.startLoading()
+      this.$http.put(`/v1/subjects/${this.user.id}/picture`,
+      this.fileAvatar,
+      {
+        headers: {
+          'content-type': this.fileAvatar.type
+        }
+      })
+      .then(res => {
+        this.$toast.open({
+            message:
+              '<i class="fas fa-check"></i>&nbsp;Picture was successfully loaded!',
+            type: "is-success"
+          });
+        this.updateUserToken()
+        this.fileAvatar = null
+      }).catch(err => {
+        console.error(err)
+        this.$toast.open({
+            message:
+              '<i class="fas fa-check"></i>&nbsp;There was an error while uploading your avatar',
+            type: "is-danger"
+          });
+      }).finally(() => {
+        this.stopLoading()
+      })
+    },
+    removeAvatar(){
+      this.startLoading()
+      this.$http.delete(`/v1/subjects/${this.user.id}/picture`)
+        .then(res => {
+          this.updateUserToken()
+          this.fileAvatar = null
+          this.$toast.open({
+            message:
+              '<i class="fas fa-check"></i>&nbsp;Avatar was successfully deleted!',
+            type: "is-success"
+          });
+        })
+        .catch(err => {
+          console.error(err)
+          this.$toast.open({
+            message:
+              '<i class="fas fa-times"></i>&nbsp;There was an error while deleting the avatar',
+            type: "is-danger"
+          });
+        }).finally(() => {
+          this.stopLoading()
+        })
+    },
+    getPayload() {
+      const data = {};
+      const options = {};
       data.bio = this.model.bio;
       data.data = this.model.data;
       return { data, options };
     },
     // Submit new pending user
     submit() {
-      this.$validator.validateAll().then(valid => {
+      this.$validator.validateAll().then((valid) => {
         if (!valid) {
           // Not valid
           this.$toast.open({
-            message: this.$t("globals.errors.formNotValid"),
-            type: "is-danger"
+            message: this.$t('globals.errors.formNotValid'),
+            type: 'is-danger',
           });
           return false;
         }
@@ -258,23 +341,24 @@ export default {
         this.startLoading();
         this.$http
           .patch(`/v1/users/${this.user.id}`, this.getPayload())
-          .then(res => {
+          .then((res) => {
             this.response.ok = true;
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err);
-            if (err.response && err.response.data)
+            if (err.response && err.response.data) {
               this.$toast.open({
                 message: this.$t(err.response.data.message),
-                type: "is-danger"
+                type: 'is-danger',
               });
+            }
           })
           .finally(() => {
             this.stopLoading();
           });
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
