@@ -43,14 +43,8 @@
               <p class="help" v-if="!fetchingCities && mapReady">
                 <b-switch
                 type='is-primary'
-                @input="changeToggleView">Toggle presence in countries <span class="has-text-primary"><i class="fas fa-asterisk"></i>&nbsp;(New!)</span></b-switch>
+                @input="changeToggleView">Show only presence in countries</b-switch>
               </p>
-              <!-- <p class="help" v-if="mapReady">
-                <a
-                  class="has-text-primary"
-                  @click="fetchCountries"
-                >Magic</a>
-              </p> -->
             </div>
           </div>
         </div>
@@ -71,7 +65,7 @@
             <br />
             <br class="is-hidden-touch"/>
             <a class="has-text-white toggle-button is-size-7-touch" @click="openUnlocated">
-              <i class="fas fa-question-circle"></i>&nbsp;List initiatives without city
+              <i class="fas fa-clipboard-list fa-lg"></i>&nbsp;&nbsp;List initiatives without city
             </a>
           </div>
           <p v-else class="animated infinite bounce is-size-4">

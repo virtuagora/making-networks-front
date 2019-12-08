@@ -3,7 +3,7 @@
     <MglMap
       ref="theMap"
       :accessToken="accessToken"
-      :minZoom="2"
+      :minZoom="1.4"
       :maxZoom="8"
       class="my-mapbox"
       :mapStyle.sync="mapStyle"
@@ -67,7 +67,8 @@ export default {
       colorMarker: "#da8313",
       accessToken: process.env.VUE_APP_MAPBOX_TOKEN_MAPTILES, // your access token. Needed if you using Mapbox maps
       mapStyle: process.env.VUE_APP_MAPBOX_STYLE, // your map style
-      theCenter: [-60.675328, -31.617428],
+      // theCenter: [-60.675328, -31.617428],
+      // theCenter: [32, -15],
       showCities: true,
     };
   },
