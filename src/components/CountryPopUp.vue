@@ -3,7 +3,7 @@
     <section class="modal-card-body has-text-centered">
       <div class="content">
         <p><span class="is-size-4 is-700">{{resource.initiatives}} initiatives</span><br> have or does some work (or activity) in</p>
-        <h1 class="subtitle is-3 has-text-danger is-marginless">{{resource.name}}</h1>
+        <h1 class="subtitle is-3 has-text-primary is-marginless">{{resource.name}}</h1>
       </div>
       <div v-if="!getching">
         <p v-for="initiative in initiatives" :key="initiative.id">
@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     getInitiatives() {
-        this.$http.get(`/v1/initiatives?country=${this.resource.countryId}`).then((res) => {
+        this.$http.get(`/v1/initiatives?countries=${this.resource.countryId}`).then((res) => {
           this.initiatives = res.data.data;
           this.fetching = false
         });

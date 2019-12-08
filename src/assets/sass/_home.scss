@@ -102,3 +102,14 @@
     }
   }
 }
+
+.book-bg{
+    border-top: 1px solid rgba(255, 255, 255, 0.397);
+
+  background-image: url('/youngatlasbook-bg.png');
+  background-size: cover;
+  background-position: top, center;
+  .hero-body{
+    background: linear-gradient(to bottom, #8c30a367, rgba(0, 0, 0, 0.726));
+  }
+}

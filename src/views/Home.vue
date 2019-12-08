@@ -74,6 +74,23 @@
         </div>
       </div>
     </div>
+    <div class="hero is-dark book-bg" >
+      <div class="hero-body">
+        <div class="container">
+          <div class="columns is-vcentered">
+            <div class="column">
+              <img src="/youngatlasbook-logo.svg" class="image is-centered book-logo"/>
+            </div>
+            <div class="column has-text-centered">
+            <a href="https://drive.google.com/file/d/1pddHrGYlSz-JvM_q63RYp3JJLsgwnyix/view" target="_blank">
+              <img src="/youngatlasbook.png" class="image is-centered book-style"/>
+            </a>
+              <p class="title is-3 is-800 animated infinite pulse slow"><i class="fas fa-arrow-down"></i>&nbsp;Download Now!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="hero is-dark creating-network-tv">
       <div class="hero-body">
         <div class="container">
@@ -245,5 +262,15 @@ export default {
     border-top: 1px solid rgba(255, 255, 255, 0.397);
     border-bottom: 1px solid rgba(255, 255, 255, 0.397);
 
+}
+
+.book-style{
+  width: 200px;
+  box-shadow: rgb(0, 0, 0) 5px 5px 0px 1px;
+  border: 5px solid rgb(255, 255, 255);
+  margin-bottom: 15px;
+}
+.book-logo{
+  width: 350px;
 }
 </style>
