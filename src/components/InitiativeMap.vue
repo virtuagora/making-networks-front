@@ -3,7 +3,7 @@
     <MglMap
       ref="theMap"
       :accessToken="accessToken"
-      :minZoom="1.4"
+      :minZoom="1"
       :maxZoom="8"
       class="my-mapbox"
       :mapStyle.sync="mapStyle"
@@ -59,7 +59,7 @@ export default {
   props: {
     cities: {
       type: Array
-    },
+    }
   },
   data() {
     return {
@@ -69,7 +69,7 @@ export default {
       mapStyle: process.env.VUE_APP_MAPBOX_STYLE, // your map style
       // theCenter: [-60.675328, -31.617428],
       // theCenter: [32, -15],
-      showCities: true,
+      showCities: true
     };
   },
   methods: {
@@ -109,46 +109,57 @@ export default {
       this.$refs.theMap.map.getCanvas().style.cursor = "grab";
     },
     toggleCountriesVisibility: async function() {
-      var visibility = await this.$refs.theMap.map.getLayoutProperty('countries-layer', 'visibility');
-      
-      if (visibility === 'visible') {
-        await this.$refs.theMap.map.setLayoutProperty('countries-layer', 'visibility', 'none');
-      this.className = '';
+      var visibility = await this.$refs.theMap.map.getLayoutProperty(
+        "countries-layer",
+        "visibility"
+      );
+
+      if (visibility === "visible") {
+        await this.$refs.theMap.map.setLayoutProperty(
+          "countries-layer",
+          "visibility",
+          "none"
+        );
+        this.className = "";
       } else {
-      this.className = 'active';
-        await this.$refs.theMap.map.setLayoutProperty('countries-layer', 'visibility', 'visible');
+        this.className = "active";
+        await this.$refs.theMap.map.setLayoutProperty(
+          "countries-layer",
+          "visibility",
+          "visible"
+        );
       }
-      this.toggleShowCities()
+      this.toggleShowCities();
     },
     toggleShowCities: function() {
       this.showCities = !this.showCities;
     },
     drawCountryGeoJson: async function(geojson) {
-      console.log(geojson)
+      console.log(geojson);
       await this.$refs.theMap.map.addSource("countries", geojson);
       await this.$refs.theMap.map.addLayer({
         id: "countries-layer",
         type: "fill",
         source: "countries",
         layout: {
-          "visibility": "visible"
+          visibility: "visible"
         },
         paint: {
           "fill-color": "#da8313",
-          "fill-opacity": 0.4,
+          "fill-opacity": 0.4
         }
         // "filter": ["==", "$type", "Polygon"]
       });
-      await this.$refs.theMap.map.on('mouseenter', 'countries-layer', (e) => {
+      await this.$refs.theMap.map.on("mouseenter", "countries-layer", e => {
         this.$refs.theMap.map.getCanvas().style.cursor = "pointer";
-      })
-      await this.$refs.theMap.map.on('mouseleave', 'countries-layer', (e) => {
-        this.$refs.theMap.map.getCanvas().style.cursor = '';
-      })
-      await this.$refs.theMap.map.on('click', 'countries-layer', (e) => {
-        this.openCountryModalLayer(e.features[0].properties)
-      })
-      this.toggleShowCities()
+      });
+      await this.$refs.theMap.map.on("mouseleave", "countries-layer", e => {
+        this.$refs.theMap.map.getCanvas().style.cursor = "";
+      });
+      await this.$refs.theMap.map.on("click", "countries-layer", e => {
+        this.openCountryModalLayer(e.features[0].properties);
+      });
+      this.toggleShowCities();
       // await this.$refs.theMap.map.addLayer({
       //   id: "countries-labels",
       //   type: "symbol",
@@ -169,9 +180,9 @@ export default {
     }
   },
   computed: {
-    citiesArray: function(){
-      if(this.showCities) return this.cities
-      else return [] 
+    citiesArray: function() {
+      if (this.showCities) return this.cities;
+      else return [];
     }
   }
 };

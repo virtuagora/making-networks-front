@@ -18,7 +18,7 @@
    inkscape:export-xdpi="100"
    inkscape:export-ydpi="100"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="book-atlas-logo.svg">
+   sodipodi:docname="youngatlasbook-logo.svg">
   <defs
      id="defs107440">
     <clipPath
@@ -53,9 +53,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="174.89814"
-     inkscape:cy="237.67637"
+     inkscape:zoom="1.979899"
+     inkscape:cx="227.33621"
+     inkscape:cy="85.072027"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -76,7 +76,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -442,7 +442,7 @@
        id="path102834"
        inkscape:connector-curvature="0" />
     <path
-       d="m 98.821969,107.13798 h -0.506941 v -1.9057 h 0.506941 z m -1.086908,0.58279 h 1.664406 v -3.07304 h -1.664406 z"
+       d="m 97.99987,106.56156 h -0.506941 v -1.9057 h 0.506941 z m -1.086908,0.58279 h 1.664406 v -3.07304 h -1.664406 z"
        style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277775"
        id="path102836"
        inkscape:connector-curvature="0" />
