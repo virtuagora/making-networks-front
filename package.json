@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "animate.css": "^3.7.2",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "buefy": "^0.7.10",
     "bulma": "^0.7.5",
     "lodash": "^4.17.15",
